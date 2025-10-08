@@ -1,0 +1,11 @@
+.navbarColor {
+  background-color: red important!;
+}
+
+*{
+   font-family: 'Open Sans', sans-serif;
+}
+
+h1 {
+  text-align: center;
+}
