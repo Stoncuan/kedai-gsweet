@@ -1,11 +1,4 @@
-.navbarColor {
-  background-color: red important!;
-}
+.navbar-gsweet{
+    background-color: #FFD4D4 !important;
 
-*{
-   font-family: 'Open Sans', sans-serif;
-}
-
-h1 {
-  text-align: center;
 }

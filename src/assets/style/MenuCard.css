@@ -1,0 +1,7 @@
+.menu-card {
+  cursor: pointer; /* Pointer cursor untuk interaktif */
+}
+
+.menu-card:hover .card-title {
+  color: #FFD700 !important; /* Gold highlight pada judul saat hover */
+}
