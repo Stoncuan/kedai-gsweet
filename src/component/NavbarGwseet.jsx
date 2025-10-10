@@ -22,9 +22,9 @@ function NavbarGwseet() {
             style={{ maxHeight: '100px' }}
             navbarScroll
           >
-            <Nav.Link href="#action1">Menu</Nav.Link>
-            <Nav.Link href="#action2">About</Nav.Link>
-             <Nav.Link href="#action2">Contact</Nav.Link>
+            <Nav.Link href="#action1"><b>Menu</b></Nav.Link>
+            <Nav.Link href="#action2"><b>About</b></Nav.Link>
+             <Nav.Link href="#action2"><b>Contact</b></Nav.Link>
           </Nav>
         </Navbar.Collapse>
       </Container>

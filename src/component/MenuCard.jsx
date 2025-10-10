@@ -46,7 +46,14 @@ const defaultMenus = [
     image: '/image/MieJebew.jpg',
     price: 'Rp 30.000'
   },
-  // Tambahkan lebih banyak data sesuai kebutuhan
+  {
+    id: 6,
+    name: 'Mie Jebew',
+    description: 'Tart buah segar dengan custard creamy dan topping strawberry, kiwi, dan anggur. Sehat dan menyegarkan.',
+    image: '/image/MieJebew.jpg',
+    price: 'Rp 30.000'
+  },
+  
 ];
 
 function MenuCard({ menus = defaultMenus }) { // Props menus opsional, default ke data contoh

@@ -1,5 +1,6 @@
 import React from 'react';
 import { Container, Row, Col, Image, ListGroup } from 'react-bootstrap';
+import 'bootstrap/dist/css/bootstrap.min.css';
 
 function About() {
   return (

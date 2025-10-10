@@ -10,7 +10,7 @@ const CarouselExample = () => {
           fade={true} // Efek fade halus untuk transisi menarik
           indicators={true}
           controls={true}
-          interval={4000} // Auto-slide setiap 4 detik
+          interval={6000} // Auto-slide setiap 4 detik
           className="best-seller-carousel"
         >
           {/* Slide 1: Nasi Goreng */}
