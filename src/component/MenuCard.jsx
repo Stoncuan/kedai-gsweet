@@ -60,7 +60,7 @@ function MenuCard({ menus = defaultMenus }) { // Props menus opsional, default k
   return (
     <Container fluid className="py-5" style={{ backgroundColor: '#f8f9fa' }}> {/* Background container untuk kontras */}
       <h2 className="text-center mb-4 text-dark fw-bold">Daftar Menu GSweet</h2>
-      <Row xs={1} md={2} lg={3} className="g-4"> {/* Grid responsive: 1 kolom di mobile, 2 di tablet, 3 di desktop */}
+      <Row xs={1} md={2} lg={4} className="g-4"> {/* Grid responsive: 1 kolom di mobile, 2 di tablet, 3 di desktop */}
         {menus.map((menu) => (
           <Col key={menu.id}>
             <Card 
