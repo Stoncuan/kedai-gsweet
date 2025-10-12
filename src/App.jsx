@@ -4,6 +4,8 @@ import Corousel from './component/CarouselExample.jsx';
 import NavbarGwseet from './component/NavbarGwseet.jsx';
 import MenuCard from './component/MenuCard.jsx';
 import About from './component/About.jsx';
+import Contact from './component/Contact.jsx';
+import Footer from './component/Footer.jsx';
 
 function App() {
   return (
@@ -12,6 +14,8 @@ function App() {
       <Corousel/>
       <MenuCard/>
       <About/>
+      <Contact/>
+      <Footer/>
     </div>
   );
 }

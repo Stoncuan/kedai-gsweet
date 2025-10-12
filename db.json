@@ -1,4 +1,4 @@
-{
+ {
   "categories": [
     {
       "id": 1,
@@ -16,11 +16,10 @@
   "products": [
     {
       "id": 1,
-      "kode": "K-01",
-      "nama": "Sate Ayam",
-      "harga": 16000,
-      "is_ready": true,
-      "gambar": "sate-ayam.jpg",
+      "nama": "Seblak",
+      "Deskripsi": "Seblak komplit yang Bikin Lidah Bergoyang!",
+      "harga": 25000,
+      "gambar": "seblak.jpg",
       "category": {
         "id": 1,
         "nama": "Makanan"
@@ -28,11 +27,10 @@
     },
     {
       "id": 2,
-      "kode": "K-02",
-      "nama": "Nasi Goreng Telur",
-      "harga": 14000,
-      "is_ready": true,
-      "gambar": "nasi-goreng-telor.jpg",
+      "nama": "Baso Aci",
+      "Deskripsi": "Bakso Aci Kenyal, Rasanya Gurih, buat kamu ketagihan!",
+      "harga": 25000,
+      "gambar": "BasoAci.jpg",
       "category": {
         "id": 1,
         "nama": "Makanan"
@@ -40,11 +38,10 @@
     },
     {
       "id": 3,
-      "kode": "K-03",
-      "nama": "Nasi Rames",
-      "harga": 12000,
-      "is_ready": true,
-      "gambar": "nasi-rames.jpg",
+      "nama": "Mie Jebew",
+      "Deskripsi": "Mie Jebew, Rasanya Bikin Ketagihan!",
+      "harga": 18000,
+      "gambar": "MieJebew.jpg",
       "category": {
         "id": 1,
         "nama": "Makanan"
@@ -52,59 +49,54 @@
     },
     {
       "id": 4,
-      "kode": "K-04",
-      "nama": "Lontong Opor Ayam",
-      "harga": 18000,
-      "is_ready": true,
-      "gambar": "lontong-opor-ayam.jpg",
+      "nama": "Matcha Latte",
+      "Deskripsi": "Perpaduan Matcha dan susu yang menyegarkan, Bikin kamu Feel Good",
+      "harga": 20000,
+      "gambar": "MatchaLatte.jpg",
       "category": {
-        "id": 1,
-        "nama": "Makanan"
+        "id": 2,
+        "nama": "Minuman"
       }
     },
     {
       "id": 5,
-      "kode": "K-05",
-      "nama": "Mie Goreng",
-      "harga": 13000,
-      "is_ready": true,
-      "gambar": "mie-goreng.jpg",
+      "nama": "Dalgona Coffee",
+      "Deskripsi": "Kopi Dalgona yang kental dan manis, Nikmatnya tiada batas!",
+      "harga": 10000,
+      "gambar": "dalgona.jpg",
       "category": {
-        "id": 1,
-        "nama": "Makanan"
+        "id": 2,
+        "nama": "Minuman"
       }
     },
     {
       "id": 6,
-      "kode": "K-06",
-      "nama": "Bakso",
-      "harga": 10000,
-      "is_ready": true,
-      "gambar": "bakso.jpg",
+      "nama": "Brownies",
+      "Deskripsi": "Brownies yang Lembut dan Kaya, Camilan Sempurna untuk Pecinta Cokelat!",
+      "harga": 85000,
+      "gambar": "Brownies.jpg",
       "category": {
-        "id": 1,
-        "nama": "Makanan"
+        "id": 3,
+        "nama": "Cemilan"
       }
     },
     {
       "id": 7,
-      "kode": "K-07",
-      "nama": "Mie Ayam Bakso",
-      "harga": 14000,
-      "is_ready": true,
-      "gambar": "mie-ayam-bakso.jpg",
+      "nama": "Pisang Aroma",
+      "Deskripsi": "Pisang Aroma Manis, Camilan Sempurna untuk menyenangkan harimu!",
+      "harga": 20000,
+      "gambar": "PisangAroma.jpg",
       "category": {
-        "id": 1,
-        "nama": "Makanan"
+        "id": 3,
+        "nama": "Cemilan"
       }
     },
     {
       "id": 8,
-      "kode": "K-08",
-      "nama": "Pangsit 6 pcs",
+      "nama": "Roti Bakar",
+      "Deskripsi": "Roti Bakar dengan berbagai rasa yang Nikmat untuk Disantap!",
       "harga": 5000,
-      "is_ready": true,
-      "gambar": "pangsit.jpg",
+      "gambar": "RotiBakar.jpg",
       "category": {
         "id": 3,
         "nama": "Cemilan"
@@ -112,77 +104,14 @@
     },
     {
       "id": 9,
-      "kode": "K-09",
-      "nama": "Kentang Goreng",
-      "harga": 5000,
-      "is_ready": true,
-      "gambar": "kentang-goreng.jpg",
+      "nama": "Kebab",
+      "Deskripsi": "Kebab yang Enak, dan Dagingnya Juicy!",
+      "harga": 25000,
+      "gambar": "Kebab.jpg",
       "category": {
         "id": 3,
         "nama": "Cemilan"
-      }
-    },
-    {
-      "id": 10,
-      "kode": "K-010",
-      "nama": "Cheese Burger",
-      "harga": 15000,
-      "is_ready": true,
-      "gambar": "cheese-burger.jpg",
-      "category": {
-        "id": 3,
-        "nama": "Cemilan"
-      }
-    },
-    {
-      "id": 11,
-      "kode": "K-011",
-      "nama": "Coffe Late",
-      "harga": 15000,
-      "is_ready": true,
-      "gambar": "coffe-late.jpg",
-      "category": {
-        "id": 2,
-        "nama": "Minuman"
-      }
-    },
-    {
-      "id": 12,
-      "kode": "K-012",
-      "nama": "Es Jeruk",
-      "harga": 7000,
-      "is_ready": true,
-      "gambar": "es-jeruk.jpg",
-      "category": {
-        "id": 2,
-        "nama": "Minuman"
-      }
-    },
-    {
-      "id": 13,
-      "kode": "K-013",
-      "nama": "Es Teh",
-      "harga": 5000,
-      "is_ready": true,
-      "gambar": "es-teh.jpg",
-      "category": {
-        "id": 2,
-        "nama": "Minuman"
-      }
-    },
-    {
-      "id": 14,
-      "kode": "K-014",
-      "nama": "Teh Hangat",
-      "harga": 3000,
-      "is_ready": true,
-      "gambar": "teh-hangat.jpg",
-      "category": {
-        "id": 2,
-        "nama": "Minuman"
       }
     }
   ]
-  
-  
 }

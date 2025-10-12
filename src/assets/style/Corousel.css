@@ -1,7 +1,6 @@
 .carousel-wrapper {
   position: relative;
   max-width: 100%;
-  border-radius: 20px;
   overflow: hidden;
   box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2); /* Shadow halus untuk depth menarik */
   background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%); /* Background gradient subtle */
@@ -15,7 +14,7 @@
   z-index: 10;
   background: rgba(255, 255, 255, 0.9);
   padding: 10px 25px;
-  border-radius: 30px;
+  border-radius: 10px;
   color: #333;
   font-size: 1.8rem;
   font-weight: bold;
@@ -63,7 +62,7 @@
   padding: 30px 25px;
   max-width: 80%;
   text-align: center;
-  color: white;
+  color:  #FFFFE8;
   backdrop-filter: blur(15px); /* Efek blur modern untuk stylish */
   box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
   animation: slideIn 0.8s ease-out; /* Animasi muncul halus */
@@ -79,7 +78,7 @@
 .caption-overlay h3 {
   font-size: 2.5rem;
   margin: 0 0 15px 0;
-  color: #ffd700; /* Warna emas untuk nama menu menarik */
+  color: #E8988A; /* Warna emas untuk nama menu menarik */
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: bold;
   line-height: 1.2;
@@ -97,9 +96,9 @@
 .caption-overlay .price {
   font-size: 1.5rem;
   font-weight: bold;
-  color: #ffd700;
+  color:  #FFD4D4;
   text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.8);
-  border-top: 2px solid rgba(255, 215, 0, 0.3);
+  border-top: 2px solid rgba(201, 106, 204, 0.808);
   padding-top: 10px;
   display: inline-block;
 }
@@ -110,7 +109,7 @@
 }
 
 .best-seller-carousel .carousel-indicators [data-bs-target] {
-  background-color: rgba(255, 215, 0, 0.8);
+  background-color: rgba(193, 105, 219, 0.8);
   border-radius: 50%;
   width: 12px;
   height: 12px;
@@ -119,12 +118,12 @@
 }
 
 .best-seller-carousel .carousel-indicators .active {
-  background-color: #ffd700;
+  background-color: #FFD4D4;
 }
 
 .best-seller-carousel .carousel-control-prev-icon,
 .best-seller-carousel .carousel-control-next-icon {
-  background-color: rgba(255, 215, 0, 0.9);
+  background-color: rgba(193, 105, 219, 0.8);
   border-radius: 50%;
   width: 50px;
   height: 50px;
@@ -134,7 +133,7 @@
 
 .best-seller-carousel .carousel-control-prev:hover .carousel-control-prev-icon,
 .best-seller-carousel .carousel-control-next:hover .carousel-control-next-icon {
-  background-color: #ffd700;
+  background-color: #FFD4D4;
 }
 
 /* Animasi untuk caption */

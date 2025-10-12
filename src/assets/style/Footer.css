@@ -1,0 +1,103 @@
+.footer-gsweet {
+  background-color: #ffd4d4 !important;
+  color: #333;
+  padding: 40px 0 20px;
+  margin-top: 50px; /* Jarak dari konten utama */
+  box-shadow: 0 -2px 10px rgba(0, 0, 0, 0.1); /* Shadow atas untuk efek depth */
+  font-family: Arial, sans-serif;
+}
+
+.footer-brand {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-bottom: 20px;
+}
+
+.footer-brand img {
+  width: 60px; /* Logo lebih kecil di footer */
+  height: auto;
+  margin-right: 10px;
+  transition: transform 0.3s ease; /* Animasi hover logo */
+}
+
+.footer-brand img:hover {
+  transform: scale(1.1); /* Zoom sedikit saat hover */
+}
+
+.footer-brand h5 {
+  color: #333 !important;
+  font-weight: bold;
+  margin: 0;
+  transition: color 0.3s ease;
+}
+
+.footer-brand:hover h5 {
+  color: #fff; /* Warna berubah saat hover ke brand */
+}
+
+.footer-link {
+  color: #333 !important;
+  text-decoration: none;
+  font-weight: 500;
+  padding: 5px 10px;
+  border-radius: 15px;
+  display: inline-block;
+  margin: 5px 0;
+  transition: all 0.3s ease; /* Transisi halus */
+  background-color: transparent;
+}
+
+.footer-link:hover {
+  background-color: #fff !important; /* Background putih saat hover */
+  color: #ffd4d4 !important; /* Warna teks sesuai tema */
+  transform: translateX(5px); /* Efek geser ke kanan untuk animasi */
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.2); /* Shadow ringan */
+}
+
+.footer-section-title {
+  color: #333 !important;
+  font-weight: bold;
+  margin-bottom: 15px;
+  border-bottom: 2px solid #fff;
+  padding-bottom: 5px;
+  transition: color 0.3s ease;
+}
+
+.footer-section-title:hover {
+  color: #fff;
+}
+
+.footer-contact {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 20px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+}
+
+.footer-contact i {
+  margin-right: 5px;
+  color: #ffd4d4; /* Ikon warna tema, sesuaikan jika pakai Font Awesome */
+}
+
+.copyright {
+  text-align: center;
+  margin-top: 20px;
+  padding-top: 15px;
+  border-top: 1px solid rgba(255, 255, 255, 0.3);
+  color: #666;
+  font-size: 0.9em;
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 768px) {
+  .footer-gsweet {
+    padding: 30px 0 15px;
+  }
+
+  .footer-link {
+    display: block;
+    text-align: center;
+    margin: 3px 0;
+  }
+}

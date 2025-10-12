@@ -3,5 +3,8 @@
 }
 
 .menu-card:hover .card-title {
-  color: #FFD700 !important; /* Gold highlight pada judul saat hover */
+  color: #ffd4d4 !important; /* Gold highlight pada judul saat hover */
+  transition: 0.5s;
 }
+
+

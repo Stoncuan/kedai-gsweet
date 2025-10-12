@@ -1,5 +1,52 @@
-.navbar-gsweet{
-    background-color: #FFD4D4 !important;
-    margin-bottom: -48px;
+.navbar-gsweet {
+  background-color: #ffd4d4 !important;
+  box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1); /* Tambah shadow untuk tampilan lebih menarik */
+  transition: background-color 0.3s ease; /* Transisi halus untuk background navbar jika diubah */
+  margin-bottom: -48px;
+}
 
+.navbar-brand h4 {
+  color: #333 !important;
+  font-weight: bold;
+  margin-left: 10px; /* Jarak dari logo */
+  transition: color 0.3s ease; /* Transisi warna teks brand */
+}
+
+.navbar-brand:hover h4 {
+  color: #fff; /* Warna berubah saat hover ke brand */
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  transition: transform 0.3s ease; /* Animasi hover untuk logo */
+}
+
+.logo-container:hover {
+  transform: scale(1.05); /* Zoom sedikit saat hover */
+}
+
+.nav-link-custom {
+  color: #333 !important;
+  font-weight: bold;
+  padding: 10px 15px !important; /* Padding lebih besar untuk tampilan menarik */
+  border-radius: 25px; /* Border radius untuk bentuk pill */
+  margin: 0 5px; /* Jarak antar link */
+  transition: all 0.3s ease; /* Transisi halus untuk semua perubahan */
+  background-color: transparent;
+}
+
+.nav-link-custom:hover {
+  background-color: #ffd4d4 !important; /* Warna hover sesuai request */
+  color: #fff !important; /* Warna teks putih saat hover */
+  transform: translateY(-2px); /* Efek angkat sedikit untuk animasi */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.2); /* Shadow saat hover */
+}
+
+/* Responsif untuk mobile */
+@media (max-width: 991px) {
+  .nav-link-custom {
+    border-radius: 15px;
+    margin: 5px 0;
+  }
 }

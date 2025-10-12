@@ -1,0 +1,30 @@
+.aboutContainer {
+  background-color: #ffd4d4;
+  min-height: 100vh;
+  padding: 2rem 0;
+}
+
+.aboutDiv {
+  background-color: rgba(255, 255, 255, 0.8);
+  padding: 2rem;
+  border-radius: 15px;
+  box-shadow: 0 8px 20px rgba(0, 0, 0, 0.1);
+}
+
+.aboutH2 {
+  color: #d2691e;
+  font-weight: bold;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+}
+
+.aboutH4 {
+  color: #8b4513;
+  font-style: italic;
+}
+
+.aboutUmkm {
+  background-color: rgba(255, 255, 255, 0.9);
+  padding: 1.5rem;
+  border-radius: 10px;
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+}
