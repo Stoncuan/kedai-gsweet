@@ -10,10 +10,10 @@ const CarouselExample = () => {
           fade={true} // Efek fade halus untuk transisi menarik
           indicators={true}
           controls={true}
-          interval={6000} // Auto-slide setiap 4 detik
+          interval={6000} // Auto-slide setiap 6 detik
           className="best-seller-carousel"
         >
-          {/* Slide 1: Nasi Goreng */}
+         
           <Carousel.Item>
             <div className="image-container">
               <img
@@ -34,7 +34,7 @@ const CarouselExample = () => {
             </div>
           </Carousel.Item>
 
-          {/* Slide 2: Burger */}
+         
           <Carousel.Item>
             <div className="image-container">
               <img
@@ -55,7 +55,7 @@ const CarouselExample = () => {
             </div>
           </Carousel.Item>
 
-          {/* Slide 3: Pizza */}
+         
           <Carousel.Item>
             <div className="image-container">
               <img

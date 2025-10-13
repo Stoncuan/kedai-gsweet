@@ -1,0 +1,117 @@
+ {
+  "categories": [
+    {
+      "id": 1,
+      "nama": "Makanan"
+    },
+    {
+      "id": 2,
+      "nama": "Minuman"
+    },
+    {
+      "id": 3,
+      "nama": "Cemilan"
+    }
+  ],
+  "products": [
+    {
+      "id": 1,
+      "nama": "Seblak",
+      "Deskripsi": "Seblak komplit yang Bikin Lidah Bergoyang!",
+      "harga": 25000,
+      "gambar": "seblak.jpg",
+      "category": {
+        "id": 1,
+        "nama": "Makanan"
+      }
+    },
+    {
+      "id": 2,
+      "nama": "Baso Aci",
+      "Deskripsi": "Bakso Aci Kenyal, Rasanya Gurih, buat kamu ketagihan!",
+      "harga": 25000,
+      "gambar": "BasoAci.jpg",
+      "category": {
+        "id": 1,
+        "nama": "Makanan"
+      }
+    },
+    {
+      "id": 3,
+      "nama": "Mie Jebew",
+      "Deskripsi": "Mie Jebew, Rasanya Bikin Ketagihan!",
+      "harga": 18000,
+      "gambar": "MieJebew.jpg",
+      "category": {
+        "id": 1,
+        "nama": "Makanan"
+      }
+    },
+    {
+      "id": 4,
+      "nama": "Matcha Latte",
+      "Deskripsi": "Perpaduan Matcha dan susu yang menyegarkan, Bikin kamu Feel Good",
+      "harga": 20000,
+      "gambar": "MatchaLatte.jpg",
+      "category": {
+        "id": 2,
+        "nama": "Minuman"
+      }
+    },
+    {
+      "id": 5,
+      "nama": "Dalgona Coffee",
+      "Deskripsi": "Kopi Dalgona yang kental dan manis, Nikmatnya tiada batas!",
+      "harga": 10000,
+      "gambar": "dalgona.jpg",
+      "category": {
+        "id": 2,
+        "nama": "Minuman"
+      }
+    },
+    {
+      "id": 6,
+      "nama": "Brownies",
+      "Deskripsi": "Brownies yang Lembut dan Kaya, Camilan Sempurna untuk Pecinta Cokelat!",
+      "harga": 85000,
+      "gambar": "Brownies.jpg",
+      "category": {
+        "id": 3,
+        "nama": "Cemilan"
+      }
+    },
+    {
+      "id": 7,
+      "nama": "Pisang Aroma",
+      "Deskripsi": "Pisang Aroma Manis, Camilan Sempurna untuk menyenangkan harimu!",
+      "harga": 20000,
+      "gambar": "PisangAroma.jpg",
+      "category": {
+        "id": 3,
+        "nama": "Cemilan"
+      }
+    },
+    {
+      "id": 8,
+      "nama": "Roti Bakar",
+      "Deskripsi": "Roti Bakar dengan berbagai rasa yang Nikmat untuk Disantap!",
+      "harga": 5000,
+      "gambar": "RotiBakar.jpg",
+      "category": {
+        "id": 3,
+        "nama": "Cemilan"
+      }
+    },
+    {
+      "id": 9,
+      "nama": "Kebab",
+      "Deskripsi": "Kebab yang Enak, dan Dagingnya Juicy!",
+      "harga": 25000,
+      "gambar": "Kebab.jpg",
+      "category": {
+        "id": 3,
+        "nama": "Cemilan"
+      }
+    }
+  ]
+}
