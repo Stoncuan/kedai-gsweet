@@ -20,8 +20,8 @@ export default class MenuCard extends Component {
   }
 
   componentDidMount() {
-    axios.get(API_URL + "products").then((res) => {
-      const menus = res.data;
+    axios.get("https://kedai-gsweet.vercel.app/db.json").then((res) => {
+      const menus = res.data.products;
       this.setState({ menus});
     })
     .catch((error) => {
