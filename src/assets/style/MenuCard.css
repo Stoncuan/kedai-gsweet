@@ -1,10 +1,33 @@
 .menu-card {
-  cursor: pointer; /* Pointer cursor untuk interaktif */
+  cursor: pointer;
 }
 
 .menu-card:hover .card-title {
-  color: #ffd4d4 !important; /* Gold highlight pada judul saat hover */
+  color: #ffd4d4 !important;
   transition: 0.5s;
 }
 
+.menu-card {
+  background-color: #e8988a;
+  border: none;
+  border-radius: 15px;
+  overflow: "hidden";
+  transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
 
+.imgMenu {
+  height: 200px;
+  object-fit: cover;
+  width: 100%;
+}
+
+.menuName {
+  color: #ffffff;
+  font-size: 1.25rem;
+}
+
+.cardText {
+  color: #ffffff;
+  opacity: 0.9;
+  line-height: 1.5;
+}

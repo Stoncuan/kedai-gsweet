@@ -28,3 +28,47 @@
   border-radius: 10px;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
 }
+
+.aboutUmkm p {
+  color: #8b4513;
+  line-height: 1.6;
+}
+
+.listGroup {
+  border-radius: 10px;
+  overflow: hidden;
+}
+
+.listGroupItem {
+  background-color: #fff8dc;
+  border: 1px solid #ffd4d4;
+  color: #8b4513;
+}
+
+.imgAbout {
+  max-height: 500px;
+  width: 100%;
+  object-fit: cover;
+  box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+  border-radius: 15px;
+  border: 3px solid #ffd4d4;
+}
+
+.overlayDekoratif {
+  position: absolute;
+  top: -10px;
+  right: -10px;
+  background-color: #ffd4d4;
+  padding: 0.5rem 1rem;
+  border-radius: 50px;
+  font-size: 0.9rem;
+  color: #8b4513;
+  font-weight: bold;
+  box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
+}
+
+.aboutFooterP {
+  color: #8B4513; 
+  font-size: 1.1rem;
+  font-style: italic;
+}

@@ -32,7 +32,6 @@ function NavbarGwseet() {
               <Nav.Link href="#contact" className="nav-link-custom">
                 Contact
               </Nav.Link>{" "}
-              {/* Diperbaiki href untuk Contact */}
             </Nav>
           </Navbar.Collapse>
         </Container>

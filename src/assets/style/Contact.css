@@ -15,12 +15,12 @@
   border-radius: 10px;
   padding: 20px !important;
   margin-bottom: 30px !important;
-  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1); 
-  transition: all 0.3s ease; 
+  box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+  transition: all 0.3s ease;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 10px; 
+  gap: 10px;
 }
 
 .contact-header:hover {
@@ -41,7 +41,7 @@
 }
 
 .contact-card:hover {
-  transform: translateY(-5px); /* Angkat lebih tinggi saat hover */
+  transform: translateY(-5px); /* lebih tinggi saat hover */
   box-shadow: 0 8px 25px rgba(232, 152, 138, 0.3);
   border-color: #e8988a; /* Border warna tema saat hover */
 }
@@ -57,7 +57,7 @@
 }
 
 .contact-card:hover h5 {
-  color: #d87a75 !important; /* Lebih gelap saat hover */
+  color: #d87a75 !important; /* gelap saat hover */
 }
 
 .contact-item {
@@ -66,7 +66,7 @@
   margin-bottom: 15px;
   padding: 10px;
   border-radius: 10px;
-  background-color: #f8f9fa; /* Background ringan untuk item */
+  background-color: #f8f9fa; /* Background untuk item */
   transition: all 0.3s ease;
   font-size: 1.1em;
 }
@@ -74,7 +74,7 @@
 .contact-item:hover {
   background-color: #e8988a;
   color: #ffffff !important;
-  transform: scale(1.02); /* Sedikit zoom saat hover item */
+  transform: scale(1.02); /* zoom saat hover item */
   box-shadow: 0 2px 10px rgba(232, 152, 138, 0.2);
 }
 
@@ -103,7 +103,7 @@
   color: #e8988a;
   font-size: 1.2em;
   transition: color 0.3s ease;
-  flex-shrink: 0; /* Icon tidak menyusut */
+  flex-shrink: 0; /* buat icon tidak menyusut */
 }
 
 .contact-item:hover svg {
@@ -113,7 +113,7 @@
 .map-card {
   background-color: #ffffff !important;
   border-radius: 15px !important;
-  overflow: hidden; /* Pastikan map terpotong rapi */
+  overflow: hidden; 
   box-shadow: 0 4px 15px rgba(232, 152, 138, 0.2);
   transition: all 0.3s ease;
   height: 100%;

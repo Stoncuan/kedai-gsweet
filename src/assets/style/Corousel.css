@@ -72,13 +72,13 @@
   display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: center; /* Centering internal untuk rapih */
+  align-items: center; 
 }
 
 .caption-overlay h3 {
   font-size: 2.5rem;
   margin: 0 0 15px 0;
-  color: #E8988A; /* Warna emas untuk nama menu menarik */
+  color: #E8988A; 
   text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
   font-weight: bold;
   line-height: 1.2;

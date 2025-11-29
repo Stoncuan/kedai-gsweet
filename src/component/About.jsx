@@ -14,44 +14,28 @@ function About() {
       <Row className="align-items-center mb-5">
         <Col md={6} className="mb-4 mb-md-0">
           <div className="aboutUmkm">
-            <p className="lead" style={{ color: "#8B4513", lineHeight: "1.6" }}>
+            <p>
               Kedai Gsweet adalah UMKM kuliner yang berfokus pada sajian manis
               dan minuman segar khas lokal. Didirikan oleh generasi muda
               kreatif, GSweet hadir untuk menciptakan cita rasa yang menggugah
               selera dengan harga terjangkau.
             </p>
-            <p style={{ color: "#8B4513", lineHeight: "1.6" }}>
+            <p>
               Di era modern yang serba canggih dan digitalisasi saat ini, agar
               pelanggan dapat mendapat pengalaman yang menyenangkan dan mudah
               saat mengunjungi kedai kami, maka kami menyediakan informasi
               seputar produk, promo, dan acara menarik secara online.
             </p>
 
-            <ListGroup
-              variant="flush"
-              className="mt-4"
-              style={{ borderRadius: "10px", overflow: "hidden" }}
-            >
-              <ListGroup.Item
-                style={{
-                  backgroundColor: "#FFF8DC",
-                  border: "1px solid #FFD4D4",
-                  color: "#8B4513",
-                }}
-              >
+            <ListGroup variant="flush" className="mt-4 listGroup">
+              <ListGroup.Item className="listGroupItem">
                 <strong>Dari Dapur GSweet ke Hatimu</strong>
                 <br />
                 Setiap resep kami diracik dengan cinta, menghadirkan kehangatan
                 dalam setiap gigitan.
               </ListGroup.Item>
-              {/* Tambahkan item list tambahan untuk membuatnya lebih menarik */}
-              <ListGroup.Item
-                style={{
-                  backgroundColor: "#FFF8DC",
-                  border: "1px solid #FFD4D4",
-                  color: "#8B4513",
-                }}
-              >
+
+              <ListGroup.Item className="listGroupItem">
                 <strong>Inovasi Rasa Lokal</strong>
                 <br />
                 Menggabungkan tradisi kuliner Indonesia dengan sentuhan modern
@@ -68,41 +52,16 @@ function About() {
               alt="Foto Kedai GSweet"
               fluid
               rounded
-              style={{
-                maxHeight: "500px",
-                width: "100%",
-                objectFit: "cover",
-                boxShadow: "0 8px 25px rgba(0,0,0,0.15)",
-                borderRadius: "15px",
-                border: "3px solid #FFD4D4",
-              }}
+              className="imgAbout"
             />
-            {/* Overlay dekoratif untuk menambah daya tarik */}
-            <div
-              style={{
-                position: "absolute",
-                top: "-10px",
-                right: "-10px",
-                backgroundColor: "#FFD4D4",
-                padding: "0.5rem 1rem",
-                borderRadius: "50px",
-                fontSize: "0.9rem",
-                color: "#8B4513",
-                fontWeight: "bold",
-                boxShadow: "0 4px 10px rgba(0,0,0,0.1)",
-              }}
-            >
-              🍭 Manis Alami
-            </div>
+
+            <div className="overlayDekoratif">🍭 Manis Alami</div>
           </div>
         </Col>
       </Row>
 
-      {/* Tambahkan elemen dekoratif di bawah untuk lebih menarik */}
       <div className="text-center mt-5">
-        <p
-          style={{ color: "#8B4513", fontSize: "1.1rem", fontStyle: "italic" }}
-        >
+        <p className="aboutFooterP">
           Kunjungi kami dan rasakan kelezatan yang tak terlupakan!
         </p>
       </div>

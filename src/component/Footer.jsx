@@ -2,6 +2,8 @@ import React from "react";
 import { Container, Row, Col } from "react-bootstrap";
 import { FaInstagram, FaWhatsapp, FaTiktok, FaArrowUp } from "react-icons/fa";
 
+import '../assets/style/footer.css'
+
 const Footer = () => {
   return (
     <footer
@@ -124,21 +126,7 @@ const Footer = () => {
           </Col>
         </Row>
 
-        <a
-          href="#top"
-          style={{
-            position: "fixed",
-            right: "25px",
-            bottom: "25px",
-            backgroundColor: "#E75480",
-            color: "white",
-            borderRadius: "50%",
-            padding: "10px 13px",
-            textDecoration: "none",
-            fontSize: "1.2rem",
-            boxShadow: "0 2px 6px rgba(0,0,0,0.3)",
-          }}
-        >
+        <a href="#top" className="arrowBack">
           <FaArrowUp />
         </a>
       </Container>
