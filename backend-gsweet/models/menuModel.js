@@ -1,6 +1,6 @@
 import { DataTypes } from "sequelize";
 import db from "../config/db.js";
-import User from "./userModel.js";
+import User from "../models/userModel.js";
 
 const Post = db.define("posts", {
   title: DataTypes.STRING,
