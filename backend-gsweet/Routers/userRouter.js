@@ -5,14 +5,8 @@ import {
   updateUser,
   deleteUser,
 } from "../models/userModel.js";
-import {
-  getUsers,
-  addUser,
-  updateUser,
-  deleteUser,
-} from "../model/userModel.js";
 import bcrypt from "bcrypt";
-import { verifyToken } from "../middleware/auth.js";
+import { verifyToken } from "../middlewares/verifyToken.js";
 
 const router = express.Router();
 

@@ -1,13 +1,22 @@
-import { DataTypes } from "sequelize";
 import db from "../config/db.js";
-import User from "../models/userModel.js";
 
-const Post = db.define("posts", {
-  title: DataTypes.STRING,
-  content: DataTypes.TEXT,
-});
+export const getMenu = callback => {
+  db.query("SELECT * FROM tb_menu", callback);
+};
 
-User.hasMany(Post, { foreignKey: "userId" });
-Post.belongsTo(User, { foreignKey: "userId" });
+export const getMenuById = (id, callback) => {
+  db.query("SELECT * FROM tb_menu WHERE id = ?", [id], callback);
+};
 
-export default Post;
+
+export const addMenu = (data, callback) => {
+  db.query("INSERT INTO tb_menu SET ?", data, callback);
+};
+
+export const updateMenu = (data, id, callback) => {
+  db.query("UPDATE tb_menu SET ? WHERE id = ?", [data, id], callback);
+};
+
+export const deleteMenu = (id, callback) => {
+  db.query("DELETE FROM tb_menu WHERE id = ?", [id], callback);
+};

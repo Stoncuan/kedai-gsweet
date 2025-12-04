@@ -3,6 +3,7 @@ import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { getUserByUsername } from "../models/userModel.js";
 
+
 const router = express.Router();
 
 router.post("/", (req, res) => {
