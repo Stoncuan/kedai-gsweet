@@ -2,6 +2,7 @@ import "bootstrap/dist/css/bootstrap.min.css";
 import "../assets/style/Navbar.css";
 
 import { Navbar, Container, Nav } from "react-bootstrap";
+import { Link } from "react-router-dom";
 function NavbarGwseet() {
   return (
     <>
@@ -31,7 +32,10 @@ function NavbarGwseet() {
               </Nav.Link>
               <Nav.Link href="#contact" className="nav-link-custom">
                 Contact
-              </Nav.Link>{" "}
+              </Nav.Link>{""}
+             <Link to="/login" className="nav-link-custom">
+                Login
+              </Link>
             </Nav>
           </Navbar.Collapse>
         </Container>
