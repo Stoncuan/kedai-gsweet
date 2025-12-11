@@ -1,0 +1,276 @@
+/* LAYOUT UTAMA */
+.editpage-container {
+  display: flex;
+  min-height: 100vh;
+  background: white;
+  overflow-x: hidden;
+}
+
+/* SIDEBAR */
+.sidebar {
+  width: 220px;
+  background: #FFD4D4; 
+  display: flex;
+  flex-direction: column;
+  padding: 0;
+  position: relative;
+  flex-shrink: 0;
+}
+
+/* LOGO + ADMIN */
+.sidebar-logo-header {
+  background-color: #FFD4D4;
+  padding: 15px 20px;
+  text-align: center;
+}
+
+.logo-admin-wrapper {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 12px;
+  margin-bottom: 8px;
+}
+
+.logo-img {
+  width: 50px;
+  height: auto;
+}
+
+.admin-text {
+  font-weight: bold;
+  font-size: 1.2rem;
+  color: #b3475c;
+}
+
+.logo-tagline {
+  font-size: 0.8rem;
+  color: #6c757d;
+  line-height: 1.2;
+}
+
+/* MENU NAVIGASI */
+.sidebar-menu {
+  padding-top: 10px;
+  display: flex;
+  flex-direction: column;
+  flex-grow: 1;
+  width: 100%;
+   background-color: #FFD4D4;
+}
+
+.menu-item {
+  display: flex;
+  align-items: center;
+  padding: 10px 20px;
+  color: #b3475c;
+  font-weight: 500;
+  text-decoration: none;
+  transition: background 0.2s;
+}
+
+.menu-dashboard {
+  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
+  color: #b3475c;
+}
+
+.menu-item.active {
+  background: white;
+  color: #ffc0cb;
+  font-weight: bold;
+  border-top-right-radius: 10px;
+  border-bottom-right-radius: 10px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.menu-icon {
+  font-size: 1.1em;
+  margin-right: 12px;
+}
+
+/* LOGOUT DAN KEDAI GSWEET DI BAWAH */
+.sidebar-bottom {
+  padding: 20px;
+  margin-top: auto;
+}
+
+.kedai-text {
+  font-size: 0.8rem;
+  color: #b3475c;
+  margin-bottom: 10px;
+}
+
+.logout-btn {
+  color: #b3475c;
+  font-weight: bold;
+  text-decoration: none;
+  font-size: 0.95rem;
+  display: flex;
+  align-items: center;
+  width: fit-content;
+}
+
+.logout-icon {
+  margin-left: 5px;
+}
+
+.logout-btn:hover {
+  color: #ffc0cb;
+  text-decoration: none;
+}
+
+/* MAIN CONTENT */
+.main-content {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  background: white;
+  position: relative;
+}
+
+/* TOPBAR */
+.topbar {
+  width: 100%;
+  height: 60px;
+  background: white;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding: 0 25px;
+  border-bottom: 1px solid #e2b9c0;
+}
+
+/* USER BUTTON + ICON */
+.topbar-user {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+}
+
+.user-btn-label {
+  color: #6b2f38;
+  font-weight: 600;
+  font-size: 0.95rem;
+}
+
+.user-icon {
+  width: 32px;
+  height: 32px;
+  background: #ffd4d4;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: #ffc0cb;
+  font-size: 1.5rem;
+}
+
+/* AREA EDIT PROFILE */
+.editprofile-main {
+  flex: 1;
+  padding: 40px 20px;
+  padding-bottom: 100px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+.editprofile-main h2 {
+  text-align: center;
+  color: #b3475c;
+  margin-bottom: 30px;
+  font-size: 24px;
+  font-weight: 600;
+}
+
+/* FOTO PROFIL */
+.profile-avatar {
+  text-align: center;
+  margin-bottom: 50px;
+}
+
+.large-avatar-icon {
+  font-size: 100px;
+  color: #bdbdbd;
+  background: #e9ecef;
+  border-radius: 50%;
+  padding: 10px;
+}
+
+/* FORM */
+.editprofile-form {
+  width: 100%;
+  max-width: 350px;
+  margin: 0 auto;
+}
+
+/* INPUT GROUP */
+.input-group {
+  display: flex;
+  align-items: center;
+  padding: 10px 15px;
+  border-radius: 30px;
+  margin-bottom: 20px;
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
+}
+
+.input-group .icon {
+  font-size: 1.1rem;
+  margin-right: 10px;
+  color: #ffc0cb;
+}
+
+.input-group input {
+  flex: 1;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-size: 1rem;
+  color: #6b2f38;
+}
+
+/* PINK INPUT */
+.pink-input {
+  background: #ffd4d4;
+}
+
+/* BLUE INPUT (tapi warnanya sama) */
+.blue-input {
+  background: #ffd4d4;
+}
+
+/* BUTTON KONFIRMASI */
+.btn-confirm {
+  width: fit-content;
+  min-width: 150px;
+  background: #f7a3af;
+  padding: 10px 40px;
+  border: none;
+  border-radius: 25px;
+  font-weight: bold;
+  color: white;
+  cursor: pointer;
+  margin-top: 30px;
+  transition: background 0.2s;
+  display: block;
+  margin-left: auto;
+  margin-right: auto;
+}
+
+.btn-confirm:hover {
+  background: #e98c99;
+}
+
+/* FOOTER */
+.main-footer {
+  width: 100%;
+  height: 50px;
+  background: white;
+  text-align: center;
+  font-size: 0.9rem;
+  font-weight: bold;
+  color: #b3475c;
+  padding: 15px 0;
+  border-top: 1px solid #e2b9c0;
+  flex-shrink: 0;
+}

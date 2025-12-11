@@ -1,0 +1,210 @@
+/* Reset & full height */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #f9d4db; /* soft pink background */
+}
+
+/* Wrapper flex */
+.dashboard-wrapper {
+  display: flex;
+  height: 100vh;
+  color: #c90244; /* pinkish-red color */
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 220px;
+  background-color: #f9e8ea;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  border-right: 1px solid #f5c9d1;
+}
+
+/* Logo and title */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  padding-bottom: 14px;
+  margin-bottom: 20px;
+  border-bottom: 1px solid #f5c9d1;
+}
+
+.sidebar-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.sidebar-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #c90244;
+}
+
+/* Nav menu */
+.sidebar-nav .nav-item {
+  font-size: 0.9rem;
+  color: #c90244;
+  margin-bottom: 12px;
+  text-decoration: none !important;
+  font-weight: 600;
+  padding-left: 8px;
+  border-radius: 50px;
+  transition: background-color 0.3s ease;
+  cursor: pointer;
+}
+
+.sidebar-nav .nav-item:hover {
+  background-color: #fab3c2;
+}
+
+.sidebar-nav .nav-item.active {
+  background-color: #c90244;
+  color: white !important;
+}
+
+/* Logout button */
+.logout-btn {
+  color: #c90244;
+  font-weight: 700;
+  font-size: 1rem;
+  margin-top: auto;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: none;
+  border: none;
+  cursor: pointer;
+}
+
+.logout-btn:hover {
+  color: #9b1844;
+  text-decoration: underline;
+}
+
+/* Main content styling */
+.main-content {
+  flex-grow: 1;
+  background-color: #fff0f3;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header */
+.main-header {
+  height: 56px;
+  background-color: #f9d4db;
+  border-bottom: 1px solid #f5c9d1;
+  padding: 0 30px;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  color: #c90244;
+  font-weight: 700;
+  font-size: 1.1rem;
+}
+
+.header-right {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+}
+
+.user-label {
+  font-size: 1rem;
+}
+
+.user-icon {
+  color: #c90244;
+}
+
+/* Content container */
+.content-container {
+  flex-grow: 1;
+  padding: 30px 40px;
+  overflow-y: auto;
+}
+
+/* Button Tambah menu */
+.btn-tambah {
+  background-color: #c90244;
+  border: none;
+  font-weight: 700;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  transition: background-color 0.3s ease;
+}
+
+.btn-tambah:hover {
+  background-color: #9b1844;
+}
+
+/* Table styling */
+.menu-table {
+  background-color: white;
+  border-radius: 10px;
+  overflow: hidden;
+  box-shadow: 0 3px 10px rgba(201, 2, 68, 0.15);
+}
+
+.menu-table thead tr {
+  background-color: #f9d4db;
+  color: #c90244;
+  font-weight: 700;
+}
+
+.menu-table th,
+.menu-table td {
+  vertical-align: middle;
+  text-align: center;
+}
+
+.action-icons {
+  display: flex;
+  justify-content: center;
+  gap: 20px;
+}
+
+.icon {
+  cursor: pointer;
+  font-size: 18px;
+  transition: color 0.3s ease;
+}
+
+.icon.delete {
+  color: #c90244;
+}
+
+.icon.delete:hover {
+  color: #80002f;
+}
+
+.icon.edit {
+  color: #c90244;
+}
+
+.icon.edit:hover {
+  color: #9b1844;
+}
+
+/* Footer */
+.footer {
+  height: 36px;
+  background-color: #f9d4db;
+  border-top: 1px solid #f5c9d1;
+  color: #c90244;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.85rem;
+}

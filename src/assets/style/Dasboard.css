@@ -1,0 +1,161 @@
+/* Reset & body bg */
+body, html, #root {
+  height: 100%;
+  margin: 0;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #1a1a1a; /* dark background */
+}
+
+/* Wrapper: sidebar + main content */
+.admin-wrapper {
+  display: flex;
+  height: 100vh;
+  color: #9b1844; /* primary dark pink */
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 220px;
+  background-color: #f9d4db;
+  display: flex;
+  flex-direction: column;
+  padding: 15px 15px 30px;
+}
+
+/* Logo and title */
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+  padding-bottom: 10px;
+  border-bottom: 1px solid #e7a8b7;
+}
+
+.sidebar-logo {
+  width: 40px;
+  height: 40px;
+  object-fit: contain;
+}
+
+.sidebar-title {
+  font-weight: 700;
+  font-size: 1.2rem;
+  color: #9b1844;
+}
+
+/* Nav menu links */
+.sidebar-nav {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+}
+
+.nav-item {
+  font-size: 0.9rem;
+  color: #9b1844;
+  cursor: pointer;
+  padding-left: 10px;
+  border-radius: 5px;
+  transition: background-color 0.3s ease;
+  font-weight: 600;
+  text-decoration: none !important;
+}
+
+.nav-item:hover {
+  background-color: #ebbcc5;
+}
+
+/* Active nav item */
+.nav-item.active,
+.nav-item.active:hover {
+  background-color: #9b1844;
+  color: #ffffff !important;
+}
+
+/* Logout Button */
+.logout-btn {
+  color: #9b1844;
+  font-weight: 700;
+  font-size: 1rem;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  transition: color 0.3s ease;
+}
+
+.logout-btn:hover {
+  color: #6d1230;
+  text-decoration: underline;
+}
+
+/* Main area: content and header */
+.main-area {
+  flex-grow: 1;
+  background-color: #d1d3d4;
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* Header bar */
+.main-header {
+  height: 56px;
+  background-color: #f9e8ea;
+  padding: 0 30px;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  gap: 10px;
+  font-weight: 600;
+  color: #9b1844;
+  border-bottom: 1px solid #d1b8bf;
+}
+
+.user-label {
+  font-size: 1rem;
+}
+
+.user-icon {
+  color: #9b1844;
+}
+
+/* Content container */
+.content-container {
+  flex-grow: 1;
+  padding: 50px 20px;
+  background-color: #d1d3d4;
+  overflow-y: auto;
+}
+
+/* Welcome card */
+.welcome-card {
+  background-color: #f9e8ea;
+  border-radius: 12px;
+  padding: 40px 30px;
+  text-align: center;
+  color: #9b1844;
+  font-weight: 700;
+  font-size: 1.25rem;
+  box-shadow: 0 6px 12px rgba(155, 24, 68, 0.25);
+  border: 1px solid #c77b8a;
+  user-select: none;
+}
+
+/* Footer */
+.footer {
+  height: 36px;
+  background-color: #f9e8ea;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: #9b1844;
+  border-top: 1px solid #d1b8bf;
+}

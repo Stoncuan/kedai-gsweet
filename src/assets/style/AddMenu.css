@@ -1,0 +1,243 @@
+/* Reset & layout */
+html,
+body,
+#root {
+  height: 100%;
+  margin: 0;
+  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  background-color: #222222;
+  color: #c90244;
+}
+
+/* Wrapper flexbox: sidebar + main */
+.app-container {
+  display: flex;
+  height: 100vh;
+}
+
+/* Sidebar styling */
+.sidebar {
+  width: 180px;
+  background-color: #f9d4db;
+  display: flex;
+  flex-direction: column;
+  padding: 20px 15px;
+  justify-content: space-between;
+}
+
+.sidebar-header {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-bottom: 30px;
+}
+
+.sidebar-logo {
+  width: 38px;
+  height: 38px;
+  object-fit: contain;
+}
+
+.sidebar-title {
+  font-weight: 700;
+  font-size: 1.1rem;
+  color: #c90244;
+  user-select: none;
+}
+
+/* Sidebar Nav */
+.sidebar-nav {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  gap: 15px;
+}
+
+.sidebar-nav .nav-link {
+  padding: 6px 12px;
+  font-weight: 600;
+  color: #c90244;
+  border-radius: 12px;
+  font-size: 0.9rem;
+  user-select: none;
+}
+
+.sidebar-nav .nav-link.active {
+  background-color: #ffffff;
+  color: #c90244;
+  box-shadow: 2px 2px 8px rgba(201, 2, 68, 0.3);
+  font-weight: 700;
+}
+
+.sidebar-nav .nav-link-disabled {
+  color: #c99eb1;
+  pointer-events: none;
+  cursor: default;
+}
+
+/* Logout button */
+.logout-btn {
+  color: #c90244;
+  font-weight: 700;
+  font-size: 1rem;
+  padding-left: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  border: none;
+  background: none;
+  cursor: pointer;
+  user-select: none;
+}
+
+.logout-btn:hover {
+  color: #961235;
+  text-decoration: underline;
+}
+
+/* Main content */
+.main-content {
+  flex-grow: 1;
+  background-color: #fff;
+  display: flex;
+  flex-direction: column;
+}
+
+/* Header bar */
+.header-bar {
+  height: 48px;
+  background-color: #f9d4db;
+  border-bottom: 1px solid #f5c9d1;
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+  padding: 0 24px;
+  font-weight: 600;
+  color: #c90244;
+  user-select: none;
+}
+
+.header-user {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+/* Form container */
+.form-container {
+  flex-grow: 1;
+  padding: 40px 30px;
+  max-width: 600px;
+}
+
+.form-title {
+  color: #c90244;
+  font-weight: 700;
+  margin-bottom: 30px;
+  user-select: none;
+}
+
+.form-group-custom {
+  margin-bottom: 18px;
+}
+
+.form-input {
+  background-color: #fbe9ed;
+  border: none;
+  border-radius: 15px;
+  padding: 10px 15px;
+  font-size: 1rem;
+  color: #c90244;
+  text-align: center;
+  user-select: text;
+  transition: box-shadow 0.3s ease;
+}
+
+.form-input::placeholder {
+  color: #d78e9e;
+  font-weight: 600;
+  text-align: center;
+}
+
+.form-input:focus {
+  outline: none;
+  box-shadow: 0 0 6px #c90244aa;
+  background-color: #fdebee;
+}
+
+/* File input custom */
+.file-group {
+  padding-left: 0;
+  padding-right: 0;
+}
+
+.file-input {
+  height: 40px;
+  padding: 3px 10px;
+  text-align: left;
+  border-radius: 12px;
+  cursor: pointer;
+  background-color: #fbe9ed;
+  border: none;
+  color: #c90244;
+  font-weight: 600;
+}
+
+.file-input::-webkit-file-upload-button {
+  visibility: hidden;
+}
+
+.file-input::before {
+  content: "Pilih file";
+  display: inline-block;
+  background: #f9d4db;
+  border-radius: 12px;
+  padding: 5px 14px;
+  outline: none;
+  white-space: nowrap;
+  -webkit-user-select: none;
+  cursor: pointer;
+  color: #c90244;
+  font-weight: 700;
+  font-size: 0.9rem;
+  margin-right: 12px;
+  position: relative;
+  top: 3px;
+}
+
+/* Submit Button */
+.btn-konfirmasi {
+  width: 120px;
+  background-color: #c90244;
+  border: none;
+  font-weight: 700;
+  padding: 8px 0;
+  border-radius: 15px;
+  font-size: 1rem;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.3s ease;
+}
+
+.btn-konfirmasi:hover {
+  background-color: #9b1844;
+}
+
+/* Form row spacing */
+.form-row {
+  margin-top: -10px;
+}
+
+/* Footer bar */
+.footer-bar {
+  height: 36px;
+  background-color: #f9d4db;
+  border-top: 1px solid #f5c9d1;
+  color: #c90244;
+  font-weight: 700;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  font-size: 0.8rem;
+  user-select: none;
+}
