@@ -1,85 +1,70 @@
-const express = require("express");
+import express from "express";
+import {
+  getUser,
+  addUser,
+  updateUser,
+  deleteUser,
+  getUserById,
+} from "../models/userModel.js";  // Mengimpor fungsi dari model user
+
+import bcrypt from "bcrypt";  // Menggunakan bcrypt untuk hashing password
+
 const router = express.Router();
-const { getUserById, updateUser } = require("../models/modelUser");
-const verifyToken = require("../middlewares/verifyToken");
-const bcrypt = require("bcryptjs");
-const db = require("../config/db");
 
-router.get("/profile", verifyToken, (req, res) => {
-  getUserById(req.user.id, (err, results) => {
-    if (err) return res.status(500).json({ msg: "DB error" });
-    res.json(results[0]);
+// Get all users
+router.get("/", (req, res) => {
+  getUser((err, results) => {
+    if (err) return res.status(500).json({ msg: "Error fetching users", error: err });
+    res.json(results);
   });
 });
 
-//edit
-router.put("/profile", verifyToken, async (req, res) => {
-  const data = { ...req.body };
-  if (data.password) {
-    data.password = await bcrypt.hash(data.password, 10);
-  }
-  updateUser(req.user.id, data, (err) => {
-    if (err) return res.status(500).json({ msg: "Update gagal" });
-    res.json({ msg: "Profil berhasil diperbarui" });
+// Get user by ID
+router.get("/:id", (req, res) => {
+  getUserById(req.params.id, (err, results) => {
+    if (err) return res.status(500).json({ msg: "Error fetching user", error: err });
+    res.json(results);
   });
 });
 
-router.get("/users", verifyToken, (req, res) => {
-  db.query(
-    "SELECT id, nama_lengkap, username, no_tel, email FROM tb_user",
-    (err, results) => {
-      if (err) {
-        console.error("DB error:", err);
-        return res.status(500).json({ msg: "DB error", error: err });
-      }
-      res.json(results);
-    }
-  );
-});
-
-//tambah user
-router.post("/users", verifyToken, async (req, res) => {
+// Add a new user
+router.post("/addUser", async (req, res) => {
   const { nama_lengkap, username, no_tel, email, password } = req.body;
-  console.log("Data diterima:", req.body);
 
+  // Validasi input
   if (!nama_lengkap || !username || !no_tel || !email || !password) {
-    return res.status(400).json({ msg: "Data tidak lengkap" });
+    return res.status(400).json({ msg: "Data tidak lengkap!" });
   }
 
   try {
+    // Hash password sebelum menyimpannya
     const hashedPassword = await bcrypt.hash(password, 10);
-    db.query(
-      "INSERT INTO tb_user (nama_lengkap, username, no_tel, email, password) VALUES (?, ?, ?, ?, ?)",
-      [nama_lengkap, username, no_tel, email, hashedPassword],
-      (err, result) => {
-        if (err) {
-          console.error("DB error:", err);
-          return res.status(500).json({ msg: "DB error", error: err });
-        }
-        res.json({
-          id: result.insertId,
-          nama_lengkap,
-          username,
-          no_tel,
-          email,
-        });
-      }
-    );
+
+    // Menyimpan user baru
+    addUser({ nama_lengkap, username, no_tel, email, password: hashedPassword }, (err) => {
+      if (err) return res.status(500).json({ msg: "Error adding user", error: err });
+      res.json({ message: "User berhasil ditambahkan!" });
+    });
   } catch (error) {
-    console.error("Hash error:", error);
-    res.status(500).json({ msg: "Server error" });
+    console.error("Error hashing password:", error);
+    res.status(500).json({ msg: "Server error", error: error.message });
   }
 });
 
-// DELETE user
-router.delete("/users/:id", verifyToken, (req, res) => {
-  db.query("DELETE FROM tb_user WHERE id = ?", [req.params.id], (err) => {
-    if (err) {
-      console.error("DB error:", err);
-      return res.status(500).json({ msg: "DB error", error: err });
-    }
-    res.json({ msg: "User berhasil dihapus" });
+// Update user by ID
+router.put("/editUser/:id", (req, res) => {
+  updateUser(req.body, req.params.id, (err) => {
+    if (err) return res.status(500).json({ msg: "Error updating user", error: err });
+    res.json({ message: "User berhasil diperbarui!" });
   });
 });
 
-module.exports = router;
+// Delete user by ID
+router.delete("/deleteUser/:id", (req, res) => {
+  deleteUser(req.params.id, (err) => {
+    if (err) return res.status(500).json({ msg: "Error deleting user", error: err });
+    res.json({ message: "User berhasil dihapus!" });
+  });
+});
+
+export default router;

@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState, useEffect } from "react";
 import { Container, Row, Col, Nav, Table, Button, Form } from "react-bootstrap";
 import {
   FaUserCircle,
@@ -7,21 +7,27 @@ import {
   FaEdit,
   FaTrash,
 } from "react-icons/fa";
+import axios from "axios"; // Mengimpor axios untuk API request
 import "../assets/style/ManageMenuDashboard.css";
 
 const ManageMenuDashboard = () => {
-  // Data dummy menu
-  const menuData = [
-    { id: 1, name: "Sateku", price: "25,000" },
-    { id: 2, name: "Baso Aci", price: "23,000" },
-    { id: 3, name: "Mie Ayam", price: "16,000" },
-    { id: 4, name: "Putung Ayam", price: "20,000" },
-    { id: 5, name: "Roti Bakar", price: "5,000" },
-    { id: 6, name: "Kebab", price: "28,000" },
-    { id: 7, name: "Brownies", price: "80,000" },
-    { id: 8, name: "Matcha Latte", price: "30,000" },
-    { id: 9, name: "Delagrosa Coffee", price: "10,000" },
-  ];
+  const [menuData, setMenuData] = useState([]); // Menyimpan data menu yang diambil dari backend
+  const [message, setMessage] = useState(""); // Menyimpan pesan error/sukses jika ada
+
+  // Mengambil data menu ketika komponen dimuat
+  useEffect(() => {
+    const fetchMenu = async () => {
+      try {
+        const response = await axios.get("http://localhost:5000/menu");
+        setMenuData(response.data); // Menyimpan data menu yang diterima
+      } catch (error) {
+        console.error("Error fetching menu:", error);
+        setMessage("Gagal memuat menu dari server");
+      }
+    };
+
+    fetchMenu();
+  }, []); // Hanya dijalankan sekali saat komponen dimuat
 
   return (
     <div className="dashboard-wrapper">
@@ -79,6 +85,7 @@ const ManageMenuDashboard = () => {
 
           <Row>
             <Col>
+              {/* Tabel Menu */}
               <Table responsive bordered hover size="sm" className="menu-table">
                 <thead className="table-header">
                   <tr>
@@ -91,6 +98,7 @@ const ManageMenuDashboard = () => {
                   </tr>
                 </thead>
                 <tbody>
+                  {/* Menampilkan data menu yang diambil dari backend */}
                   {menuData.map((item) => (
                     <tr key={item.id}>
                       <td>
@@ -109,6 +117,9 @@ const ManageMenuDashboard = () => {
             </Col>
           </Row>
         </Container>
+
+        {/* Pesan Error/Sukses */}
+        {message && <div className="alert alert-danger mt-3">{message}</div>}
 
         {/* Footer */}
         <footer className="footer">KEDAI GSWEET</footer>

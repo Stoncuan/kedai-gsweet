@@ -1,70 +1,33 @@
-const db = require("../config/db");
+import db from "../config/db.js"; // Mengimpor koneksi database
 
-// Ambil user berdasarkan ID
-exports.getUserById = (id, callback) => {
+// Mendapatkan semua user
+export const getUser = (callback) => {
   db.query(
-    "SELECT id, nama_lengkap, username, no_tel, email, password FROM tb_user WHERE id = ?",
+    "SELECT id, nama_lengkap, username, no_tel, email FROM tb_user",
+    callback
+  );
+};
+
+// Mendapatkan user berdasarkan ID
+export const getUserById = (id, callback) => {
+  db.query(
+    "SELECT id, nama_lengkap, username, no_tel, email FROM tb_user WHERE id = ?",
     [id],
     callback
   );
 };
 
-// Update user berdasarkan ID
-exports.updateUser = (id, data, callback) => {
-  const { nama_lengkap, username, no_tel, email, password } = data;
-  const fields = [];
-  const values = [];
-
-  if (nama_lengkap) {
-    fields.push("nama_lengkap = ?");
-    values.push(nama_lengkap);
-  }
-  if (username) {
-    fields.push("username = ?");
-    values.push(username);
-  }
-  if (no_tel) {
-    fields.push("no_tel = ?");
-    values.push(no_tel);
-  }
-  if (email) {
-    fields.push("email = ?");
-    values.push(email);
-  }
-  if (password) {
-    fields.push("password = ?");
-    values.push(password);
-  }
-
-  values.push(id);
-  const sql = `UPDATE tb_user SET ${fields.join(", ")} WHERE id = ?`;
-  db.query(sql, values, callback);
+// Menambahkan user baru
+export const addUser = (data, callback) => {
+  db.query("INSERT INTO tb_user SET ?", data, callback); // Menambahkan data user ke dalam database
 };
 
-// Cari user berdasarkan email
-exports.findUserByEmail = (email) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "SELECT * FROM tb_user WHERE email = ?",
-      [email],
-      (err, results) => {
-        if (err) return reject(err);
-        resolve(results[0]);
-      }
-    );
-  });
+// Memperbarui user berdasarkan ID
+export const updateUser = (data, id, callback) => {
+  db.query("UPDATE tb_user SET ? WHERE id = ?", [data, id], callback); // Memperbarui data user
 };
 
-// Buat user baru
-exports.createUser = (nama_lengkap, username, no_tel, email, password) => {
-  return new Promise((resolve, reject) => {
-    db.query(
-      "INSERT INTO tb_user (nama_lengkap, username, no_tel, email, password) VALUES (?, ?, ?, ?, ?)",
-      [nama_lengkap, username, no_tel, email, password],
-      (err, results) => {
-        if (err) return reject(err);
-        resolve(results);
-      }
-    );
-  });
+// Menghapus user berdasarkan ID
+export const deleteUser = (id, callback) => {
+  db.query("DELETE FROM tb_user WHERE id = ?", [id], callback); // Menghapus user dari database
 };

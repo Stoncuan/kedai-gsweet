@@ -18,7 +18,7 @@ const AdminDashboard = () => {
           <span className="sidebar-title">ADMIN</span>
         </div>
 
-        <Nav className="sidebar-nav" defaultActiveKey="#dashboard" variant="pills" className="flex-column">
+        <Nav className="sidebar-nav" defaultActiveKey="#dashboard" variant="pills" >
           <Nav.Link href="#dashboard" className="nav-item active">
             Dashboard
           </Nav.Link>

@@ -1,9 +1,58 @@
-import React from "react";
+import React, { useState } from "react";
 import { Container, Row, Col, Nav, Form, Button, Image } from "react-bootstrap";
 import { FaUserCircle, FaSignOutAlt } from "react-icons/fa";
+import axios from "axios"; // Import axios for making HTTP requests
 import "../assets/style/AddMenu.css";
 
 const AddMenu = () => {
+  // State untuk form inputs
+  const [namaMenu, setNamaMenu] = useState("");
+  const [hargaMenu, setHargaMenu] = useState("");
+  const [deskripsiMenu, setDeskripsiMenu] = useState("");
+  const [gambarMenu, setGambarMenu] = useState(null);
+
+  // Handle form input changes
+  const handleNamaMenuChange = (e) => setNamaMenu(e.target.value);
+  const handleHargaMenuChange = (e) => setHargaMenu(e.target.value);
+  const handleDeskripsiMenuChange = (e) => setDeskripsiMenu(e.target.value);
+  const handleGambarMenuChange = (e) => setGambarMenu(e.target.files[0]);
+
+  // Handle form submission
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Prepare the form data
+    const formData = new FormData();
+    formData.append("namaMenu", namaMenu);
+    formData.append("hargaMenu", hargaMenu);
+    formData.append("deskripsiMenu", deskripsiMenu);
+    formData.append("gambarMenu", gambarMenu);
+
+    try {
+      // Send POST request to the backend
+      const response = await axios.post(
+        "http://localhost:5000/menu/tambahMenu",
+        formData,
+        {
+          headers: {
+            "Content-Type": "multipart/form-data", // Set the correct content type for form data
+          },
+        }
+      );
+      alert(response.data.message); // Show success message
+      // Reset the form
+      setNamaMenu("");
+      setHargaMenu("");
+      setDeskripsiMenu("");
+      setGambarMenu(null);
+    } catch (error) {
+      alert(
+        "Error: " +
+          (error.response ? error.response.data.message : error.message)
+      ); // Handle error
+    }
+  };
+
   return (
     <div className="app-container">
       {/* Sidebar */}
@@ -45,12 +94,14 @@ const AddMenu = () => {
 
         <Container className="form-container">
           <h5 className="form-title">Tambah menu</h5>
-          <Form>
+          <Form onSubmit={handleSubmit}>
             <Form.Group controlId="namaMenu" className="form-group-custom">
               <Form.Control
                 type="text"
                 placeholder="Nama menu"
                 className="form-input"
+                value={namaMenu}
+                onChange={handleNamaMenuChange}
               />
             </Form.Group>
             <Form.Group controlId="hargaMenu" className="form-group-custom">
@@ -58,6 +109,8 @@ const AddMenu = () => {
                 type="text"
                 placeholder="Harga menu"
                 className="form-input"
+                value={hargaMenu}
+                onChange={handleHargaMenuChange}
               />
             </Form.Group>
             <Form.Group controlId="deskripsiMenu" className="form-group-custom">
@@ -66,6 +119,8 @@ const AddMenu = () => {
                 placeholder="Deskripsi menu"
                 rows={3}
                 className="form-input"
+                value={deskripsiMenu}
+                onChange={handleDeskripsiMenuChange}
               />
             </Form.Group>
             <Row className="form-row">
@@ -74,14 +129,22 @@ const AddMenu = () => {
                   controlId="gambarMenu"
                   className="form-group-custom file-group"
                 >
-                  <Form.Control type="file" className="form-input file-input" />
+                  <Form.Control
+                    type="file"
+                    className="form-input file-input"
+                    onChange={handleGambarMenuChange}
+                  />
                 </Form.Group>
               </Col>
               <Col
                 xs={6}
                 className="d-flex justify-content-end align-items-center"
               >
-                <Button variant="danger" className="btn-konfirmasi">
+                <Button
+                  variant="danger"
+                  className="btn-konfirmasi"
+                  type="submit"
+                >
                   Konfirmasi
                 </Button>
               </Col>
