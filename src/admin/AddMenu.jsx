@@ -1,20 +1,20 @@
 import React, { useState } from "react";
+import axios from "axios";
 import {
   Container,
-  Row,
-  Col,
-  Form,
-  Button,
   Navbar,
   Nav,
+  Button,
   Image,
+  Form,
+  Row,
+  Col,
 } from "react-bootstrap";
 import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
-import axios from "axios";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../assets/style/AddMenu.css";
+import "../assets/styles/admin/AddMenu.css";
 
 const AddMenu = () => {
   const navigate = useNavigate();
@@ -37,27 +37,17 @@ const AddMenu = () => {
     formData.append("namaMenu", namaMenu);
     formData.append("hargaMenu", hargaMenu);
     formData.append("deskripsiMenu", deskripsiMenu);
-    if (gambarMenu) {
-      formData.append("gambarMenu", gambarMenu);
-    }
+    if (gambarMenu) formData.append("gambarMenu", gambarMenu);
 
     try {
       setLoading(true);
-
-      await axios.post("http://localhost:5000/menu/addMenu", formData, {
-        headers: {
-          "Content-Type": "multipart/form-data",
-        },
-      });
-
+      await axios.post("http://localhost:5000/menu/addMenu", formData);
       toast.success("Menu berhasil ditambahkan 🎉");
 
-      // Redirect ke Manage Menu setelah 1.5 detik
       setTimeout(() => {
-        navigate("/dashboard/manage-datalist");
+        navigate("/dashboard/manage-menu");
       }, 1500);
-    } catch (error) {
-      console.error(error);
+    } catch (err) {
       toast.error("Gagal menambahkan menu ❌");
     } finally {
       setLoading(false);
@@ -65,126 +55,116 @@ const AddMenu = () => {
   };
 
   return (
-    <>
-      {/* Navbar */}
-      <Navbar expand="lg" className="custom-navbar px-3">
-        <Container fluid>
-          <Navbar.Brand className="d-flex align-items-center gap-2 p-0">
-            <Image
-              src="/gsweet-logo.png"
-              roundedCircle
-              className="logo"
-              alt="GSweet Logo"
-            />
-            <span className="admin-text">ADMIN</span>
-          </Navbar.Brand>
-          <Nav className="ms-auto align-items-center gap-2 user-section">
-            <span className="user-text">User</span>
-            <PersonCircle className="user-icon" />
+    <div className="page-wrapper">
+      {/* SIDEBAR */}
+      <aside className="sidebar">
+        <div className="sidebar-logo-section">
+          <Image
+            src="https://i.ibb.co/ZdSg5bx/gsweet-logo.png"
+            roundedCircle
+            className="sidebar-logo"
+          />
+          <span className="sidebar-admin">ADMIN</span>
+        </div>
+
+        <Nav className="flex-column sidebar-links">
+          <Nav.Link href="/dashboard" className="link-item">
+            Dashboard
+          </Nav.Link>
+          <Nav.Link href="/manage-user" className="link-item">
+            Manage User
+          </Nav.Link>
+          <Nav.Link className="link-item active-link">
+            Tambah Menu
+          </Nav.Link>
+        </Nav>
+
+        <Nav.Link className="logout-link">
+          Logout <BoxArrowRight />
+        </Nav.Link>
+      </aside>
+
+      {/* MAIN CONTENT */}
+      <div className="main-content">
+        {/* NAVBAR */}
+        <Navbar className="top-navbar px-4">
+          <Navbar.Text className="header-title">
+            Tambah Menu
+          </Navbar.Text>
+          <Nav className="ms-auto align-items-center gap-2">
+            <span>User</span>
+            <PersonCircle size={22} />
           </Nav>
-        </Container>
-      </Navbar>
+        </Navbar>
 
-      <Container fluid className="vh-100 d-flex p-0">
-        <Row className="flex-grow-1 m-0">
-          {/* Sidebar */}
-          <Col md={2} sm={3} xs={12} className="sidebar p-3 d-flex flex-column">
-            <Nav className="flex-column">
-              <Nav.Link href="/dashboard" className="nav-link-custom">
-                Dashboard
-              </Nav.Link>
-              <Nav.Link href="/manage-user" className="nav-link-custom">
-                Manage User
-              </Nav.Link>
-              <Button
-                variant="outline-danger"
-                className="mt-2 rounded-pill btn-manage"
-                href="/dashboard/manage-menu"
-              >
-                Manage Datalist Menu
-              </Button>
-              <Nav.Link
-                href="/logout"
-                className="mt-auto logout-link d-flex align-items-center gap-1"
-              >
-                <BoxArrowRight /> Logout
-              </Nav.Link>
-            </Nav>
-          </Col>
-
-          {/* Main Content */}
-          <Col md={10} sm={9} xs={12} className="main-content p-4">
-            <h5 className="mb-4 title">Tambah Menu</h5>
-
-            <Form className="form-add-menu mx-auto" onSubmit={handleSubmit}>
-              <Form.Group className="mb-3">
-                <Form.Control
-                  type="text"
-                  placeholder="Nama menu"
-                  value={namaMenu}
-                  onChange={(e) => setNamaMenu(e.target.value)}
-                  className="input-custom"
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Control
-                  type="number"
-                  placeholder="Harga menu"
-                  value={hargaMenu}
-                  onChange={(e) => setHargaMenu(e.target.value)}
-                  className="input-custom"
-                />
-              </Form.Group>
-
-              <Form.Group className="mb-3">
-                <Form.Control
-                  as="textarea"
-                  placeholder="Deskripsi menu"
-                  rows={3}
-                  value={deskripsiMenu}
-                  onChange={(e) => setDeskripsiMenu(e.target.value)}
-                  className="input-custom"
-                />
-              </Form.Group>
-
-              <Row className="align-items-center justify-content-between">
-                <Col xs={12} sm={6} md={4}>
-                  <Form.Label className="upload-label">
-                    Pilih Gambar
-                  </Form.Label>
+        {/* FORM CENTER */}
+        <Container
+          fluid
+          className="d-flex justify-content-center align-items-start py-4"
+        >
+          <Form className="form-add-menu" onSubmit={handleSubmit}>
+            <Row className="mb-3">
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Nama Menu</Form.Label>
                   <Form.Control
-                    type="file"
-                    accept="image/jpeg,image/png"
-                    onChange={(e) => setGambarMenu(e.target.files[0])}
-                    className="input-file-custom"
+                    type="text"
+                    value={namaMenu}
+                    onChange={(e) => setNamaMenu(e.target.value)}
+                    placeholder="Masukkan nama menu"
                   />
-                </Col>
+                </Form.Group>
+              </Col>
 
-                <Col xs={12} sm="auto" className="text-sm-end">
-                  <Button
-                    variant="danger"
-                    type="submit"
-                    className="btn-submit"
-                    disabled={loading}
-                  >
-                    {loading ? "Menyimpan..." : "Konfirmasi"}
-                  </Button>
-                </Col>
-              </Row>
-            </Form>
-          </Col>
-        </Row>
-      </Container>
+              <Col md={6}>
+                <Form.Group>
+                  <Form.Label>Harga</Form.Label>
+                  <Form.Control
+                    type="number"
+                    value={hargaMenu}
+                    onChange={(e) => setHargaMenu(e.target.value)}
+                    placeholder="Masukkan harga"
+                  />
+                </Form.Group>
+              </Col>
+            </Row>
 
-      {/* Footer */}
-      <footer className="footer text-center text-danger py-2">
-        KEDAI GSWEET
-      </footer>
+            <Form.Group className="mb-3">
+              <Form.Label>Deskripsi Menu</Form.Label>
+              <Form.Control
+                as="textarea"
+                rows={3}
+                value={deskripsiMenu}
+                onChange={(e) => setDeskripsiMenu(e.target.value)}
+                placeholder="Deskripsi menu"
+              />
+            </Form.Group>
 
-      {/* Toast */}
+            <Form.Group className="mb-4">
+              <Form.Label>Gambar Menu</Form.Label>
+              <Form.Control
+                type="file"
+                accept="image/png,image/jpeg"
+                onChange={(e) => setGambarMenu(e.target.files[0])}
+              />
+            </Form.Group>
+
+            <div className="d-flex justify-content-end">
+              <Button type="submit" variant="danger" disabled={loading}>
+                {loading ? "Menyimpan..." : "Simpan Menu"}
+              </Button>
+            </div>
+          </Form>
+        </Container>
+
+        {/* FOOTER */}
+        <footer className="footer text-center py-2">
+          KEDAI GSWEET
+        </footer>
+      </div>
+
       <ToastContainer position="top-right" autoClose={3000} />
-    </>
+    </div>
   );
 };
 
