@@ -1,210 +1,208 @@
-/* Reset & full height */
-html,
-body,
-#root {
-  height: 100%;
-  margin: 0;
-  font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
-  background-color: #f9d4db; /* soft pink background */
-}
-
-/* Wrapper flex */
-.dashboard-wrapper {
+.page-wrapper {
   display: flex;
-  height: 100vh;
-  color: #c90244; /* pinkish-red color */
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background-color: #fff0f2;
+  color: #ae0032;
 }
 
-/* Sidebar styling */
+/* Sidebar */
 .sidebar {
   width: 220px;
-  background-color: #f9e8ea;
+  background-color: #f7d5db;
+  padding: 20px 15px;
   display: flex;
   flex-direction: column;
-  padding: 20px 15px;
-  border-right: 1px solid #f5c9d1;
+  border-right: 2px solid #ecb0c8;
+  user-select: none;
 }
 
-/* Logo and title */
-.sidebar-header {
+.sidebar-logo-section {
   display: flex;
   align-items: center;
-  gap: 12px;
-  padding-bottom: 14px;
-  margin-bottom: 20px;
-  border-bottom: 1px solid #f5c9d1;
+  gap: 0.7rem;
+  margin-bottom: 2rem;
 }
 
 .sidebar-logo {
   width: 38px;
   height: 38px;
-  object-fit: contain;
 }
 
-.sidebar-title {
-  font-weight: 700;
-  font-size: 1.2rem;
-  color: #c90244;
-}
-
-/* Nav menu */
-.sidebar-nav .nav-item {
-  font-size: 0.9rem;
-  color: #c90244;
-  margin-bottom: 12px;
-  text-decoration: none !important;
+.sidebar-admin {
   font-weight: 600;
-  padding-left: 8px;
-  border-radius: 50px;
-  transition: background-color 0.3s ease;
-  cursor: pointer;
-}
-
-.sidebar-nav .nav-item:hover {
-  background-color: #fab3c2;
-}
-
-.sidebar-nav .nav-item.active {
-  background-color: #c90244;
-  color: white !important;
-}
-
-/* Logout button */
-.logout-btn {
-  color: #c90244;
-  font-weight: 700;
   font-size: 1rem;
-  margin-top: auto;
-  padding-left: 0;
+}
+
+.sidebar-links {
+  flex-grow: 1;
+}
+
+.link-item {
+  font-weight: 600;
+  color: #ae0032;
+  padding: 8px 12px;
+  border-radius: 24px;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.link-item:hover,
+.active-link {
+  background-color: #fbe3e6;
+  border: 1.5px solid #ae0032;
+  color: #ae0032;
+}
+
+.logout-link {
+  margin-top: 1rem;
+  color: #ae0032;
+  font-weight: 600;
+  cursor: pointer;
   display: flex;
   align-items: center;
-  gap: 8px;
-  background: none;
-  border: none;
-  cursor: pointer;
+  gap: 6px;
+  font-size: 0.9rem;
 }
 
-.logout-btn:hover {
-  color: #9b1844;
+.logout-link:hover {
   text-decoration: underline;
 }
 
-/* Main content styling */
+/* Main Content */
 .main-content {
   flex-grow: 1;
-  background-color: #fff0f3;
   display: flex;
   flex-direction: column;
-  height: 100vh;
+  background-color: #fff;
 }
 
-/* Header */
-.main-header {
-  height: 56px;
-  background-color: #f9d4db;
-  border-bottom: 1px solid #f5c9d1;
-  padding: 0 30px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  color: #c90244;
+/* Navbar */
+.top-navbar {
+  background-color: #fff0f2 !important;
+  border-bottom: 1px solid #ecb0c8;
+  padding: 12px 30px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  user-select: none;
+}
+
+.header-title {
   font-weight: 700;
-  font-size: 1.1rem;
-}
-
-.header-right {
-  display: flex;
-  align-items: center;
-  gap: 12px;
+  font-size: 1.25rem;
 }
 
 .user-label {
-  font-size: 1rem;
+  font-weight: 600;
+  color: #ae0032;
 }
 
 .user-icon {
-  color: #c90244;
+  color: #ae0032;
 }
 
-/* Content container */
-.content-container {
-  flex-grow: 1;
-  padding: 30px 40px;
-  overflow-y: auto;
+/* Content */
+.content-area {
+  padding: 20px 30px;
+  user-select: none;
 }
 
-/* Button Tambah menu */
-.btn-tambah {
-  background-color: #c90244;
+.page-title {
+  font-weight: 700;
+  color: #ae0032;
+}
+
+.btn-tambah-menu {
+  background: none;
   border: none;
   font-weight: 700;
+  color: #ae0032;
+  cursor: pointer;
+  font-size: 0.9rem;
+  padding: 0;
   display: flex;
   align-items: center;
-  gap: 8px;
-  transition: background-color 0.3s ease;
+  gap: 6px;
 }
 
-.btn-tambah:hover {
-  background-color: #9b1844;
+.btn-tambah-menu:hover {
+  text-decoration: underline;
 }
 
-/* Table styling */
-.menu-table {
-  background-color: white;
-  border-radius: 10px;
-  overflow: hidden;
-  box-shadow: 0 3px 10px rgba(201, 2, 68, 0.15);
-}
-
-.menu-table thead tr {
-  background-color: #f9d4db;
-  color: #c90244;
-  font-weight: 700;
-}
-
-.menu-table th,
-.menu-table td {
-  vertical-align: middle;
-  text-align: center;
-}
-
+/* Actions Icons */
 .action-icons {
   display: flex;
-  justify-content: center;
-  gap: 20px;
+  gap: 14px;
+  font-size: 1.3rem;
+  color: #ae0032;
 }
 
 .icon {
   cursor: pointer;
-  font-size: 18px;
   transition: color 0.3s ease;
 }
 
-.icon.delete {
-  color: #c90244;
-}
-
-.icon.delete:hover {
-  color: #80002f;
-}
-
-.icon.edit {
-  color: #c90244;
-}
-
-.icon.edit:hover {
-  color: #9b1844;
+.icon:hover {
+  color: #d6336c;
 }
 
 /* Footer */
 .footer {
-  height: 36px;
-  background-color: #f9d4db;
-  border-top: 1px solid #f5c9d1;
-  color: #c90244;
+  background-color: #f7d5db;
+  padding: 10px 0;
+  color: #ae0032;
+  text-align: center;
   font-weight: 700;
-  display: flex;
-  justify-content: center;
-  align-items: center;
   font-size: 0.85rem;
+  border-top: 1px solid #ecb0c8;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .page-wrapper {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    padding: 0.5rem 1rem;
+    border-right: none;
+    border-bottom: 2px solid #ecb0c8;
+    overflow-x: auto;
+  }
+  .sidebar-logo-section {
+    display: none;
+  }
+  .sidebar-links {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .link-item {
+    white-space: nowrap;
+    margin-bottom: 0;
+    border-radius: 16px;
+  }
+  .logout-link {
+    margin-left: auto;
+    font-size: 0.85rem;
+  }
+  .main-content {
+    padding: 1rem 1rem 0;
+  }
+  .content-area {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .content-area {
+    padding: 1rem 0.5rem 20px;
+  }
+  .btn-tambah-menu {
+    font-size: 0.85rem;
+  }
 }

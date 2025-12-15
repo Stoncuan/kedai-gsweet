@@ -10,7 +10,7 @@ import ManageMenuDashboard from "./admin/ManageMenuDashboard.jsx";
 import EditProfile from "./admin/EditProfile.jsx";
 import AddUser from "./admin/AddUser.jsx";
 import EditMenu from "./admin/EditMenu.jsx";
-import DetailMenu from "./user/DetailMenu.jsx";
+import DetailMenu from "./admin/DetailMenu.jsx";
 import EditUser from "./admin/EditUser.jsx";
 import { Route, Routes } from "react-router-dom";
 
@@ -41,7 +41,10 @@ function App() {
         <Route path="/dashboard/edit-user/:id" element={<EditUser />} />
         <Route path="/dashboard/edit-profile" element={<EditProfile />} />
       </Routes>
+      
     </div>
+
+    
   );
 }
 

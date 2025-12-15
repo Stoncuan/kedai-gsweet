@@ -1,18 +1,23 @@
-const express = require("express");
-const bcrypt = require("bcryptjs");
-const jwt = require("jsonwebtoken");
-const { findUserByEmail, createUser } = require("../models/userModel");
+import express from "express";
+import bcrypt from "bcryptjs";
+import jwt from "jsonwebtoken";
+import { findUserByEmail, addUser } from "../models/userModel.js";
 
 const router = express.Router();
 
 router.post("/login", async (req, res) => {
   const { email, password } = req.body;
+
   try {
     const user = await findUserByEmail(email);
-    if (!user) return res.status(400).json({ msg: "User tidak ditemukan" });
+    if (!user) {
+      return res.status(400).json({ msg: "User tidak ditemukan" });
+    }
 
     const match = await bcrypt.compare(password, user.password);
-    if (!match) return res.status(400).json({ msg: "Password salah" });
+    if (!match) {
+      return res.status(400).json({ msg: "Password salah" });
+    }
 
     const token = jwt.sign(
       { id: user.id, username: user.username },
@@ -35,4 +40,4 @@ router.post("/login", async (req, res) => {
   }
 });
 
-module.exports = router;
+export default router;

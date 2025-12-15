@@ -1,129 +1,219 @@
-import React, { useState, useEffect } from "react";
-import { Container, Row, Col, Nav, Table, Button, Form } from "react-bootstrap";
+import React, { useState, useEffect, useMemo } from "react";
+import axios from "axios";
+import DataTable from "react-data-table-component";
 import {
-  FaUserCircle,
-  FaSignOutAlt,
-  FaPlus,
-  FaEdit,
-  FaTrash,
-} from "react-icons/fa";
-import axios from "axios"; // Mengimpor axios untuk API request
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  Image,
+  Form,
+} from "react-bootstrap";
+import {
+  BiUserCircle,
+  BiLogOut,
+  BiPlus,
+  BiFile,
+  BiTrash,
+  BiPencil,
+} from "react-icons/bi";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 import "../assets/style/ManageMenuDashboard.css";
 
 const ManageMenuDashboard = () => {
-  const [menuData, setMenuData] = useState([]); // Menyimpan data menu yang diambil dari backend
-  const [message, setMessage] = useState(""); // Menyimpan pesan error/sukses jika ada
+  const [menuData, setMenuData] = useState([]);
+  const [filterText, setFilterText] = useState("");
+  const [loading, setLoading] = useState(true);
+  const navigate = useNavigate();
 
-  // Mengambil data menu ketika komponen dimuat
+  // ===============================
+  // FETCH DATA MENU
+  // ===============================
   useEffect(() => {
     const fetchMenu = async () => {
       try {
-        const response = await axios.get("http://localhost:5000/menu");
-        setMenuData(response.data); // Menyimpan data menu yang diterima
+        const res = await axios.get("http://localhost:5000/menu");
+        setMenuData(res.data);
       } catch (error) {
-        console.error("Error fetching menu:", error);
-        setMessage("Gagal memuat menu dari server");
+        console.error("Gagal mengambil data menu:", error);
+        toast.error("Gagal mengambil data menu ❌");
+      } finally {
+        setLoading(false);
       }
     };
 
     fetchMenu();
-  }, []); // Hanya dijalankan sekali saat komponen dimuat
+  }, []);
+
+  // ===============================
+  // DELETE MENU
+  // ===============================
+  const handleDelete = async (id) => {
+    if (!window.confirm("Yakin ingin menghapus menu ini?")) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/menu/deleteMenu/${id}`);
+
+      setMenuData((prev) => prev.filter((item) => item.id !== id));
+
+      toast.success("Menu berhasil dihapus ✅");
+    } catch (error) {
+      console.error("Gagal menghapus menu:", error);
+      toast.error("Gagal menghapus menu ❌");
+    }
+  };
+
+  // ===============================
+  // FILTER DATA
+  // ===============================
+  const filteredItems = useMemo(() => {
+    return menuData.filter(
+      (item) =>
+        item.nama_menu
+          ?.toLowerCase()
+          .includes(filterText.toLowerCase()) ||
+        item.harga?.toString().includes(filterText)
+    );
+  }, [menuData, filterText]);
+
+  // ===============================
+  // KOLOM DATATABLE
+  // ===============================
+  const columns = [
+    {
+      name: "Nama Menu",
+      selector: (row) => row.nama_menu,
+      sortable: true,
+    },
+    {
+      name: "Harga",
+      selector: (row) => row.harga,
+      sortable: true,
+      right: true,
+    },
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="action-icons">
+          <BiFile className="icon detail" title="Detail" />
+          <BiTrash
+            className="icon delete"
+            title="Hapus"
+            onClick={() => handleDelete(row.id)}
+            style={{ cursor: "pointer" }}
+          />
+          <BiPencil className="icon edit" title="Edit" />
+        </div>
+      ),
+      ignoreRowClick: true,
+    },
+  ];
+
+  // ===============================
+  // STYLE DATATABLE
+  // ===============================
+  const customStyles = {
+    headRow: {
+      style: {
+        backgroundColor: "#fbd6db",
+      },
+    },
+    headCells: {
+      style: {
+        fontWeight: "700",
+        color: "#ae0032",
+      },
+    },
+    rows: {
+      style: {
+        backgroundColor: "#fff0f2",
+      },
+    },
+    cells: {
+      style: {
+        color: "#ae0032",
+      },
+    },
+  };
 
   return (
-    <div className="dashboard-wrapper">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="sidebar-header">
-          <img
+    <div className="page-wrapper">
+      {/* SIDEBAR */}
+      <aside className="sidebar">
+        <div className="sidebar-logo-section">
+          <Image
             src="https://i.ibb.co/ZdSg5bx/gsweet-logo.png"
-            alt="GSweet Logo"
+            roundedCircle
             className="sidebar-logo"
+            alt="GSweet Logo"
           />
-          <span className="sidebar-title">ADMIN</span>
+          <span className="sidebar-admin">ADMIN</span>
         </div>
 
-        <Nav
-          className="sidebar-nav flex-column"
-          defaultActiveKey="#manage-datalist"
-        >
-          <Nav.Link href="#dashboard" className="nav-item">
-            Dashboard
-          </Nav.Link>
-          <Nav.Link href="#manage-user" className="nav-item">
-            Manage User
-          </Nav.Link>
-          <Nav.Link href="#manage-datalist" className="nav-item active">
-            Manage Datalist Menu
-          </Nav.Link>
+        <Nav className="flex-column sidebar-links">
+          <Nav.Link className="link-item">Dashboard</Nav.Link>
+          <Nav.Link className="link-item">Manage User</Nav.Link>
+          <Nav.Link className="link-item active-link">Manage Menu</Nav.Link>
         </Nav>
 
-        <Button variant="link" className="logout-btn">
-          Logout <FaSignOutAlt />
-        </Button>
-      </div>
+        <Nav.Link className="logout-link">
+          Logout <BiLogOut />
+        </Nav.Link>
+      </aside>
 
-      {/* Main Content */}
+      {/* MAIN CONTENT */}
       <div className="main-content">
-        {/* Header */}
-        <header className="main-header">
-          <span className="header-title">Manage Menu</span>
-          <div className="header-right">
-            <span className="user-label">User</span>
-            <FaUserCircle size={24} className="user-icon" />
+        <Navbar className="top-navbar p-3">
+          <Container fluid>
+            <Navbar.Text className="header-title">Manage Menu</Navbar.Text>
+            <Nav className="ms-auto align-items-center gap-2">
+              <span>User</span>
+              <BiUserCircle size={22} />
+            </Nav>
+          </Container>
+        </Navbar>
+
+        <Container fluid className="px-4 py-3">
+          <div className="d-flex justify-content-between align-items-center mb-3">
+            <Form.Control
+              type="text"
+              placeholder="Cari menu / harga..."
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+              style={{ maxWidth: "250px" }}
+            />
+
+            <Button
+              variant="danger"
+              onClick={() => navigate("/dashboard/add-menu")}
+            >
+              Tambah Menu <BiPlus />
+            </Button>
           </div>
-        </header>
 
-        {/* Content */}
-        <Container fluid className="content-container">
-          <Row>
-            <Col className="d-flex justify-content-end align-items-center mb-3">
-              <Button variant="danger" className="btn-tambah">
-                <FaPlus /> Tambah menu
-              </Button>
-            </Col>
-          </Row>
-
-          <Row>
-            <Col>
-              {/* Tabel Menu */}
-              <Table responsive bordered hover size="sm" className="menu-table">
-                <thead className="table-header">
-                  <tr>
-                    <th>
-                      <Form.Check type="checkbox" />
-                    </th>
-                    <th>Nama Menu</th>
-                    <th>Harga</th>
-                    <th>Action</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {/* Menampilkan data menu yang diambil dari backend */}
-                  {menuData.map((item) => (
-                    <tr key={item.id}>
-                      <td>
-                        <Form.Check type="checkbox" />
-                      </td>
-                      <td>{item.name}</td>
-                      <td>{item.price}</td>
-                      <td className="action-icons">
-                        <FaTrash className="icon delete" title="Delete" />
-                        <FaEdit className="icon edit" title="Edit" />
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </Table>
-            </Col>
-          </Row>
+          {loading ? (
+            <p>Loading data menu...</p>
+          ) : (
+            <DataTable
+              columns={columns}
+              data={filteredItems}
+              customStyles={customStyles}
+              pagination
+              highlightOnHover
+              responsive
+            />
+          )}
         </Container>
 
-        {/* Pesan Error/Sukses */}
-        {message && <div className="alert alert-danger mt-3">{message}</div>}
-
-        {/* Footer */}
-        <footer className="footer">KEDAI GSWEET</footer>
+        <footer className="footer text-center py-2">
+          KEDAI GSWEET
+        </footer>
       </div>
+
+      {/* TOAST */}
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

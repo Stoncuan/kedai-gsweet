@@ -1,74 +1,87 @@
-import express from 'express';
-import multer from 'multer';
-import path from 'path';
-import { fileURLToPath } from 'url'; // For converting meta URL to file path
-import { getMenu, addMenu, updateMenu, deleteMenu, getMenuById } from "../models/menuModel.js";
+import express from "express";
+import {
+  getMenu,
+  addMenu,
+  updateMenu,
+  deleteMenu,
+  getMenuById,
+} from "../models/menuModel.js";
+import multer from "multer";
+import path from "path";
+import { fileURLToPath } from "url";
 
 const router = express.Router();
 
-// Get the current directory (__dirname equivalent in ESM)
-const __filename = fileURLToPath(import.meta.url);
-const __dirname = path.dirname(__filename);
-
-// Make sure the 'uploads' folder exists
-const uploadDir = path.join(__dirname, "../uploads");
-
-// Multer configuration to store images
-const storage = multer.diskStorage({
-  destination: function (req, file, cb) {
-    // Store the images in the 'uploads' folder
-    cb(null, uploadDir);
-  },
-  filename: function (req, file, cb) {
-    // Generate a unique file name using timestamp
-    cb(null, Date.now() + '-' + file.originalname);
-  },
+// GET all menu items
+router.get("/", (req, res) => {
+  getMenu((err, results) => {
+    if (err)
+      return res
+        .status(500)
+        .json({ message: "Error fetching menus", error: err });
+    res.json(results);
+  });
 });
 
+// Konfigurasi __dirname untuk ESM
+const __filename = fileURLToPath(import.meta.url);
+const __dirname = path.dirname(__filename);
+// Pastikan folder uploads ada dan path benar
+const uploadDir = path.join(__dirname, "../uploads");
+// Konfigurasi multer storage
+const storage = multer.diskStorage({
+  destination: (req, file, cb) => {
+    cb(null, uploadDir);
+  },
+  filename: (req, file, cb) => {
+    cb(null, Date.now() + "-" + file.originalname);
+  },
+});
+// Filter file image
 const upload = multer({
-  storage: storage,
-  limits: { fileSize: 5 * 1024 * 1024 }, // Optional: Limit file size to 5MB
-  fileFilter: function (req, file, cb) {
-    const fileTypes = /jpeg|jpg|png/;  // Only allow certain file types
-    const extname = fileTypes.test(path.extname(file.originalname).toLowerCase());
+  storage,
+  limits: { fileSize: 5 * 1024 * 1024 },
+  fileFilter: (req, file, cb) => {
+    const fileTypes = /jpeg|jpg|png/;
+    const extname = fileTypes.test(
+      path.extname(file.originalname).toLowerCase()
+    );
     const mimetype = fileTypes.test(file.mimetype);
-
     if (mimetype && extname) {
-      return cb(null, true);
+      cb(null, true);
     } else {
       cb(new Error("Only image files (jpg, jpeg, png) are allowed."));
     }
   },
 });
+router.post("/addMenu", upload.single("gambarMenu"), (req, res) => {
+  console.log("===== ADD MENU =====");
+  console.log("BODY:", req.body);
+  console.log("FILE:", req.file);
 
-// GET all menu items
-router.get("/", (req, res) => {
-  getMenu((err, results) => {
-    if (err) return res.status(500).json({ message: "Error fetching menus", error: err });
-    res.json(results);
-  });
-});
-
-// POST to add a new menu item
-router.post("/tambahMenu", upload.single("gambarMenu"), async (req, res) => {
   const { namaMenu, hargaMenu, deskripsiMenu } = req.body;
-
-  // Get the filename of the uploaded image
   const gambarMenu = req.file ? req.file.filename : null;
 
-  if (!namaMenu || !hargaMenu || !deskripsiMenu || !gambarMenu) {
-    return res.status(400).json({ message: "Data tidak lengkap!" });
-  }
+  const data = {
+    nama_menu: namaMenu,
+    harga: hargaMenu,
+    deskripsi: deskripsiMenu,
+    gambar: gambarMenu,
+  };
 
-  // Create the menu data object
-  const menuData = { namaMenu, hargaMenu, deskripsiMenu, gambarMenu };
-
-  // Add the menu data to the database
-  addMenu(menuData, (err) => {
+  addMenu(data, (err, result) => {
     if (err) {
-      return res.status(500).json({ message: "Error adding menu", error: err });
+      console.error("SQL ERROR:", err);
+      return res.status(500).json({
+        message: "Database error",
+        error: err.sqlMessage || err,
+      });
     }
-    res.json({ message: "Menu berhasil ditambahkan!" });
+
+    res.status(201).json({
+      message: "Menu berhasil ditambahkan",
+      id: result.insertId,
+    });
   });
 });
 
@@ -80,16 +93,49 @@ router.put("/editMenu/:id", upload.single("gambarMenu"), (req, res) => {
   const menuData = { namaMenu, hargaMenu, deskripsiMenu, gambarMenu };
 
   updateMenu(menuData, req.params.id, (err) => {
-    if (err) return res.status(500).json({ message: "Error updating menu", error: err });
+    if (err)
+      return res
+        .status(500)
+        .json({ message: "Error updating menu", error: err });
     res.json({ message: "Menu berhasil diperbarui!" });
   });
 });
 
-// DELETE a menu item
+// DELETE menu + hapus gambar
 router.delete("/deleteMenu/:id", (req, res) => {
-  deleteMenu(req.params.id, (err) => {
-    if (err) return res.status(500).json({ message: "Error deleting menu", error: err });
-    res.json({ message: "Menu berhasil dihapus!" });
+  const id = req.params.id;
+
+  // 1. Ambil data menu dulu
+  getMenuById(id, (err, results) => {
+    if (err) return res.status(500).json({ message: "DB error", error: err });
+
+    if (results.length === 0)
+      return res.status(404).json({ message: "Menu tidak ditemukan" });
+
+    const menu = results[0];
+    const gambarMenu = menu.gambarMenu || menu.gambar_menu;
+
+    // 2. Hapus data dari database
+    deleteMenu(id, (err) => {
+      if (err)
+        return res
+          .status(500)
+          .json({ message: "Gagal hapus menu", error: err });
+
+      // 3. Hapus file gambar jika ada
+      if (gambarMenu) {
+        const imagePath = path.join(__dirname, "../uploads", gambarMenu);
+
+        fs.unlink(imagePath, (err) => {
+          // Kalau file tidak ada → tidak dianggap error fatal
+          if (err && err.code !== "ENOENT") {
+            console.error("Gagal hapus gambar:", err);
+          }
+        });
+      }
+
+      res.json({ message: "Menu & gambar berhasil dihapus" });
+    });
   });
 });
 
