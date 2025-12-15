@@ -1,14 +1,7 @@
 import React, { useState, useEffect, useMemo } from "react";
 import axios from "axios";
 import DataTable from "react-data-table-component";
-import {
-  Container,
-  Navbar,
-  Nav,
-  Button,
-  Image,
-  Form,
-} from "react-bootstrap";
+import { Container, Navbar, Nav, Button, Image, Form } from "react-bootstrap";
 import {
   BiUserCircle,
   BiLogOut,
@@ -71,9 +64,7 @@ const ManageMenuDashboard = () => {
   const filteredItems = useMemo(() => {
     return menuData.filter(
       (item) =>
-        item.nama_menu
-          ?.toLowerCase()
-          .includes(filterText.toLowerCase()) ||
+        item.nama_menu?.toLowerCase().includes(filterText.toLowerCase()) ||
         item.harga?.toString().includes(filterText)
     );
   }, [menuData, filterText]);
@@ -81,35 +72,46 @@ const ManageMenuDashboard = () => {
   // ===============================
   // KOLOM DATATABLE
   // ===============================
+
   const columns = [
-    {
-      name: "Nama Menu",
-      selector: (row) => row.nama_menu,
-      sortable: true,
-    },
-    {
-      name: "Harga",
-      selector: (row) => row.harga,
-      sortable: true,
-      right: true,
-    },
-    {
-      name: "Action",
-      cell: (row) => (
-        <div className="action-icons">
-          <BiFile className="icon detail" title="Detail" />
-          <BiTrash
-            className="icon delete"
-            title="Hapus"
-            onClick={() => handleDelete(row.id)}
-            style={{ cursor: "pointer" }}
-          />
-          <BiPencil className="icon edit" title="Edit" />
-        </div>
-      ),
-      ignoreRowClick: true,
-    },
-  ];
+  {
+    name: "No",
+    selector: (row, index) => index + 1,
+    width: "70px",
+  },
+  {
+    name: "Nama Menu",
+    selector: (row) => row.nama_menu,
+    sortable: true,
+  },
+  {
+    name: "Harga",
+    selector: (row) => `Rp ${row.harga}`,
+    sortable: true,
+  },
+  {
+    name: "Action",
+    cell: (row) => (
+      <div className="menu-action-wrapper">
+        <BiFile
+          className="menu-action-icon menu-action-detail"
+          title="Detail"
+          onClick={() => handleDetail(row)}
+        />
+        <BiTrash
+          className="menu-action-icon menu-action-delete"
+          title="Hapus"
+          onClick={() => handleDelete(row.id)}
+        />
+        <BiPencil
+          className="menu-action-icon menu-action-edit"
+          title="Edit"
+          onClick={() => navigate(`/dashboard/edit-menu/${row.id}`)}
+        />
+      </div>
+    ),
+  },
+];
 
   // ===============================
   // STYLE DATATABLE
@@ -207,9 +209,7 @@ const ManageMenuDashboard = () => {
           )}
         </Container>
 
-        <footer className="footer text-center py-2">
-          KEDAI GSWEET
-        </footer>
+        <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
 
       {/* TOAST */}

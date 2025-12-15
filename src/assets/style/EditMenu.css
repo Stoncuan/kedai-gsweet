@@ -1,0 +1,106 @@
+/* ===== PAGE LAYOUT ===== */
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  background-color: #f5f6fa;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 240px;
+  background-color: #fff0f2;
+  color: #fff;
+  padding: 20px;
+  position: fixed;
+  height: 100vh;
+}
+
+.sidebar-logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 30px;
+}
+
+.sidebar-logo {
+  width: 80px;
+  height: 80px;
+  object-fit: cover;
+}
+
+.sidebar-admin {
+  margin-top: 10px;
+  font-weight: bold;
+  letter-spacing: 1px;
+}
+
+/* ===== MAIN CONTENT ===== */
+.main-content {
+  margin-left: 240px;
+  width: calc(100% - 240px);
+  display: flex;
+  flex-direction: column;
+}
+
+/* ===== TOP NAVBAR ===== */
+.top-navbar {
+  background-color: #fff0f2;
+  border-bottom: 1px solid #ddd;
+  height: 60px;
+}
+
+.header-title {
+  font-size: 18px;
+  font-weight: 600;
+  color: #333;
+}
+
+/* ===== FORM ===== */
+.form-add-menu {
+  background-color: #fff;
+  padding: 25px;
+  width: 100%;
+  max-width: 800px;
+  border-radius: 10px;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
+}
+
+/* INPUT */
+.form-add-menu .form-control {
+  border-radius: 8px;
+  padding: 10px 12px;
+}
+
+.form-add-menu label {
+  font-weight: 600;
+  margin-bottom: 6px;
+}
+
+/* ===== PREVIEW IMAGE ===== */
+.preview-image-wrapper {
+  margin-bottom: 15px;
+}
+
+.preview-image-wrapper img {
+  width: 160px;
+  height: 160px;
+  object-fit: cover;
+  border-radius: 10px;
+  border: 2px solid #eee;
+}
+
+/* ===== BUTTON ===== */
+.form-add-menu button {
+  padding: 10px 22px;
+  border-radius: 8px;
+  font-weight: 600;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  margin-top: auto;
+  background-color: #fff0f2;
+  border-top: 1px solid #ddd;
+  font-size: 13px;
+  color: #ae0032;
+}

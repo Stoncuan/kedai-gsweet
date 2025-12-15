@@ -14,7 +14,7 @@ import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../assets/styles/admin/AddMenu.css";
+import "../assets/style/AddMenu.css";
 
 const AddMenu = () => {
   const navigate = useNavigate();
@@ -45,7 +45,7 @@ const AddMenu = () => {
       toast.success("Menu berhasil ditambahkan 🎉");
 
       setTimeout(() => {
-        navigate("/dashboard/manage-menu");
+        navigate("/dashboard/manage-datalist");
       }, 1500);
     } catch (err) {
       toast.error("Gagal menambahkan menu ❌");
@@ -74,8 +74,8 @@ const AddMenu = () => {
           <Nav.Link href="/manage-user" className="link-item">
             Manage User
           </Nav.Link>
-          <Nav.Link className="link-item active-link">
-            Tambah Menu
+          <Nav.Link className="link-item active-link" href="/dashboard/manage-datalist">
+            Manage Menu
           </Nav.Link>
         </Nav>
 
