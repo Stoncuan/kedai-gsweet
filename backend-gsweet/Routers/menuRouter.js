@@ -8,6 +8,7 @@ import {
 } from "../models/menuModel.js";
 import multer from "multer";
 import path from "path";
+import fs from "fs";
 import { fileURLToPath } from "url";
 
 const router = express.Router();
@@ -85,27 +86,51 @@ router.post("/addMenu", upload.single("gambarMenu"), (req, res) => {
   });
 });
 
-// PUT to update an existing menu item
-router.put("/editMenu/:id", upload.single("gambarMenu"), (req, res) => {
-  const { namaMenu, hargaMenu, deskripsiMenu } = req.body;
-  const gambarMenu = req.file ? req.file.filename : null;
+router.get("/getMenu/:id", (req, res) => {
+  getMenuById(req.params.id, (err, results) => {
+    if (err) return res.status(500).json(err);
+    if (results.length === 0)
+      return res.status(404).json({ message: "Menu tidak ditemukan" });
 
-  const menuData = { namaMenu, hargaMenu, deskripsiMenu, gambarMenu };
-
-  updateMenu(menuData, req.params.id, (err) => {
-    if (err)
-      return res
-        .status(500)
-        .json({ message: "Error updating menu", error: err });
-    res.json({ message: "Menu berhasil diperbarui!" });
+    res.json(results[0]);
   });
 });
 
-// DELETE menu + hapus gambar
+router.put("/editMenu/:id", upload.single("gambarMenu"), (req, res) => {
+  const { namaMenu, hargaMenu, deskripsiMenu } = req.body;
+  const gambarBaru = req.file ? req.file.filename : null;
+
+  getMenuById(req.params.id, (err, results) => {
+    if (err) return res.status(500).json(err);
+    if (results.length === 0)
+      return res.status(404).json({ message: "Menu tidak ditemukan" });
+
+    const gambarLama = results[0].gambar;
+
+    const data = {
+      nama_menu: namaMenu,
+      harga: hargaMenu,
+      deskripsi: deskripsiMenu,
+      gambar: gambarBaru || gambarLama,
+    };
+
+    updateMenu(data, req.params.id, (err) => {
+      if (err) return res.status(500).json(err);
+
+      // 🔥 hapus gambar lama jika upload baru
+      if (gambarBaru && gambarLama) {
+        const imagePath = path.join(__dirname, "../uploads", gambarLama);
+        fs.unlink(imagePath, () => {});
+      }
+
+      res.json({ message: "Menu berhasil diperbarui" });
+    });
+  });
+});
+
 router.delete("/deleteMenu/:id", (req, res) => {
   const id = req.params.id;
 
-  // 1. Ambil data menu dulu
   getMenuById(id, (err, results) => {
     if (err) return res.status(500).json({ message: "DB error", error: err });
 
@@ -113,23 +138,27 @@ router.delete("/deleteMenu/:id", (req, res) => {
       return res.status(404).json({ message: "Menu tidak ditemukan" });
 
     const menu = results[0];
-    const gambarMenu = menu.gambarMenu || menu.gambar_menu;
+    const gambarMenu = menu.gambar; // sesuai DB kamu
 
-    // 2. Hapus data dari database
     deleteMenu(id, (err) => {
       if (err)
         return res
           .status(500)
           .json({ message: "Gagal hapus menu", error: err });
 
-      // 3. Hapus file gambar jika ada
       if (gambarMenu) {
         const imagePath = path.join(__dirname, "../uploads", gambarMenu);
+        console.log("Hapus gambar:", imagePath);
 
         fs.unlink(imagePath, (err) => {
-          // Kalau file tidak ada → tidak dianggap error fatal
-          if (err && err.code !== "ENOENT") {
-            console.error("Gagal hapus gambar:", err);
+          if (err) {
+            if (err.code === "ENOENT") {
+              console.warn("File gambar tidak ditemukan");
+            } else {
+              console.error("Gagal hapus gambar:", err);
+            }
+          } else {
+            console.log("Gambar berhasil dihapus");
           }
         });
       }
