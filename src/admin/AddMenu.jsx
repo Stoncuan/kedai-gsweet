@@ -19,11 +19,21 @@ import "../assets/style/AddMenu.css";
 const AddMenu = () => {
   const navigate = useNavigate();
 
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
   const [namaMenu, setNamaMenu] = useState("");
   const [hargaMenu, setHargaMenu] = useState("");
   const [deskripsiMenu, setDeskripsiMenu] = useState("");
   const [gambarMenu, setGambarMenu] = useState(null);
   const [loading, setLoading] = useState(false);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -59,11 +69,7 @@ const AddMenu = () => {
       {/* SIDEBAR */}
       <aside className="sidebar">
         <div className="sidebar-logo-section">
-          <Image
-            src="https://i.ibb.co/ZdSg5bx/gsweet-logo.png"
-            roundedCircle
-            className="sidebar-logo"
-          />
+          <Image src="/logoooo.png" className="sidebar-logo" />
           <span className="sidebar-admin">ADMIN</span>
         </div>
 
@@ -74,12 +80,15 @@ const AddMenu = () => {
           <Nav.Link href="/manage-user" className="link-item">
             Manage User
           </Nav.Link>
-          <Nav.Link className="link-item active-link" href="/dashboard/manage-datalist">
+          <Nav.Link
+            className="link-item active-link"
+            href="/dashboard/manage-datalist"
+          >
             Manage Menu
           </Nav.Link>
         </Nav>
 
-        <Nav.Link className="logout-link">
+        <Nav.Link className="logout-link" onClick={handleLogout}>
           Logout <BoxArrowRight />
         </Nav.Link>
       </aside>
@@ -88,12 +97,15 @@ const AddMenu = () => {
       <div className="main-content">
         {/* NAVBAR */}
         <Navbar className="top-navbar px-4">
-          <Navbar.Text className="header-title">
-            Tambah Menu
-          </Navbar.Text>
-          <Nav className="ms-auto align-items-center gap-2">
-            <span>User</span>
-            <PersonCircle size={22} />
+          <Navbar.Text className="header-title">Tambah Menu</Navbar.Text>
+          {/* USER PROFILE */}
+          <Nav
+            className="ms-auto align-items-center gap-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/dashboard/profile")}
+          >
+            <span className="fw-semibold">{username}</span>
+            <PersonCircle size={24} />
           </Nav>
         </Navbar>
 
@@ -158,9 +170,7 @@ const AddMenu = () => {
         </Container>
 
         {/* FOOTER */}
-        <footer className="footer text-center py-2">
-          KEDAI GSWEET
-        </footer>
+        <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
 
       <ToastContainer position="top-right" autoClose={3000} />

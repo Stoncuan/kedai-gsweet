@@ -1,19 +1,24 @@
 import React, { useEffect, useState } from "react";
-import { Container, Navbar, Nav, Image } from "react-bootstrap";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { Container, Navbar, Nav, Image, Button } from "react-bootstrap";
+import {
+  PersonCircle,
+  PencilSquare,
+  BoxArrowRight,
+  Envelope,
+  Telephone,
+} from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
+import axios from "axios";
 import "../assets/style/ManageMenuDashboard.css";
 
-const Dashboard = () => {
+const UserProfile = () => {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+  const [user, setUser] = useState(null);
 
-  // ===============================
-  // AMBIL USER DARI TOKEN
-  // ===============================
   useEffect(() => {
     const token = localStorage.getItem("token");
+
     if (!token) {
       navigate("/login");
       return;
@@ -21,9 +26,17 @@ const Dashboard = () => {
 
     try {
       const decoded = jwtDecode(token);
-      setUsername(decoded.username);
-    } catch (error) {
-      console.error("Token invalid");
+
+      axios
+        .get(`http://localhost:5000/users/${decoded.id}`)
+        .then((res) => {
+          setUser(res.data);
+        })
+        .catch(() => {
+          localStorage.removeItem("token");
+          navigate("/login");
+        });
+    } catch (err) {
       localStorage.removeItem("token");
       navigate("/login");
     }
@@ -34,20 +47,28 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  if (!user) return null;
+
   return (
     <div className="page-wrapper">
-      {/* ================= SIDEBAR ================= */}
+      {/* SIDEBAR */}
       <aside className="sidebar">
-        <div className="sidebar-logo-section">
-         <Image
-           src="/logoooo.png"
-            className="sidebar-logo"
-          />
+        <div
+          className="sidebar-logo-section"
+          onClick={() => navigate("/dashboard/profile")}
+          style={{ cursor: "pointer" }}
+        >
+          <Image src="/logoooo.png" className="sidebar-logo" />
           <span className="sidebar-admin">ADMIN</span>
         </div>
 
         <Nav className="flex-column sidebar-links">
-          <Nav.Link className="link-item active-link">Dashboard</Nav.Link>
+          <Nav.Link
+            className="link-item"
+            onClick={() => navigate("/dashboard")}
+          >
+            Dashboard
+          </Nav.Link>
           <Nav.Link
             className="link-item"
             onClick={() => navigate("/dashboard/manage-user")}
@@ -67,46 +88,50 @@ const Dashboard = () => {
         </Nav.Link>
       </aside>
 
-      {/* ================= MAIN CONTENT ================= */}
+      {/* MAIN */}
       <div className="main-content">
-        {/* NAVBAR */}
         <Navbar className="top-navbar p-3">
           <Container fluid>
-            <Navbar.Text className="header-title">Dashboard</Navbar.Text>
+            <Navbar.Text className="header-title">User Profile</Navbar.Text>
 
-            {/* USER PROFILE */}
-            <Nav
-              className="ms-auto align-items-center gap-2"
-              style={{ cursor: "pointer" }}
-              onClick={() => navigate("/dashboard/profile")}
-            >
-              <span className="fw-semibold">{username}</span>
-              <PersonCircle size={24} />
+            <Nav className="ms-auto align-items-center gap-2">
+              <span>{user.username}</span>
+              <PersonCircle size={22} />
             </Nav>
           </Container>
         </Navbar>
 
-        {/* ===== CENTER CONTENT ===== */}
         <Container
           fluid
           className="d-flex justify-content-center align-items-center"
           style={{ minHeight: "calc(100vh - 120px)" }}
         >
-          <div className="text-center">
-            <h1 className="fw-bold text-danger mb-2">
-              Selamat Datang, {username} 👋
-            </h1>
-            <p className="text-muted">
-              Silakan kelola data aplikasi melalui menu di samping
+          <div className="text-center" style={{ maxWidth: 420 }}>
+            <PersonCircle size={140} className="text-secondary mb-3" />
+
+            <h5 className="fw-bold">{user.nama_lengkap}</h5>
+
+            <p>
+              <Envelope /> {user.email}
             </p>
+
+            <p>
+              <Telephone /> {user.no_tel}
+            </p>
+
+            <Button
+              variant="outline-danger"
+              onClick={() => navigate(`/dashboard/edit-profile/${user.id}`)}
+            >
+              Edit Profile <PencilSquare />
+            </Button>
           </div>
         </Container>
 
-        {/* FOOTER */}
         <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
     </div>
   );
 };
 
-export default Dashboard;
+export default UserProfile;

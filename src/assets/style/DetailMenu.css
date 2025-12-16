@@ -1,0 +1,138 @@
+/* ===== LAYOUT ===== */
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+}
+
+/* ===== SIDEBAR ===== */
+.sidebar {
+  width: 240px;
+  background: #fff0f2;
+  color: #fff;
+  padding: 20px;
+}
+
+.sidebar-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 30px;
+}
+
+.sidebar-logo {
+  width: 45px;
+}
+
+.sidebar-admin {
+  font-weight: 700;
+}
+
+.sidebar-links .link-item {
+  color: #bbb;
+  margin-bottom: 12px;
+}
+
+.sidebar-links .active-link {
+  color: #e91e63;
+  font-weight: 600;
+}
+
+.logout-link {
+  margin-top: auto;
+  color: #ff6b6b;
+}
+
+/* ===== MAIN ===== */
+.main-content {
+  flex: 1;
+  background: #f5f6fa;
+}
+
+/* ===== NAVBAR ===== */
+.top-navbar {
+  background: #fff;
+  border-bottom: 1px solid #ddd;
+}
+
+.header-title {
+  font-weight: 700;
+  color: #e91e63;
+}
+
+/* ===== CARD ===== */
+.detail-card {
+  border-radius: 18px;
+  overflow: hidden;
+  background: #fff;
+  box-shadow: 0 18px 40px rgba(0, 0, 0, 0.08);
+}
+
+/* IMAGE */
+.detail-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  min-height: 320px;
+}
+
+/* BODY */
+.detail-body {
+  padding: 30px;
+}
+
+.menu-title {
+  font-weight: 700;
+  color: #e91e63;
+}
+
+.price-badge {
+  background: #fbd6db;
+  color: #ae0032;
+  padding: 8px 16px;
+  font-size: 15px;
+  margin: 10px 0;
+}
+
+/* TEXT */
+.label {
+  font-weight: 600;
+  margin-top: 15px;
+}
+
+.menu-desc {
+  color: #555;
+  line-height: 1.7;
+}
+
+/* ACTION */
+.detail-actions {
+  display: flex;
+  justify-content: flex-end;
+  gap: 12px;
+  margin-top: 30px;
+}
+
+/* ===== FOOTER ===== */
+.footer {
+  background: #fff;
+  border-top: 1px solid #ddd;
+}
+
+/* ===== RESPONSIVE ===== */
+@media (max-width: 768px) {
+  .sidebar {
+    display: none;
+  }
+
+  .detail-img {
+    min-height: 220px;
+  }
+
+  .detail-body {
+    padding: 20px;
+  }
+
+  .detail-actions {
+    flex-direction: column;
+  }
+}

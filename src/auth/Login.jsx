@@ -6,20 +6,25 @@ import { useNavigate } from "react-router-dom";
 import "../assets/style/Login.css";
 
 export default function Login() {
-  const [email, setEmail] = useState("");
+  const [username, setUsername] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState("");
   const navigate = useNavigate();
 
   const handleLogin = async (e) => {
     e.preventDefault();
+    setError("");
+
     try {
-      const res = await axios.post("http://localhost:3000/api/login", {
-        email,
+      const res = await axios.post("http://localhost:5000/login", {
+        username,
         password,
       });
+
       localStorage.setItem("token", res.data.token);
-      navigate("/dashboard/admin-panel"); // redirect ke dashboard ManageUsers
+      localStorage.setItem("user", JSON.stringify(res.data.user));
+
+      navigate("/dashboard");
     } catch (err) {
       setError(err.response?.data?.msg || "Login gagal");
     }
@@ -31,7 +36,7 @@ export default function Login() {
         <Row className="justify-content-center">
           <Col md={10} className="text-center">
             <img src="/logoooo.png" alt="Logo" className="login-logo" />
-            <h4 className="login-title">USER LOGIN</h4>
+            <h4 className="login-title">ADMIN LOGIN</h4>
 
             <Form onSubmit={handleLogin}>
               <div className="input-group custom-input mt-4">
@@ -39,11 +44,9 @@ export default function Login() {
                   <FaUser />
                 </span>
                 <Form.Control
-                  type="email"
-                  placeholder="Email"
-                  className="input-field"
-                  value={email}
-                  onChange={(e) => setEmail(e.target.value)}
+                  placeholder="Username"
+                  value={username}
+                  onChange={(e) => setUsername(e.target.value)}
                 />
               </div>
 
@@ -54,7 +57,6 @@ export default function Login() {
                 <Form.Control
                   type="password"
                   placeholder="Password"
-                  className="input-field"
                   value={password}
                   onChange={(e) => setPassword(e.target.value)}
                 />
@@ -65,7 +67,7 @@ export default function Login() {
               </Button>
             </Form>
 
-            {error && <p style={{ color: "red" }}>{error}</p>}
+            {error && <p className="text-danger mt-3">{error}</p>}
           </Col>
         </Row>
       </Container>

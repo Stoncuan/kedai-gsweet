@@ -19,6 +19,17 @@ import "../assets/style/EditMenu.css";
 const EditMenu = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const token = localStorage.getItem("token");
+
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
+  };
 
   const [namaMenu, setNamaMenu] = useState("");
   const [hargaMenu, setHargaMenu] = useState("");
@@ -70,38 +81,42 @@ const EditMenu = () => {
   return (
     <div className="page-wrapper">
       <aside className="sidebar">
-             <div className="sidebar-logo-section">
-               <Image
-                 src="https://i.ibb.co/ZdSg5bx/gsweet-logo.png"
-                 roundedCircle
-                 className="sidebar-logo"
-               />
-               <span className="sidebar-admin">ADMIN</span>
-             </div>
-     
-             <Nav className="flex-column sidebar-links">
-               <Nav.Link href="/dashboard" className="link-item">
-                 Dashboard
-               </Nav.Link>
-               <Nav.Link href="/manage-user" className="link-item">
-                 Manage User
-               </Nav.Link>
-               <Nav.Link className="link-item active-link" href="/dashboard/manage-datalist">
-                 Manage Menu
-               </Nav.Link>
-             </Nav>
-     
-             <Nav.Link className="logout-link">
-               Logout <BoxArrowRight />
-             </Nav.Link>
-           </aside>
+        <div className="sidebar-logo-section">
+          <Image src="/logoooo.png" className="sidebar-logo" />
+          <span className="sidebar-admin">ADMIN</span>
+        </div>
+
+        <Nav className="flex-column sidebar-links">
+          <Nav.Link href="/dashboard" className="link-item">
+            Dashboard
+          </Nav.Link>
+          <Nav.Link href="/manage-user" className="link-item">
+            Manage User
+          </Nav.Link>
+          <Nav.Link
+            className="link-item active-link"
+            href="/dashboard/manage-datalist"
+          >
+            Manage Menu
+          </Nav.Link>
+        </Nav>
+
+        <Nav.Link className="logout-link" onClick={handleLogout}>
+          Logout <BoxArrowRight />
+        </Nav.Link>
+      </aside>
 
       <div className="main-content">
         <Navbar className="top-navbar px-4">
           <Navbar.Text className="header-title">Edit Menu</Navbar.Text>
-          <Nav className="ms-auto align-items-center gap-2">
-            <span>User</span>
-            <PersonCircle size={22} />
+          {/* USER PROFILE */}
+          <Nav
+            className="ms-auto align-items-center gap-2"
+            style={{ cursor: "pointer" }}
+            onClick={() => navigate("/dashboard/profile")}
+          >
+            <span className="fw-semibold">{username}</span>
+            <PersonCircle size={24} />
           </Nav>
         </Navbar>
 
@@ -158,7 +173,7 @@ const EditMenu = () => {
             </Form.Group>
 
             <div className="d-flex justify-content-end">
-              <Button type="submit" variant="warning" disabled={loading}>
+              <Button type="submit" variant="danger" disabled={loading}>
                 {loading ? "Menyimpan..." : "Update Menu"}
               </Button>
             </div>

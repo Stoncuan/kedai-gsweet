@@ -1,10 +1,9 @@
+import dotenv from "dotenv";
 import express from "express";
 import cors from "cors";
-import dotenv from "dotenv";
 import path from 'path';
 import { fileURLToPath } from 'url';
-
-import loginRouter from "./Routers/loginRouter.js";
+import authRouter from "./Routers/authRouter.js";
 import userRouter from "./Routers/userRouter.js";
 import menuRouter from "./Routers/menuRouter.js";
 
@@ -23,7 +22,7 @@ app.use(express.urlencoded({ extended: true }));
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
 
 // Routing API
-app.use("/login", loginRouter);
+app.use("/login", authRouter);
 app.use("/users", userRouter);
 app.use("/menu", menuRouter);
 

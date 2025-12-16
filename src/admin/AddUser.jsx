@@ -1,162 +1,228 @@
-import React, { useState } from 'react';
-import { Container, Row, Col, Nav, Form, Button, Image } from 'react-bootstrap';
-import { FaUserCircle, FaSignOutAlt } from 'react-icons/fa';
-import '../assets/style/AddUser.css';
-import axios from 'axios';
+import React, { useState } from "react";
+import axios from "axios";
+import {
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  Image,
+  Form,
+  Row,
+  Col,
+  Card,
+} from "react-bootstrap";
+import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
+import "../assets/style/ManageMenuDashboard.css";
 
 const AddUser = () => {
-  // State untuk menyimpan data input
-  const [formData, setFormData] = useState({
-    nama_lengkap: '',
-    username: '',
-    no_tel: '',
-    email: '',
-    password: '',
-  });
+  const navigate = useNavigate();
+  const [loading, setLoading] = useState(false);
+  const token = localStorage.getItem("token");
 
-  // State untuk menangani pesan error/sukses
-  const [message, setMessage] = useState('');
+  if (!token) {
+    navigate("/login");
+    return;
+  }
 
-  // Fungsi untuk mengupdate state saat input berubah
-  const handleChange = (e) => {
-    const { name, value } = e.target;
-    setFormData((prevState) => ({
-      ...prevState,
-      [name]: value,
-    }));
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
-  // Fungsi untuk menangani pengiriman form
+  const [form, setForm] = useState({
+    nama_lengkap: "",
+    username: "",
+    no_tel: "",
+    email: "",
+    password: "",
+  });
+
+  // ===============================
+  // SUBMIT TAMBAH USER
+  // ===============================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
-    // Validasi form data
-    const { nama_lengkap, username, no_tel, email, password } = formData;
-    if (!nama_lengkap || !username || !no_tel || !email || !password) {
-      setMessage('Data tidak lengkap!');
+    if (
+      !form.nama_lengkap ||
+      !form.username ||
+      !form.no_tel ||
+      !form.email ||
+      !form.password
+    ) {
+      toast.error("Semua field wajib diisi ❌");
       return;
     }
 
     try {
-      // Mengirim data ke server dengan axios
-      const response = await axios.post('http://localhost:5000/users/addUser', formData);
+      setLoading(true);
+      await axios.post("http://localhost:5000/users/addUser", form);
+      toast.success("User berhasil ditambahkan ✅");
 
-      // Menangani respons sukses
-      setMessage(response.data.message);
-      // Reset form setelah berhasil
-      setFormData({
-        nama_lengkap: '',
-        username: '',
-        no_tel: '',
-        email: '',
-        password: '',
-      });
-    } catch (error) {
-      // Menangani error jika ada masalah dengan server
-      console.error('Error:', error);
-      setMessage('Gagal menambahkan user');
+      setTimeout(() => {
+        navigate("/dashboard/manage-user");
+      }, 1500);
+    } catch {
+      toast.error("Gagal menambahkan user ❌");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="app-wrapper">
-      {/* Sidebar */}
-      <div className="sidebar">
-        <div className="sidebar-top">
-          <Image src="https://i.ibb.co/ZdSg5bx/gsweet-logo.png" roundedCircle className="sidebar-logo" />
-          <div className="sidebar-admin-text">ADMIN</div>
+    <div className="page-wrapper">
+      {/* ================= SIDEBAR ================= */}
+      <aside className="sidebar">
+        <div className="sidebar-logo-section">
+          <Image
+            width={90}
+            src="/logoooo.png"
+            roundedCircle
+            className="sidebar-logo"
+          />
+
+          <span className="sidebar-admin">ADMIN</span>
         </div>
 
-        <Nav className="sidebar-menu" defaultActiveKey="#manage-datalist">
-          <Nav.Link href="#dashboard" className="sidebar-link">Dashboard</Nav.Link>
-          <Nav.Link href="#manage-user" className="sidebar-link">Manage User</Nav.Link>
-          <Nav.Link href="#manage-datalist" className="sidebar-link active">Manage Datalist Menu</Nav.Link>
+        <Nav className="flex-column sidebar-links">
+          <Nav.Link className="link-item" href="/dashboard">
+            Dashboard
+          </Nav.Link>
+          <Nav.Link
+            className="link-item active-link"
+            href="/dashboard/manage-user"
+          >
+            Manage User
+          </Nav.Link>
+          <Nav.Link className="link-item" href="/dashboard/manage-datalist">
+            Manage Menu
+          </Nav.Link>
         </Nav>
 
-        <div className="sidebar-logout">
-          <Button variant="link" className="logout-btn">
-            Logout <FaSignOutAlt />
-          </Button>
-        </div>
-      </div>
+        <Nav.Link className="logout-link" onClick={handleLogout}>
+          Logout <BoxArrowRight />
+        </Nav.Link>
+      </aside>
 
-      {/* Content Area */}
-      <div className="content-area">
-        {/* Header */}
-        <header className="content-header">
-          <span className="page-title">Tambah Menu</span>
-          <div className="user-info">
-            <span>User</span>
-            <FaUserCircle size={22} className="user-icon" />
-          </div>
-        </header>
+      {/* ================= MAIN CONTENT ================= */}
+      <div className="main-content">
+        <Navbar className="top-navbar p-3">
+          <Container fluid>
+            <Navbar.Text className="header-title">Tambah User</Navbar.Text>
+            {/* USER PROFILE */}
+            <Nav
+              className="ms-auto align-items-center gap-2"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/dashboard/profile")}
+            >
+              <span className="fw-semibold">{username}</span>
+              <PersonCircle size={24} />
+            </Nav>
+          </Container>
+        </Navbar>
 
-        {/* Form */}
-        <Container className="form-container">
-          <Form onSubmit={handleSubmit}>
-            <Form.Group className="mb-3">
-              <Form.Control
-                name="nama_lengkap"
-                value={formData.nama_lengkap}
-                onChange={handleChange}
-                placeholder="Nama menu"
-                className="input-field"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                name="username"
-                value={formData.username}
-                onChange={handleChange}
-                placeholder="Username"
-                className="input-field"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                name="no_tel"
-                value={formData.no_tel}
-                onChange={handleChange}
-                placeholder="Nomor Telepon"
-                className="input-field"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                name="email"
-                value={formData.email}
-                onChange={handleChange}
-                placeholder="Email"
-                className="input-field"
-              />
-            </Form.Group>
-            <Form.Group className="mb-3">
-              <Form.Control
-                name="password"
-                type="password"
-                value={formData.password}
-                onChange={handleChange}
-                placeholder="Password"
-                className="input-field"
-              />
-            </Form.Group>
+        <Container fluid className="px-4 py-4">
+          <Row className="justify-content-center">
+            <Col md={8} lg={6}>
+              <Card className="shadow-sm border-0">
+                <Card.Body>
+                  <h5 className="fw-bold text-danger mb-4">Form Tambah User</h5>
 
-            <Row className="align-items-center">
-              <Col xs={6} md={4} className="d-flex justify-content-start justify-content-md-end">
-                <Button variant="danger" className="btn-confirm" type="submit">Konfirmasi</Button>
-              </Col>
-            </Row>
-          </Form>
+                  <Form onSubmit={handleSubmit}>
+                    <Form.Group className="mb-3">
+                      <Form.Label>Nama Lengkap</Form.Label>
+                      <Form.Control
+                        value={form.nama_lengkap}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            nama_lengkap: e.target.value,
+                          })
+                        }
+                      />
+                    </Form.Group>
 
-          {/* Display Message */}
-          {message && <div className="alert alert-info mt-3">{message}</div>}
+                    <Form.Group className="mb-3">
+                      <Form.Label>Username</Form.Label>
+                      <Form.Control
+                        value={form.username}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            username: e.target.value,
+                          })
+                        }
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>No Telp</Form.Label>
+                      <Form.Control
+                        value={form.no_tel}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            no_tel: e.target.value,
+                          })
+                        }
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-3">
+                      <Form.Label>Email</Form.Label>
+                      <Form.Control
+                        type="email"
+                        value={form.email}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            email: e.target.value,
+                          })
+                        }
+                      />
+                    </Form.Group>
+
+                    <Form.Group className="mb-4">
+                      <Form.Label>Password</Form.Label>
+                      <Form.Control
+                        type="password"
+                        placeholder="Masukkan password"
+                        value={form.password}
+                        onChange={(e) =>
+                          setForm({
+                            ...form,
+                            password: e.target.value,
+                          })
+                        }
+                      />
+                    </Form.Group>
+
+                    <div className="d-flex justify-content-end gap-2">
+                      <Button
+                        variant="secondary"
+                        onClick={() => navigate("/dashboard/manage-user")}
+                      >
+                        Batal
+                      </Button>
+
+                      <Button type="submit" variant="danger" disabled={loading}>
+                        {loading ? "Menyimpan..." : "Tambah User"}
+                      </Button>
+                    </div>
+                  </Form>
+                </Card.Body>
+              </Card>
+            </Col>
+          </Row>
         </Container>
 
-        {/* Footer */}
-        <footer className="footer-bar">
-          KEDAI GSWEET
-        </footer>
+        <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };

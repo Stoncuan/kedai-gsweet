@@ -1,125 +1,211 @@
-import React, { useState, useEffect } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import axios from "axios";
-import "../assets/style/ManageUser.css";
-import { FiUser } from "react-icons/fi";
-import { FaSignOutAlt } from "react-icons/fa";
-import { FiInfo, FiEdit, FiTrash } from "react-icons/fi";
+import DataTable from "react-data-table-component";
+import {
+  Container,
+  Navbar,
+  Nav,
+  Button,
+  Image,
+  Form,
+  Modal,
+  Badge,
+} from "react-bootstrap";
+import {
+  BiUserCircle,
+  BiLogOut,
+  BiPlus,
+  BiFile,
+  BiTrash,
+  BiPencil,
+} from "react-icons/bi";
+import { BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import { ToastContainer, toast } from "react-toastify";
+import "../assets/style/ManageUser.css";
 
-const ManageUser = () => {
-  const [users, setUsers] = useState([]);
-  const token = localStorage.getItem("token");
+const ManageUserDashboard = () => {
+  const [userData, setUserData] = useState([]);
+  const [filterText, setFilterText] = useState("");
+  const [showDetail, setShowDetail] = useState(false);
+  const [detailUser, setDetailUser] = useState(null);
+
   const navigate = useNavigate();
-
-  // Fetch user list
-  useEffect(() => {
-    axios
-      .get("http://localhost:3000/api/users", {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then((res) => setUsers(res.data))
-      .catch((err) => console.error("Fetch user error:", err));
-  }, [token]);
-
-  // Delete user
-  const handleDelete = (id) => {
-    axios
-      .delete(`http://localhost:3000/api/users/${id}`, {
-        headers: { Authorization: `Bearer ${token}` },
-      })
-      .then(() => {
-        setUsers((prev) => prev.filter((u) => u.id !== id));
-      })
-      .catch((err) => console.error("Delete error:", err));
+  const token = localStorage.getItem("token");
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    navigate("/login");
   };
 
+  if (!token) {
+    navigate("/login");
+    return;
+  }
+
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
+  const fetchUser = async () => {
+    try {
+      const res = await axios.get("http://localhost:5000/users");
+      setUserData(res.data);
+    } catch {
+      toast.error("Gagal mengambil data user");
+    }
+  };
+
+  const handleDetail = (row) => {
+    setDetailUser(row);
+    setShowDetail(true);
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Yakin hapus user ini?")) return;
+    await axios.delete(`http://localhost:5000/users/deleteUser/${id}`);
+    toast.success("User dihapus");
+    fetchUser();
+  };
+
+  const filteredItems = useMemo(() => {
+    return userData.filter(
+      (u) =>
+        u.nama_lengkap.toLowerCase().includes(filterText.toLowerCase()) ||
+        u.no_tel.includes(filterText)
+    );
+  }, [userData, filterText]);
+
+  const columns = [
+    { name: "No", selector: (row, i) => i + 1, width: "70px" },
+    { name: "Nama Lengkap", selector: (row) => row.nama_lengkap },
+    { name: "No Telp", selector: (row) => row.no_tel },
+    {
+      name: "Action",
+      cell: (row) => (
+        <div className="menu-action-wrapper">
+          <BiFile
+            className="menu-action-icon detail"
+            onClick={() => handleDetail(row)}
+          />
+          <BiTrash
+            className="menu-action-icon menu-action-delete"
+            onClick={() => handleDelete(row.id)}
+          />
+          <BiPencil
+            className="menu-action-icon menu-action-edit"
+            onClick={() => navigate(`/dashboard/edit-user/${row.id}`)}
+          />
+        </div>
+      ),
+    },
+  ];
+
   return (
-    <div className="container-manageuser">
+    <div className="page-wrapper">
       {/* SIDEBAR */}
-      <div className="sidebar">
-        <div className="sidebar-logo">
-          <img src="/logoooo.png" alt="logo" className="logo-img" />
-          <span className="admin-text">ADMIN</span>
+      <aside className="sidebar">
+        <div className="sidebar-logo-section">
+          <Image src="/logoooo.png" className="sidebar-logo" />
+          <span className="sidebar-admin">ADMIN</span>
         </div>
 
-        <div className="sidebar-menu">
-          <p className="menu-title">Dashboard</p>
-          <button className="menu-item active">Manage User</button>
-          <button className="menu-item">Manage Datalist Menu</button>
-        </div>
-
-        <div className="logout-section">
-          <span className="logout-text">Logout</span>
-          <FaSignOutAlt className="logout-icon" />
-        </div>
-      </div>
-
-      {/* MAIN AREA */}
-      <div className="main-content">
-        {/* TOPBAR */}
-        <div className="topbar">
-          <div className="topbar-right">
-            <span className="topbar-username">User</span>
-            <div className="topbar-icon">
-              <FiUser size={22} />
-            </div>
-          </div>
-        </div>
-
-        {/* CONTENT */}
-        <div className="content-box">
-          <h2 className="title-manage">Manage User</h2>
-
-          <button
-            className="tambah-user-btn"
-            onClick={() => navigate("/dashboard/add-user")}
+        <Nav className="flex-column sidebar-links">
+          <Nav.Link className="link-item" href="/dashboard">
+            Dashboard
+          </Nav.Link>
+          <Nav.Link
+            className="link-item active-link"
+            href="/dashboard/manage-user"
           >
-            Tambah user
-          </button>
+            Manage User
+          </Nav.Link>
+          <Nav.Link className="link-item" href="/dashboard/manage-datalist">
+            Manage Menu
+          </Nav.Link>
+        </Nav>
 
-          {/* TABLE */}
-          <table className="user-table">
-            <thead>
-              <tr>
-                <th className="th-username">Username ↕</th>
-                <th className="th-action">Action ↕</th>
-              </tr>
-            </thead>
+        <Nav.Link className="logout-link" onClick={handleLogout}>
+          Logout <BoxArrowRight />
+        </Nav.Link>
+      </aside>
 
-            <tbody>
-              {users.length > 0 ? (
-                users.map((user) => (
-                  <tr key={user.id}>
-                    <td>
-                      <input type="checkbox" className="checkbox" />
-                      <span className="username-text">{user.username}</span>
-                    </td>
-                    <td className="action-icons">
-                      <FiInfo className="icon info" />
-                      <FiEdit className="icon edit" />
-                      <FiTrash
-                        className="icon delete"
-                        onClick={() => handleDelete(user.id)}
-                      />
-                    </td>
-                  </tr>
-                ))
-              ) : (
-                <tr>
-                  <td colSpan="2">Tidak ada user.</td>
-                </tr>
-              )}
-            </tbody>
-          </table>
-        </div>
+      {/* MAIN */}
+      <div className="main-content">
+        <Navbar className="top-navbar p-3">
+          <Container fluid>
+            <Navbar.Text className="header-title">Manage User</Navbar.Text>
+            {/* USER PROFILE */}
+            <Nav
+              className="ms-auto align-items-center gap-2"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/dashboard/profile")}
+            >
+              <span className="fw-semibold">{username}</span>
+              <PersonCircle size={24} />
+            </Nav>
+          </Container>
+        </Navbar>
 
-        {/* FOOTER */}
-        <div className="footer">
-          <span>KEDAI GSWEET</span>
-        </div>
+        <Container fluid className="px-4 py-3">
+          <div className="d-flex justify-content-between mb-3">
+            <Form.Control
+              placeholder="Cari nama / no tel..."
+              style={{ maxWidth: 250 }}
+              value={filterText}
+              onChange={(e) => setFilterText(e.target.value)}
+            />
+
+            <Button
+              variant="danger"
+              onClick={() => navigate("/dashboard/add-user")}
+            >
+              Tambah User <BiPlus />
+            </Button>
+          </div>
+
+          <DataTable
+            columns={columns}
+            data={filteredItems}
+            pagination
+            highlightOnHover
+            responsive
+          />
+        </Container>
+
+        <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
+
+      {/* DETAIL MODAL */}
+      <Modal show={showDetail} onHide={() => setShowDetail(false)} centered>
+        {detailUser && (
+          <>
+            <Modal.Header closeButton>
+              <Modal.Title className="text-danger fw-bold">
+                Detail User
+              </Modal.Title>
+            </Modal.Header>
+            <Modal.Body>
+              <p>
+                <b>Nama:</b> {detailUser.nama_lengkap}
+              </p>
+              <p>
+                <b>Username:</b> {detailUser.username}
+              </p>
+              <p>
+                <b>No Tel:</b> {detailUser.no_tel}
+              </p>
+              <p>
+                <b>Email:</b> {detailUser.email}
+              </p>
+              <Badge bg="secondary">ID #{detailUser.id}</Badge>
+            </Modal.Body>
+          </>
+        )}
+      </Modal>
+
+      <ToastContainer position="top-right" autoClose={3000} />
     </div>
   );
 };
 
-export default ManageUser;
+export default ManageUserDashboard;

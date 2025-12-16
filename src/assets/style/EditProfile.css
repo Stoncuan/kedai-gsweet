@@ -1,276 +1,246 @@
-/* LAYOUT UTAMA */
-.editpage-container {
-  display: flex;
-  min-height: 100vh;
-  background: white;
-  overflow-x: hidden;
-}
-
-/* SIDEBAR */
-.sidebar {
-  width: 220px;
-  background: #FFD4D4; 
-  display: flex;
-  flex-direction: column;
-  padding: 0;
-  position: relative;
-  flex-shrink: 0;
-}
-
-/* LOGO + ADMIN */
-.sidebar-logo-header {
-  background-color: #FFD4D4;
-  padding: 15px 20px;
-  text-align: center;
-}
-
-.logo-admin-wrapper {
+.profile-item {
+  background: #ffd6dc;
+  border-radius: 20px;
+  padding: 10px 16px;
+  margin-bottom: 10px;
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 12px;
-  margin-bottom: 8px;
-}
-
-.logo-img {
-  width: 50px;
-  height: auto;
-}
-
-.admin-text {
-  font-weight: bold;
-  font-size: 1.2rem;
-  color: #b3475c;
-}
-
-.logo-tagline {
-  font-size: 0.8rem;
-  color: #6c757d;
-  line-height: 1.2;
-}
-
-/* MENU NAVIGASI */
-.sidebar-menu {
-  padding-top: 10px;
-  display: flex;
-  flex-direction: column;
-  flex-grow: 1;
-  width: 100%;
-   background-color: #FFD4D4;
-}
-
-.menu-item {
-  display: flex;
-  align-items: center;
-  padding: 10px 20px;
-  color: #b3475c;
   font-weight: 500;
-  text-decoration: none;
-  transition: background 0.2s;
+  color: #ae0032;
 }
 
-.menu-dashboard {
-  box-shadow: 0 1px 0 rgba(0,0,0,0.05);
-  color: #b3475c;
-}
-
-.menu-item.active {
-  background: white;
-  color: #ffc0cb;
-  font-weight: bold;
-  border-top-right-radius: 10px;
-  border-bottom-right-radius: 10px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.menu-icon {
-  font-size: 1.1em;
-  margin-right: 12px;
-}
-
-/* LOGOUT DAN KEDAI GSWEET DI BAWAH */
-.sidebar-bottom {
-  padding: 20px;
-  margin-top: auto;
-}
-
-.kedai-text {
-  font-size: 0.8rem;
-  color: #b3475c;
-  margin-bottom: 10px;
-}
-
-.logout-btn {
-  color: #b3475c;
-  font-weight: bold;
-  text-decoration: none;
-  font-size: 0.95rem;
+.profile-item span {
   display: flex;
   align-items: center;
-  width: fit-content;
+  gap: 8px;
 }
 
-.logout-icon {
-  margin-left: 5px;
+.page-wrapper {
+  display: flex;
+  min-height: 100vh;
+  font-family: "Poppins", sans-serif;
+  background-color: #fff0f2;
+  color: #ae0032;
 }
 
-.logout-btn:hover {
-  color: #ffc0cb;
-  text-decoration: none;
-}
-
-/* MAIN CONTENT */
-.main-content {
-  flex: 1;
+/* Sidebar */
+.sidebar {
+  width: 220px;
+  background-color: #f7c9cd;
+  padding: 20px 15px;
   display: flex;
   flex-direction: column;
-  background: white;
-  position: relative;
+  border-right: 2px solid #ecb0c8;
+  user-select: none;
 }
 
-/* TOPBAR */
-.topbar {
-  width: 100%;
-  height: 60px;
-  background: white;
+.sidebar-logo-section {
   display: flex;
   align-items: center;
-  justify-content: flex-end;
-  padding: 0 25px;
-  border-bottom: 1px solid #e2b9c0;
+  gap: 0.7rem;
+  margin-bottom: 2rem;
 }
 
-/* USER BUTTON + ICON */
-.topbar-user {
-  display: flex;
-  align-items: center;
-  gap: 10px;
+.sidebar-logo {
+  width: 38px;
+  height: 38px;
 }
 
-.user-btn-label {
-  color: #6b2f38;
+.sidebar-admin {
   font-weight: 600;
-  font-size: 0.95rem;
+  font-size: 1rem;
+}
+
+.sidebar-links {
+  flex-grow: 1;
+}
+
+.link-item {
+  font-weight: 600;
+  color: #ae0032;
+  padding: 8px 12px;
+  border-radius: 24px;
+  margin-bottom: 0.3rem;
+  font-size: 0.9rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.3s;
+}
+
+.link-item:hover,
+.active-link {
+  background-color: #fbe3e6;
+  border: 1.5px solid #ae0032;
+  color: #ae0032;
+}
+
+.logout-link {
+  margin-top: 1rem;
+  color: #ae0032;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+}
+
+/* Main Content */
+.main-content {
+  flex-grow: 1;
+  display: flex;
+  flex-direction: column;
+  background-color: #fff;
+}
+
+/* Navbar */
+.top-navbar {
+  background-color: #fff0f2 !important;
+  border-bottom: 1px solid #ecb0c8;
+  padding: 12px 30px;
+  font-weight: 600;
+  font-size: 1.15rem;
+  user-select: none;
+}
+
+.header-title {
+  font-weight: 700;
+  font-size: 1.25rem;
+}
+
+.user-label {
+  font-weight: 600;
+  color: #ae0032;
 }
 
 .user-icon {
-  width: 32px;
-  height: 32px;
-  background: #ffd4d4;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  color: #ffc0cb;
-  font-size: 1.5rem;
+  color: #ae0032;
 }
 
-/* AREA EDIT PROFILE */
-.editprofile-main {
-  flex: 1;
-  padding: 40px 20px;
-  padding-bottom: 100px;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
+/* Content */
+.content-area {
+  padding: 20px 30px;
+  user-select: none;
 }
 
-.editprofile-main h2 {
-  text-align: center;
-  color: #b3475c;
-  margin-bottom: 30px;
-  font-size: 24px;
-  font-weight: 600;
+.page-title {
+  font-weight: 700;
+  color: #ae0032;
 }
 
-/* FOTO PROFIL */
-.profile-avatar {
-  text-align: center;
-  margin-bottom: 50px;
-}
-
-.large-avatar-icon {
-  font-size: 100px;
-  color: #bdbdbd;
-  background: #e9ecef;
-  border-radius: 50%;
-  padding: 10px;
-}
-
-/* FORM */
-.editprofile-form {
-  width: 100%;
-  max-width: 350px;
-  margin: 0 auto;
-}
-
-/* INPUT GROUP */
-.input-group {
-  display: flex;
-  align-items: center;
-  padding: 10px 15px;
-  border-radius: 30px;
-  margin-bottom: 20px;
-  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.1);
-}
-
-.input-group .icon {
-  font-size: 1.1rem;
-  margin-right: 10px;
-  color: #ffc0cb;
-}
-
-.input-group input {
-  flex: 1;
+.btn-tambah-menu {
+  background: none;
   border: none;
-  outline: none;
-  background: transparent;
-  font-size: 1rem;
-  color: #6b2f38;
-}
-
-/* PINK INPUT */
-.pink-input {
-  background: #ffd4d4;
-}
-
-/* BLUE INPUT (tapi warnanya sama) */
-.blue-input {
-  background: #ffd4d4;
-}
-
-/* BUTTON KONFIRMASI */
-.btn-confirm {
-  width: fit-content;
-  min-width: 150px;
-  background: #f7a3af;
-  padding: 10px 40px;
-  border: none;
-  border-radius: 25px;
-  font-weight: bold;
-  color: white;
+  font-weight: 700;
+  color: #ae0032;
   cursor: pointer;
-  margin-top: 30px;
-  transition: background 0.2s;
-  display: block;
-  margin-left: auto;
-  margin-right: auto;
-}
-
-.btn-confirm:hover {
-  background: #e98c99;
-}
-
-/* FOOTER */
-.main-footer {
-  width: 100%;
-  height: 50px;
-  background: white;
-  text-align: center;
   font-size: 0.9rem;
-  font-weight: bold;
-  color: #b3475c;
-  padding: 15px 0;
-  border-top: 1px solid #e2b9c0;
-  flex-shrink: 0;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.btn-tambah-menu:hover {
+  text-decoration: underline;
+}
+
+/* ===============================
+   ACTION ICONS
+================================ */
+.menu-action-wrapper {
+  display: flex;
+  align-items: center;
+  gap: 16px; /* 🔥 jarak antar icon */
+}
+
+.menu-action-icon {
+  font-size: 22px; /* 🔥 ukuran icon lebih besar */
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+/* DETAIL */
+.menu-action-icon.detail {
+  color: #0d6efd;
+}
+
+/* DELETE */
+.menu-action-delete {
+  color: #dc3545;
+}
+
+/* EDIT */
+.menu-action-edit {
+  color: #ffc107;
+}
+
+/* HOVER EFFECT */
+.menu-action-icon:hover {
+  transform: scale(1.25);
+  opacity: 0.85;
+}
+
+
+/* Footer */
+.footer {
+  background-color: #f7d5db;
+  padding: 10px 0;
+  color: #ae0032;
+  text-align: center;
+  font-weight: 700;
+  font-size: 0.85rem;
+  border-top: 1px solid #ecb0c8;
+  user-select: none;
+}
+
+/* Responsive */
+@media (max-width: 992px) {
+  .page-wrapper {
+    flex-direction: column;
+  }
+  .sidebar {
+    width: 100%;
+    flex-direction: row;
+    padding: 0.5rem 1rem;
+    border-right: none;
+    border-bottom: 2px solid #ecb0c8;
+    overflow-x: auto;
+  }
+  .sidebar-logo-section {
+    display: none;
+  }
+  .sidebar-links {
+    flex-direction: row;
+    gap: 1rem;
+  }
+  .link-item {
+    white-space: nowrap;
+    margin-bottom: 0;
+    border-radius: 16px;
+  }
+  .logout-link {
+    margin-left: auto;
+    font-size: 0.85rem;
+  }
+  .main-content {
+    padding: 1rem 1rem 0;
+  }
+  .content-area {
+    padding: 1rem 0.5rem;
+  }
+}
+
+@media (max-width: 576px) {
+  .content-area {
+    padding: 1rem 0.5rem 20px;
+  }
+  .btn-tambah-menu {
+    font-size: 0.85rem;
+  }
 }

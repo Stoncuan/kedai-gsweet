@@ -25,8 +25,8 @@
 }
 
 .sidebar-logo {
-  width: 38px;
-  height: 38px;
+  width: 50px;
+  height: 50px;
 }
 
 .sidebar-admin {
@@ -132,22 +132,42 @@
   text-decoration: underline;
 }
 
-/* Actions Icons */
-.action-icons {
+/* ===============================
+   ACTION ICONS
+================================ */
+.menu-action-wrapper {
   display: flex;
-  gap: 14px;
-  font-size: 1.3rem;
-  color: #ae0032;
+  align-items: center;
+  gap: 16px; /* 🔥 jarak antar icon */
 }
 
-.icon {
+.menu-action-icon {
+  font-size: 22px; /* 🔥 ukuran icon lebih besar */
   cursor: pointer;
-  transition: color 0.3s ease;
+  transition: all 0.2s ease;
 }
 
-.icon:hover {
-  color: #d6336c;
+/* DETAIL */
+.menu-action-icon.detail {
+  color: #0d6efd;
 }
+
+/* DELETE */
+.menu-action-delete {
+  color: #dc3545;
+}
+
+/* EDIT */
+.menu-action-edit {
+  color: #ffc107;
+}
+
+/* HOVER EFFECT */
+.menu-action-icon:hover {
+  transform: scale(1.25);
+  opacity: 0.85;
+}
+
 
 /* Footer */
 .footer {

@@ -1,9 +1,5 @@
 import db from "../config/db.js";
 
-// =====================
-// CRUD LAMA (tetAP)
-// =====================
-
 // Mendapatkan semua user
 export const getUser = (callback) => {
   db.query(
@@ -36,16 +32,25 @@ export const deleteUser = (id, callback) => {
   db.query("DELETE FROM tb_user WHERE id = ?", [id], callback);
 };
 
+// update password saja
+export const updateUserPassword = (password, id, callback) => {
+  db.query(
+    "UPDATE tb_user SET password = ? WHERE id = ?",
+    [password, id],
+    callback
+  );
+};
+
 // =====================
 // FUNGSI UNTUK LOGIN
 // =====================
 
-// Cari user berdasarkan email (ASYNC)
-export const findUserByEmail = (email) => {
+// cari user by username
+export const findUserByUsername = (username) => {
   return new Promise((resolve, reject) => {
     db.query(
-      "SELECT * FROM tb_user WHERE email = ?",
-      [email],
+      "SELECT * FROM tb_user WHERE username = ?",
+      [username],
       (err, results) => {
         if (err) return reject(err);
         resolve(results[0]);
@@ -54,16 +59,13 @@ export const findUserByEmail = (email) => {
   });
 };
 
+
 // (OPSIONAL) Tambah user async
 export const createUser = (data) => {
   return new Promise((resolve, reject) => {
-    db.query(
-      "INSERT INTO tb_user SET ?",
-      data,
-      (err, result) => {
-        if (err) return reject(err);
-        resolve(result.insertId);
-      }
-    );
+    db.query("INSERT INTO tb_user SET ?", data, (err, result) => {
+      if (err) return reject(err);
+      resolve(result.insertId);
+    });
   });
 };
