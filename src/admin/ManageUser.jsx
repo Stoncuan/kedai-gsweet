@@ -12,14 +12,12 @@ import {
   Badge,
 } from "react-bootstrap";
 import {
-  BiUserCircle,
-  BiLogOut,
   BiPlus,
   BiFile,
   BiTrash,
   BiPencil,
 } from "react-icons/bi";
-import { BoxArrowRight } from "react-bootstrap-icons";
+import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "../assets/style/ManageUser.css";
@@ -29,18 +27,22 @@ const ManageUserDashboard = () => {
   const [filterText, setFilterText] = useState("");
   const [showDetail, setShowDetail] = useState(false);
   const [detailUser, setDetailUser] = useState(null);
+  const [username, setUsername] = useState("");
 
   const navigate = useNavigate();
-  const token = localStorage.getItem("token");
+
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+  }, [navigate]);
 
   useEffect(() => {
     fetchUser();

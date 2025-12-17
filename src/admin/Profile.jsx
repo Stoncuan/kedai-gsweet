@@ -10,15 +10,15 @@ import {
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
 import axios from "axios";
-import "../assets/style/ManageMenuDashboard.css";
+import "../assets/style/Profile.css";
 
 const UserProfile = () => {
   const navigate = useNavigate();
   const [user, setUser] = useState(null);
 
   useEffect(() => {
+    // cek apa user punya token atau tidak
     const token = localStorage.getItem("token");
-
     if (!token) {
       navigate("/login");
       return;

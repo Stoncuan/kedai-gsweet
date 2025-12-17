@@ -6,13 +6,14 @@ import axios from "axios";
 import { jwtDecode } from "jwt-decode";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../assets/style/ManageMenuDashboard.css";
+import "../assets/style/EditProfile.css";
 
 const EditUserProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const token = localStorage.getItem("token");
 
+  // cek apa user punya token atau tidak
+  const token = localStorage.getItem("token");
   if (!token) {
     navigate("/login");
     return;

@@ -20,8 +20,10 @@ import "../assets/style/EditUser.css";
 const EditUser = () => {
   const navigate = useNavigate();
   const { id } = useParams();
-  const token = localStorage.getItem("token");
+  const [username, setUsername] = useState("");
 
+  // cek apa user punya token atau tidak
+  const token = localStorage.getItem("token");
   if (!token) {
     navigate("/login");
     return;

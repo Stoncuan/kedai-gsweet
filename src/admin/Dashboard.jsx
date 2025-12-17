@@ -3,7 +3,7 @@ import { Container, Navbar, Nav, Image } from "react-bootstrap";
 import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { jwtDecode } from "jwt-decode";
-import "../assets/style/ManageMenuDashboard.css";
+import "../assets/style/Dasboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();

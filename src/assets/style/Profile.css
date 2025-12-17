@@ -138,11 +138,11 @@
 .menu-action-wrapper {
   display: flex;
   align-items: center;
-  gap: 16px; /* 🔥 jarak antar icon */
+  gap: 16px; /*jarak antar icon */
 }
 
 .menu-action-icon {
-  font-size: 22px; /* 🔥 ukuran icon lebih besar */
+  font-size: 22px; /* ukuran icon lebih besar */
   cursor: pointer;
   transition: all 0.2s ease;
 }
@@ -167,7 +167,6 @@
   transform: scale(1.25);
   opacity: 0.85;
 }
-
 
 /* Footer */
 .footer {
@@ -226,5 +225,3 @@
     font-size: 0.85rem;
   }
 }
-
-

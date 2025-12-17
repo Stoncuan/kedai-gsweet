@@ -18,7 +18,10 @@ import "../assets/style/AddMenu.css";
 
 const AddMenu = () => {
   const navigate = useNavigate();
+  const [username, setUsername] = useState("");
 
+  // cek apa user punya token atau tidak
+  const token = localStorage.getItem("token");
   if (!token) {
     navigate("/login");
     return;

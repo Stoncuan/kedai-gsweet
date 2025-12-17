@@ -23,28 +23,30 @@ import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../assets/style/ManageMenuDashboard.css";
-import { BoxArrowRight } from "react-bootstrap-icons";
+import { BoxArrowRight, PersonCircle} from "react-bootstrap-icons";
 
 const ManageMenuDashboard = () => {
   const [menuData, setMenuData] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [loading, setLoading] = useState(true);
+  const [username, setUsername] = useState("");
 
   const handleLogout = () => {
     localStorage.removeItem("token");
     navigate("/login");
   };
 
-  const [showDetail, setShowDetail] = useState(false);
-  const [detailMenu, setDetailMenu] = useState(null);
-
-  const navigate = useNavigate();
+  // cek apa user punya token atau tidak
   const token = localStorage.getItem("token");
-
   if (!token) {
     navigate("/login");
     return;
   }
+
+  const [showDetail, setShowDetail] = useState(false);
+  const [detailMenu, setDetailMenu] = useState(null);
+
+  const navigate = useNavigate();
 
   useEffect(() => {
     axios

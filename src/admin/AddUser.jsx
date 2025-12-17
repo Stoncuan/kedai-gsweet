@@ -15,13 +15,15 @@ import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
-import "../assets/style/ManageMenuDashboard.css";
+import "../assets/style/AddUser.css";
 
 const AddUser = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
-  const token = localStorage.getItem("token");
+  const [username, setUsername] = useState("");
 
+  // cek apa user punya token atau tidak
+  const token = localStorage.getItem("token");
   if (!token) {
     navigate("/login");
     return;
