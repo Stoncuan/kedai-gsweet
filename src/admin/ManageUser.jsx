@@ -11,12 +11,7 @@ import {
   Modal,
   Badge,
 } from "react-bootstrap";
-import {
-  BiPlus,
-  BiFile,
-  BiTrash,
-  BiPencil,
-} from "react-icons/bi";
+import { BiPlus, BiFile, BiTrash, BiPencil } from "react-icons/bi";
 import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
