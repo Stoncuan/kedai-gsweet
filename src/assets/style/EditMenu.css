@@ -1,18 +1,20 @@
-/* ===== PAGE LAYOUT ===== */
+/* ===== BASE LAYOUT ===== */
 .page-wrapper {
   display: flex;
   min-height: 100vh;
   background-color: #f5f6fa;
 }
 
-/* ===== SIDEBAR ===== */
+/* Sidebar desktop */
 .sidebar {
   width: 240px;
   background-color: #fff0f2;
-  color: #fff;
+  color: #ae0032;
   padding: 20px;
   position: fixed;
   height: 100vh;
+  user-select: none;
+  border-right: 2px solid #ecb0c8;
 }
 
 .sidebar-logo-section {
@@ -30,11 +32,48 @@
 
 .sidebar-admin {
   margin-top: 10px;
-  font-weight: bold;
+  font-weight: 700;
   letter-spacing: 1px;
+  font-size: 1rem;
 }
 
-/* ===== MAIN CONTENT ===== */
+/* Sidebar links */
+.sidebar-links .link-item {
+  font-weight: 600;
+  color: #ae0032;
+  padding: 8px 12px;
+  border-radius: 24px;
+  margin-bottom: 0.3rem;
+  font-size: 0.95rem;
+  text-decoration: none;
+  display: inline-block;
+  transition: background-color 0.25s;
+  cursor: pointer;
+}
+
+.sidebar-links .link-item.active-link,
+.sidebar-links .link-item:hover {
+  background-color: #fbe3e6;
+  border: 1.5px solid #ae0032;
+  color: #ae0032;
+}
+
+.logout-link {
+  margin-top: auto;
+  color: #ae0032;
+  font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
+}
+
+/* Main content */
 .main-content {
   margin-left: 240px;
   width: calc(100% - 240px);
@@ -42,20 +81,38 @@
   flex-direction: column;
 }
 
-/* ===== TOP NAVBAR ===== */
+/* Navbar */
 .top-navbar {
   background-color: #fff0f2;
-  border-bottom: 1px solid #ddd;
+  border-bottom: 1px solid #ecb0c8;
   height: 60px;
+  display: flex !important;
+  align-items: center;
+  padding: 0 30px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  user-select: none;
+}
+
+.top-navbar .container-fluid {
+  display: flex;
+  align-items: center;
 }
 
 .header-title {
-  font-size: 18px;
-  font-weight: 600;
-  color: #333;
+  flex-grow: 1;
+  color: #ae0032;
+  font-weight: 700;
 }
 
-/* ===== FORM ===== */
+.hamburger-icon {
+  margin-right: 1.25rem;
+  cursor: pointer;
+  color: #ae0032;
+  flex-shrink: 0;
+}
+
+/* Form */
 .form-add-menu {
   background-color: #fff;
   padding: 25px;
@@ -63,12 +120,7 @@
   max-width: 800px;
   border-radius: 10px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.08);
-}
-
-/* INPUT */
-.form-add-menu .form-control {
-  border-radius: 8px;
-  padding: 10px 12px;
+  margin-bottom: 30px;
 }
 
 .form-add-menu label {
@@ -76,31 +128,84 @@
   margin-bottom: 6px;
 }
 
-/* ===== PREVIEW IMAGE ===== */
-.preview-image-wrapper {
-  margin-bottom: 15px;
-}
-
-.preview-image-wrapper img {
-  width: 160px;
-  height: 160px;
-  object-fit: cover;
-  border-radius: 10px;
-  border: 2px solid #eee;
-}
-
-/* ===== BUTTON ===== */
-.form-add-menu button {
-  padding: 10px 22px;
-  border-radius: 8px;
-  font-weight: 600;
-}
-
-/* ===== FOOTER ===== */
+/* Footer */
 .footer {
   margin-top: auto;
   background-color: #fff0f2;
-  border-top: 1px solid #ddd;
+  border-top: 1px solid #ecb0c8;
   font-size: 13px;
   color: #ae0032;
+  text-align: center;
+  user-select: none;
+  padding: 10px 0;
+}
+
+/* Offcanvas sidebar mobile */
+.sidebar-offcanvas {
+  background-color: #fff0f2;
+  color: #ae0032;
+}
+
+.sidebar-offcanvas .sidebar-logo-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 20px;
+}
+
+.sidebar-offcanvas .sidebar-logo {
+  width: 90px;
+  height: 90px;
+  object-fit: cover;
+}
+
+.sidebar-offcanvas .sidebar-admin {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Sidebar links inside Offcanvas */
+.sidebar-offcanvas .sidebar-links .link-item {
+  display: block;
+  margin-bottom: 10px;
+  font-weight: 600;
+  color: #ae0032;
+  cursor: pointer;
+}
+
+.sidebar-offcanvas .logout-link {
+  margin-top: 20px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  cursor: pointer;
+}
+
+.sidebar-offcanvas .logout-link:hover {
+  text-decoration: underline;
+}
+
+/* RESPONSIVE */
+@media (max-width: 991px) {
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 10px 15px;
+  }
+
+  .top-navbar {
+    padding: 0 15px !important;
+    font-size: 1.1rem !important;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-add-menu {
+    padding: 15px;
+  }
 }

@@ -6,7 +6,7 @@
   color: #ae0032;
 }
 
-/* Sidebar */
+/* Sidebar Desktop */
 .sidebar {
   width: 220px;
   background-color: #f7c9cd;
@@ -72,12 +72,19 @@
   text-decoration: underline;
 }
 
+/* Offcanvas for mobile */
+.sidebar-offcanvas {
+  background-color: #f7c9cd;
+  color: #ae0032;
+}
+
 /* Main Content */
 .main-content {
   flex-grow: 1;
   display: flex;
   flex-direction: column;
   background-color: #fff;
+  min-width: 0;
 }
 
 /* Navbar */
@@ -90,84 +97,27 @@
   user-select: none;
 }
 
+.top-navbar .container-fluid {
+  display: flex;
+  align-items: center;
+}
+
 .header-title {
+  flex-grow: 1;
   font-weight: 700;
   font-size: 1.25rem;
-}
-
-.user-label {
-  font-weight: 600;
   color: #ae0032;
 }
 
-.user-icon {
-  color: #ae0032;
+.hamburger-icon {
+  margin-right: 1rem;
+  flex-shrink: 0;
 }
 
-/* Content */
-.content-area {
-  padding: 20px 30px;
-  user-select: none;
+/* Center content adjustments */
+.text-center h1 {
+  word-break: break-word;
 }
-
-.page-title {
-  font-weight: 700;
-  color: #ae0032;
-}
-
-.btn-tambah-menu {
-  background: none;
-  border: none;
-  font-weight: 700;
-  color: #ae0032;
-  cursor: pointer;
-  font-size: 0.9rem;
-  padding: 0;
-  display: flex;
-  align-items: center;
-  gap: 6px;
-}
-
-.btn-tambah-menu:hover {
-  text-decoration: underline;
-}
-
-/* ===============================
-   ACTION ICONS
-================================ */
-.menu-action-wrapper {
-  display: flex;
-  align-items: center;
-  gap: 16px; /* 🔥 jarak antar icon */
-}
-
-.menu-action-icon {
-  font-size: 22px; /* 🔥 ukuran icon lebih besar */
-  cursor: pointer;
-  transition: all 0.2s ease;
-}
-
-/* DETAIL */
-.menu-action-icon.detail {
-  color: #0d6efd;
-}
-
-/* DELETE */
-.menu-action-delete {
-  color: #dc3545;
-}
-
-/* EDIT */
-.menu-action-edit {
-  color: #ffc107;
-}
-
-/* HOVER EFFECT */
-.menu-action-icon:hover {
-  transform: scale(1.25);
-  opacity: 0.85;
-}
-
 
 /* Footer */
 .footer {
@@ -183,47 +133,18 @@
 
 /* Responsive */
 @media (max-width: 992px) {
-  .page-wrapper {
-    flex-direction: column;
-  }
   .sidebar {
-    width: 100%;
-    flex-direction: row;
-    padding: 0.5rem 1rem;
-    border-right: none;
-    border-bottom: 2px solid #ecb0c8;
-    overflow-x: auto;
-  }
-  .sidebar-logo-section {
-    display: none;
-  }
-  .sidebar-links {
-    flex-direction: row;
-    gap: 1rem;
-  }
-  .link-item {
-    white-space: nowrap;
-    margin-bottom: 0;
-    border-radius: 16px;
-  }
-  .logout-link {
-    margin-left: auto;
-    font-size: 0.85rem;
+    display: none !important;
   }
   .main-content {
-    padding: 1rem 1rem 0;
-  }
-  .content-area {
-    padding: 1rem 0.5rem;
-  }
-}
-
-@media (max-width: 576px) {
-  .content-area {
-    padding: 1rem 0.5rem 20px;
-  }
-  .btn-tambah-menu {
-    font-size: 0.85rem;
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 1rem;
   }
 }
 
+@media (min-width: 992px) {
+  .main-content {
+    margin-left: 220px; /* Sidebar width */
+  }
+}

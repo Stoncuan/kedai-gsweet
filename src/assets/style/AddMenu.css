@@ -1,14 +1,17 @@
 /* RESET */
 * {
   box-sizing: border-box;
+  margin: 0;
+  padding: 0;
 }
 
 /* WRAPPER */
 .page-wrapper {
   display: flex;
   min-height: 100vh;
-  margin: 0;
-  padding: 0;
+  font-family: "Poppins", sans-serif;
+  background-color: #fff0f2;
+  color: #ae0032;
 }
 
 /* SIDEBAR */
@@ -19,6 +22,8 @@
   padding: 20px;
   display: flex;
   flex-direction: column;
+  border-right: 2px solid #ecb0c8;
+  user-select: none;
 }
 
 .sidebar-logo-section {
@@ -36,43 +41,69 @@
 .sidebar-admin {
   font-weight: 700;
   color: #ae0032;
+  font-size: 1rem;
+}
+
+.sidebar-links {
+  flex-grow: 1;
 }
 
 .sidebar-links .link-item {
   color: #ae0032;
   margin-bottom: 10px;
   font-weight: 500;
+  font-size: 1rem;
+  text-decoration: none;
+  cursor: pointer;
+  display: inline-block;
 }
 
-.active-link {
+.sidebar-links .link-item.active-link {
   font-weight: 700;
+  text-decoration: underline;
 }
 
 .logout-link {
   margin-top: auto;
   color: #ae0032;
   font-weight: 600;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  font-size: 0.9rem;
+}
+
+.logout-link:hover {
+  text-decoration: underline;
 }
 
 /* MAIN CONTENT */
 .main-content {
-  flex: 1;
-  margin: 0;
-  padding: 0;
+  flex-grow: 1;
+  background: #fff;
   display: flex;
   flex-direction: column;
+  min-width: 0;
+  padding: 0;
+  margin: 0;
 }
 
-/* TOP NAVBAR */
+/* NAVBAR */
 .top-navbar {
   background: #fff0f2;
-  border-bottom: 1px solid #f5b6c2;
+  border-bottom: 1px solid #ecb0c8;
+  padding: 12px 30px;
+  font-weight: 700;
+  font-size: 1.25rem;
+  user-select: none;
+  display: flex;
+  align-items: center;
 }
 
 .header-title {
-  font-size: 18px;
-  font-weight: 700;
   color: #ae0032;
+  flex-grow: 1;
 }
 
 /* FORM */
@@ -83,6 +114,7 @@
   padding: 25px;
   border-radius: 12px;
   box-shadow: 0 4px 10px rgba(0, 0, 0, 0.08);
+  user-select: none;
 }
 
 .form-add-menu label {
@@ -92,8 +124,146 @@
 
 /* FOOTER */
 .footer {
-  margin-top: auto;
   background: #fff0f2;
   color: #ae0032;
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 10px 0;
+  border-top: 1px solid #ecb0c8;
+  user-select: none;
+  text-align: center;
+  margin-top: auto;
+}
+
+/* RESPONSIVE */
+@media (max-width: 992px) {
+  .page-wrapper {
+    flex-direction: column;
+  }
+
+  .sidebar {
+    width: 100%;
+    min-width: auto;
+    border-right: none;
+    border-bottom: 2px solid #ecb0c8;
+    padding: 10px 15px;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    gap: 20px;
+  }
+
+  .sidebar-logo-section {
+    display: none;
+  }
+
+  .sidebar-links {
+    display: flex;
+    flex-direction: row;
+    gap: 20px;
+  }
+
+  .sidebar-links .link-item {
+    margin-bottom: 0;
+    font-size: 0.9rem;
+  }
+
+  .logout-link {
+    margin-top: 0;
+    font-size: 0.9rem;
+  }
+
+  .main-content {
+    margin: 0;
+  }
+
+  .top-navbar {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+  }
+
+  .form-add-menu {
+    width: 100%;
+    max-width: 100%;
+    padding: 15px;
+  }
+}
+
+@media (max-width: 576px) {
+  .form-add-menu {
+    padding: 10px;
+  }
+}
+
+/* Untuk tombol hamburger pada navbar mobile */
+.hamburger-icon {
+  margin-right: 1rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: #ae0032;
+}
+
+/* Sembunyikan sidebar desktop dan atur main content fullscreen di mobile */
+@media (max-width: 991px) {
+  .sidebar {
+    display: none !important;
+  }
+
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 1rem;
+  }
+
+  .top-navbar {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Offcanvas sidebar custom styling */
+.sidebar-offcanvas {
+  background-color: #fff0f2;
+  color: #ae0032;
+}
+
+/* Offcanvas header logo */
+.sidebar-offcanvas .sidebar-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.sidebar-offcanvas .sidebar-logo {
+  width: 80px;
+  height: 80px;
+}
+
+.sidebar-offcanvas .sidebar-admin {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+/* Atur warna dan link sidebar di offcanvas */
+.sidebar-offcanvas .sidebar-links .link-item {
+  color: #ae0032;
   font-weight: 600;
+  margin-bottom: 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar-offcanvas .logout-link {
+  color: #ae0032;
+  font-weight: 600;
+  margin-top: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar-offcanvas .logout-link:hover {
+  text-decoration: underline;
 }

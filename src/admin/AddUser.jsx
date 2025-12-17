@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Container,
@@ -10,8 +10,9 @@ import {
   Row,
   Col,
   Card,
+  Offcanvas,
 } from "react-bootstrap";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -21,16 +22,34 @@ const AddUser = () => {
   const navigate = useNavigate();
   const [loading, setLoading] = useState(false);
   const [username, setUsername] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // cek apa user punya token atau tidak
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+  // Handle resize to update isMobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Check token and set username
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+      setUsername("nona"); // Bisa diubah sesuai decode token
+    }
+  }, [navigate]);
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setSidebarOpen(false); // tutup sidebar saat logout di mobile
     navigate("/login");
   };
 
@@ -42,9 +61,6 @@ const AddUser = () => {
     password: "",
   });
 
-  // ===============================
-  // SUBMIT TAMBAH USER
-  // ===============================
   const handleSubmit = async (e) => {
     e.preventDefault();
 
@@ -76,45 +92,77 @@ const AddUser = () => {
 
   return (
     <div className="page-wrapper">
-      {/* ================= SIDEBAR ================= */}
-      <aside className="sidebar">
-        <div className="sidebar-logo-section">
-          <Image
-            width={90}
-            src="/logoooo.png"
-            roundedCircle
-            className="sidebar-logo"
-          />
+      {/* Sidebar Desktop */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div className="sidebar-logo-section">
+            <Image width={90} src="/logoooo.png" roundedCircle className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
 
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link className="link-item" href="/dashboard">
+              Dashboard
+            </Nav.Link>
+            <Nav.Link className="link-item active-link" href="/dashboard/manage-user">
+              Manage User
+            </Nav.Link>
+            <Nav.Link className="link-item" href="/dashboard/manage-datalist">
+              Manage Menu
+            </Nav.Link>
+          </Nav>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link className="link-item" href="/dashboard">
-            Dashboard
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
           </Nav.Link>
-          <Nav.Link
-            className="link-item active-link"
-            href="/dashboard/manage-user"
-          >
-            Manage User
-          </Nav.Link>
-          <Nav.Link className="link-item" href="/dashboard/manage-datalist">
-            Manage Menu
-          </Nav.Link>
-        </Nav>
+        </aside>
+      )}
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
+      {/* Mobile sidebar using Offcanvas */}
+      {isMobile && (
+        <Offcanvas show={sidebarOpen} onHide={() => setSidebarOpen(false)} className="sidebar-offcanvas">
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image width={80} src="/logoooo.png" roundedCircle />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link href="/dashboard" className="link-item" onClick={() => setSidebarOpen(false)}>
+                Dashboard
+              </Nav.Link>
+              <Nav.Link href="/dashboard/manage-user" className="link-item active-link" onClick={() => setSidebarOpen(false)}>
+                Manage User
+              </Nav.Link>
+              <Nav.Link href="/dashboard/manage-datalist" className="link-item" onClick={() => setSidebarOpen(false)}>
+                Manage Menu
+              </Nav.Link>
+            </Nav>
+            <Nav.Link className="logout-link" onClick={handleLogout}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
 
-      {/* ================= MAIN CONTENT ================= */}
+      {/* Main Content */}
       <div className="main-content">
         <Navbar className="top-navbar p-3">
           <Container fluid>
+            {isMobile && (
+              <List
+                size={28}
+                className="hamburger-icon"
+                onClick={() => setSidebarOpen(true)}
+                role="button"
+                aria-label="Toggle menu"
+              />
+            )}
             <Navbar.Text className="header-title">Tambah User</Navbar.Text>
-            {/* USER PROFILE */}
+
             <Nav
               className="ms-auto align-items-center gap-2"
               style={{ cursor: "pointer" }}
@@ -139,10 +187,7 @@ const AddUser = () => {
                       <Form.Control
                         value={form.nama_lengkap}
                         onChange={(e) =>
-                          setForm({
-                            ...form,
-                            nama_lengkap: e.target.value,
-                          })
+                          setForm({ ...form, nama_lengkap: e.target.value })
                         }
                       />
                     </Form.Group>
@@ -152,10 +197,7 @@ const AddUser = () => {
                       <Form.Control
                         value={form.username}
                         onChange={(e) =>
-                          setForm({
-                            ...form,
-                            username: e.target.value,
-                          })
+                          setForm({ ...form, username: e.target.value })
                         }
                       />
                     </Form.Group>
@@ -165,10 +207,7 @@ const AddUser = () => {
                       <Form.Control
                         value={form.no_tel}
                         onChange={(e) =>
-                          setForm({
-                            ...form,
-                            no_tel: e.target.value,
-                          })
+                          setForm({ ...form, no_tel: e.target.value })
                         }
                       />
                     </Form.Group>
@@ -179,10 +218,7 @@ const AddUser = () => {
                         type="email"
                         value={form.email}
                         onChange={(e) =>
-                          setForm({
-                            ...form,
-                            email: e.target.value,
-                          })
+                          setForm({ ...form, email: e.target.value })
                         }
                       />
                     </Form.Group>
@@ -194,10 +230,7 @@ const AddUser = () => {
                         placeholder="Masukkan password"
                         value={form.password}
                         onChange={(e) =>
-                          setForm({
-                            ...form,
-                            password: e.target.value,
-                          })
+                          setForm({ ...form, password: e.target.value })
                         }
                       />
                     </Form.Group>

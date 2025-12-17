@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import axios from "axios";
 import {
   Container,
@@ -9,8 +9,9 @@ import {
   Form,
   Row,
   Col,
+  Offcanvas,
 } from "react-bootstrap";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -19,13 +20,28 @@ import "../assets/style/AddMenu.css";
 const AddMenu = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
-  // cek apa user punya token atau tidak
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+      setUsername("nona"); // ganti sesuai decode token bila perlu
+    }
+  }, [navigate]);
 
   const [namaMenu, setNamaMenu] = useState("");
   const [hargaMenu, setHargaMenu] = useState("");
@@ -35,6 +51,7 @@ const AddMenu = () => {
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setSidebarOpen(false); // tutup sidebar jika logout dari mobile
     navigate("/login");
   };
 
@@ -69,39 +86,75 @@ const AddMenu = () => {
 
   return (
     <div className="page-wrapper">
-      {/* SIDEBAR */}
-      <aside className="sidebar">
-        <div className="sidebar-logo-section">
-          <Image src="/logoooo.png" className="sidebar-logo" />
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+      {/* SIDEBAR desktop */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div className="sidebar-logo-section">
+            <Image src="/logoooo.png" className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link href="/dashboard" className="link-item">
-            Dashboard
-          </Nav.Link>
-          <Nav.Link href="/manage-user" className="link-item">
-            Manage User
-          </Nav.Link>
-          <Nav.Link
-            className="link-item active-link"
-            href="/dashboard/manage-datalist"
-          >
-            Manage Menu
-          </Nav.Link>
-        </Nav>
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link href="/dashboard" className="link-item">
+              Dashboard
+            </Nav.Link>
+            <Nav.Link href="/dashboard/manage-user" className="link-item">
+              Manage User
+            </Nav.Link>
+            <Nav.Link href="/dashboard/manage-datalist" className="link-item active-link">
+              Manage Menu
+            </Nav.Link>
+          </Nav>
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
+          </Nav.Link>
+        </aside>
+      )}
+
+      {/* Offcanvas Sidebar mobile */}
+      {isMobile && (
+        <Offcanvas show={sidebarOpen} onHide={() => setSidebarOpen(false)} className="sidebar-offcanvas">
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image src="/logoooo.png" className="sidebar-logo" />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link href="/dashboard" className="link-item" onClick={() => setSidebarOpen(false)}>
+                Dashboard
+              </Nav.Link>
+              <Nav.Link href="/manage-user" className="link-item" onClick={() => setSidebarOpen(false)}>
+                Manage User
+              </Nav.Link>
+              <Nav.Link href="/dashboard/manage-datalist" className="link-item active-link" onClick={() => setSidebarOpen(false)}>
+                Manage Menu
+              </Nav.Link>
+            </Nav>
+
+            <Nav.Link className="logout-link" onClick={handleLogout}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
 
       {/* MAIN CONTENT */}
       <div className="main-content">
-        {/* NAVBAR */}
         <Navbar className="top-navbar px-4">
+          {isMobile && (
+            <List
+              size={28}
+              className="hamburger-icon"
+              onClick={() => setSidebarOpen(true)}
+              aria-label="Toggle sidebar"
+            />
+          )}
           <Navbar.Text className="header-title">Tambah Menu</Navbar.Text>
-          {/* USER PROFILE */}
           <Nav
             className="ms-auto align-items-center gap-2"
             style={{ cursor: "pointer" }}
@@ -112,11 +165,7 @@ const AddMenu = () => {
           </Nav>
         </Navbar>
 
-        {/* FORM CENTER */}
-        <Container
-          fluid
-          className="d-flex justify-content-center align-items-start py-4"
-        >
+        <Container fluid className="d-flex justify-content-center align-items-start py-4">
           <Form className="form-add-menu" onSubmit={handleSubmit}>
             <Row className="mb-3">
               <Col md={6}>
@@ -172,7 +221,6 @@ const AddMenu = () => {
           </Form>
         </Container>
 
-        {/* FOOTER */}
         <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
 

@@ -9,8 +9,9 @@ import {
   Form,
   Row,
   Col,
+  Offcanvas,
 } from "react-bootstrap";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
@@ -20,19 +21,31 @@ const EditMenu = () => {
   const navigate = useNavigate();
   const { id } = useParams();
   const [username, setUsername] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
-  // cek apa user punya token atau tidak
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return;
-  }
+  // cek token sesi
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+    } else {
+      setUsername("nona"); // ganti dengan decode token cocok
+    }
+  }, [navigate]);
 
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
+  // resize listener untuk update isMobile
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 992;
+      setIsMobile(mobile);
+      if (!mobile) setSidebarOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
 
+  // ambil data menu lama
   const [namaMenu, setNamaMenu] = useState("");
   const [hargaMenu, setHargaMenu] = useState("");
   const [deskripsiMenu, setDeskripsiMenu] = useState("");
@@ -40,7 +53,6 @@ const EditMenu = () => {
   const [gambarLama, setGambarLama] = useState("");
   const [loading, setLoading] = useState(false);
 
-  // 🔹 Ambil data menu lama
   useEffect(() => {
     axios
       .get(`http://localhost:5000/menu/getMenu/${id}`)
@@ -51,10 +63,14 @@ const EditMenu = () => {
         setDeskripsiMenu(data.deskripsi);
         setGambarLama(data.gambar);
       })
-      .catch(() => {
-        toast.error("Gagal memuat data menu");
-      });
+      .catch(() => toast.error("Gagal memuat data menu"));
   }, [id]);
+
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setSidebarOpen(false);
+    navigate("/login");
+  };
 
   const handleSubmit = async (e) => {
     e.preventDefault();
@@ -82,36 +98,97 @@ const EditMenu = () => {
 
   return (
     <div className="page-wrapper">
-      <aside className="sidebar">
-        <div className="sidebar-logo-section">
-          <Image src="/logoooo.png" className="sidebar-logo" />
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+      {/* Sidebar desktop */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div className="sidebar-logo-section">
+            <Image src="/logoooo.png" className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link href="/dashboard" className="link-item">
-            Dashboard
-          </Nav.Link>
-          <Nav.Link href="/manage-user" className="link-item">
-            Manage User
-          </Nav.Link>
-          <Nav.Link
-            className="link-item active-link"
-            href="/dashboard/manage-datalist"
-          >
-            Manage Menu
-          </Nav.Link>
-        </Nav>
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link href="/dashboard" className="link-item">
+              Dashboard
+            </Nav.Link>
+            <Nav.Link href="/manage-user" className="link-item">
+              Manage User
+            </Nav.Link>
+            <Nav.Link
+              href="/dashboard/manage-datalist"
+              className="link-item active-link"
+            >
+              Manage Menu
+            </Nav.Link>
+          </Nav>
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
+          </Nav.Link>
+        </aside>
+      )}
 
+      {/* Sidebar Offcanvas mobile */}
+      {isMobile && (
+        <Offcanvas
+          show={sidebarOpen}
+          onHide={() => setSidebarOpen(false)}
+          className="sidebar-offcanvas"
+          backdrop="static"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image src="/logoooo.png" className="sidebar-logo" />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link
+                href="/dashboard"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Dashboard
+              </Nav.Link>
+              <Nav.Link
+                href="/manage-user"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage User
+              </Nav.Link>
+              <Nav.Link
+                href="/dashboard/manage-datalist"
+                className="link-item active-link"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage Menu
+              </Nav.Link>
+            </Nav>
+
+            <Nav.Link className="logout-link" onClick={handleLogout}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
+
+      {/* Main content */}
       <div className="main-content">
         <Navbar className="top-navbar px-4">
+          {isMobile && (
+            <List
+              size={28}
+              className="hamburger-icon"
+              onClick={() => setSidebarOpen(true)}
+              style={{ cursor: "pointer", color: "#ae0032" }}
+              aria-label="Toggle menu"
+            />
+          )}
           <Navbar.Text className="header-title">Edit Menu</Navbar.Text>
-          {/* USER PROFILE */}
+
           <Nav
             className="ms-auto align-items-center gap-2"
             style={{ cursor: "pointer" }}
@@ -153,7 +230,6 @@ const EditMenu = () => {
               />
             </Form.Group>
 
-            {/* PREVIEW GAMBAR LAMA */}
             {gambarLama && (
               <div className="mb-3">
                 <Form.Label>Gambar Saat Ini</Form.Label>
@@ -161,6 +237,7 @@ const EditMenu = () => {
                   src={`http://localhost:5000/uploads/${gambarLama}`}
                   thumbnail
                   width={150}
+                  alt="Preview gambar lama"
                 />
               </div>
             )}

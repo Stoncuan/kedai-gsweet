@@ -10,9 +10,10 @@ import {
   Form,
   Modal,
   Badge,
+  Offcanvas,
 } from "react-bootstrap";
 import { BiPlus, BiFile, BiTrash, BiPencil } from "react-icons/bi";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
 import "../assets/style/ManageUser.css";
@@ -23,14 +24,18 @@ const ManageUserDashboard = () => {
   const [showDetail, setShowDetail] = useState(false);
   const [detailUser, setDetailUser] = useState(null);
   const [username, setUsername] = useState("");
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setSidebarOpen(false);
     navigate("/login");
   };
 
+  // Token check on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
@@ -39,10 +44,18 @@ const ManageUserDashboard = () => {
     }
   }, [navigate]);
 
+  // Resize listener for isMobile updates
   useEffect(() => {
-    fetchUser();
+    const handleResize = () => {
+      const mobile = window.innerWidth < 992;
+      setIsMobile(mobile);
+      if (!mobile) setSidebarOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Fetch users
   const fetchUser = async () => {
     try {
       const res = await axios.get("http://localhost:5000/users");
@@ -52,6 +65,10 @@ const ManageUserDashboard = () => {
     }
   };
 
+  useEffect(() => {
+    fetchUser();
+  }, []);
+
   const handleDetail = (row) => {
     setDetailUser(row);
     setShowDetail(true);
@@ -59,11 +76,16 @@ const ManageUserDashboard = () => {
 
   const handleDelete = async (id) => {
     if (!window.confirm("Yakin hapus user ini?")) return;
-    await axios.delete(`http://localhost:5000/users/deleteUser/${id}`);
-    toast.success("User dihapus");
-    fetchUser();
+    try {
+      await axios.delete(`http://localhost:5000/users/deleteUser/${id}`);
+      toast.success("User dihapus");
+      fetchUser();
+    } catch {
+      toast.error("Gagal menghapus user");
+    }
   };
 
+  // Filter user list based on filterText
   const filteredItems = useMemo(() => {
     return userData.filter(
       (u) =>
@@ -99,39 +121,95 @@ const ManageUserDashboard = () => {
 
   return (
     <div className="page-wrapper">
-      {/* SIDEBAR */}
-      <aside className="sidebar">
-        <div className="sidebar-logo-section">
-          <Image src="/logoooo.png" className="sidebar-logo" />
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+      {/* Sidebar desktop */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div className="sidebar-logo-section">
+            <Image src="/logoooo.png" className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link className="link-item" href="/dashboard">
-            Dashboard
-          </Nav.Link>
-          <Nav.Link
-            className="link-item active-link"
-            href="/dashboard/manage-user"
-          >
-            Manage User
-          </Nav.Link>
-          <Nav.Link className="link-item" href="/dashboard/manage-datalist">
-            Manage Menu
-          </Nav.Link>
-        </Nav>
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link href="/dashboard" className="link-item">
+              Dashboard
+            </Nav.Link>
+            <Nav.Link
+              href="/dashboard/manage-user"
+              className="link-item active-link"
+            >
+              Manage User
+            </Nav.Link>
+            <Nav.Link href="/dashboard/manage-datalist" className="link-item">
+              Manage Menu
+            </Nav.Link>
+          </Nav>
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
+          </Nav.Link>
+        </aside>
+      )}
 
-      {/* MAIN */}
+      {/* Sidebar Offcanvas mobile */}
+      {isMobile && (
+        <Offcanvas
+          show={sidebarOpen}
+          onHide={() => setSidebarOpen(false)}
+          className="sidebar-offcanvas"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image src="/logoooo.png" className="sidebar-logo" />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link
+                href="/dashboard"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Dashboard
+              </Nav.Link>
+              <Nav.Link
+                href="/dashboard/manage-user"
+                className="link-item active-link"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage User
+              </Nav.Link>
+              <Nav.Link
+                href="/dashboard/manage-datalist"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage Menu
+              </Nav.Link>
+            </Nav>
+            <Nav.Link className="logout-link" onClick={handleLogout}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
+
+      {/* Main Content */}
       <div className="main-content">
         <Navbar className="top-navbar p-3">
           <Container fluid>
+            {isMobile && (
+              <List
+                size={28}
+                className="hamburger-icon"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Toggle menu"
+                style={{ cursor: "pointer", color: "#ae0032" }}
+              />
+            )}
             <Navbar.Text className="header-title">Manage User</Navbar.Text>
-            {/* USER PROFILE */}
             <Nav
               className="ms-auto align-items-center gap-2"
               style={{ cursor: "pointer" }}
@@ -151,7 +229,6 @@ const ManageUserDashboard = () => {
               value={filterText}
               onChange={(e) => setFilterText(e.target.value)}
             />
-
             <Button
               variant="danger"
               onClick={() => navigate("/dashboard/add-user")}
@@ -166,13 +243,14 @@ const ManageUserDashboard = () => {
             pagination
             highlightOnHover
             responsive
+            progressPending={userData.length === 0}
           />
         </Container>
 
         <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
 
-      {/* DETAIL MODAL */}
+      {/* Detail Modal */}
       <Modal show={showDetail} onHide={() => setShowDetail(false)} centered>
         {detailUser && (
           <>

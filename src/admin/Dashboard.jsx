@@ -1,24 +1,35 @@
 import React, { useEffect, useState } from "react";
-import { Container, Navbar, Nav, Image } from "react-bootstrap";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { Container, Navbar, Nav, Image, Offcanvas } from "react-bootstrap";
+import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import "../assets/style/Dasboard.css";
 
 const Dashboard = () => {
   const navigate = useNavigate();
   const [username, setUsername] = useState("");
+  const [sidebarOpen, setSidebarOpen] = useState(false);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
 
-  // ===============================
-  // AMBIL USER DARI TOKEN
-  // ===============================
+  // Handle window resize untuk update isMobile state
+  useEffect(() => {
+    const handleResize = () => {
+      setIsMobile(window.innerWidth < 992);
+      if (window.innerWidth >= 992) {
+        setSidebarOpen(false);
+      }
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Ambil user dari token
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
       return;
     }
-
     try {
       const decoded = jwtDecode(token);
       setUsername(decoded.username);
@@ -34,47 +45,94 @@ const Dashboard = () => {
     navigate("/login");
   };
 
+  const toggleSidebar = () => setSidebarOpen(!sidebarOpen);
+
   return (
     <div className="page-wrapper">
-      {/* ================= SIDEBAR ================= */}
-      <aside className="sidebar">
-        <div className="sidebar-logo-section">
-         <Image
-           src="/logoooo.png"
-            className="sidebar-logo"
-          />
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+      {/* Sidebar Desktop (hidden on mobile) */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div className="sidebar-logo-section">
+            <Image src="/logoooo.png" className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link className="link-item active-link">Dashboard</Nav.Link>
-          <Nav.Link
-            className="link-item"
-            onClick={() => navigate("/dashboard/manage-user")}
-          >
-            Manage User
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link className="link-item active-link">Dashboard</Nav.Link>
+            <Nav.Link className="link-item" onClick={() => navigate("/dashboard/manage-user")}>
+              Manage User
+            </Nav.Link>
+            <Nav.Link className="link-item" onClick={() => navigate("/dashboard/manage-datalist")}>
+              Manage Menu
+            </Nav.Link>
+          </Nav>
+
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
           </Nav.Link>
-          <Nav.Link
-            className="link-item"
-            onClick={() => navigate("/dashboard/manage-datalist")}
-          >
-            Manage Menu
-          </Nav.Link>
-        </Nav>
+        </aside>
+      )}
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
+      {/* Offcanvas Sidebar Mobile */}
+      {isMobile && (
+        <Offcanvas show={sidebarOpen} onHide={toggleSidebar} className="sidebar-offcanvas">
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image src="/logoooo.png" className="sidebar-logo" />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link className="link-item active-link" onClick={toggleSidebar}>
+                Dashboard
+              </Nav.Link>
+              <Nav.Link
+                className="link-item"
+                onClick={() => {
+                  navigate("/dashboard/manage-user");
+                  toggleSidebar();
+                }}
+              >
+                Manage User
+              </Nav.Link>
+              <Nav.Link
+                className="link-item"
+                onClick={() => {
+                  navigate("/dashboard/manage-datalist");
+                  toggleSidebar();
+                }}
+              >
+                Manage Menu
+              </Nav.Link>
+            </Nav>
 
-      {/* ================= MAIN CONTENT ================= */}
+            <Nav.Link className="logout-link" onClick={() => { handleLogout(); toggleSidebar(); }}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
+
+      {/* Main content */}
       <div className="main-content">
-        {/* NAVBAR */}
+        {/* Navbar */}
         <Navbar className="top-navbar p-3">
           <Container fluid>
+            {isMobile && (
+              <List
+                size={28}
+                className="hamburger-icon"
+                onClick={toggleSidebar}
+                style={{ cursor: "pointer", color: "#ae0032" }}
+                aria-label="Menu"
+              />
+            )}
             <Navbar.Text className="header-title">Dashboard</Navbar.Text>
 
-            {/* USER PROFILE */}
+            {/* User Profile */}
             <Nav
               className="ms-auto align-items-center gap-2"
               style={{ cursor: "pointer" }}
@@ -86,7 +144,7 @@ const Dashboard = () => {
           </Container>
         </Navbar>
 
-        {/* ===== CENTER CONTENT ===== */}
+        {/* Center Content */}
         <Container
           fluid
           className="d-flex justify-content-center align-items-center"
@@ -102,7 +160,7 @@ const Dashboard = () => {
           </div>
         </Container>
 
-        {/* FOOTER */}
+        {/* Footer */}
         <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
     </div>

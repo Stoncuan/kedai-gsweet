@@ -1,36 +1,45 @@
 import React, { useEffect, useState } from "react";
-import { Container, Navbar, Nav, Image, Button, Form } from "react-bootstrap";
-import { PersonCircle, BoxArrowRight } from "react-bootstrap-icons";
+import { Container, Navbar, Nav, Image, Offcanvas, Form, Button} from "react-bootstrap";
+import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate, useParams } from "react-router-dom";
 import axios from "axios";
-import { jwtDecode } from "jwt-decode";
+import {jwtDecode} from "jwt-decode";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../assets/style/EditProfile.css";
 
-const EditUserProfile = () => {
+const EditProfile = () => {
   const navigate = useNavigate();
   const { id } = useParams();
 
-  // cek apa user punya token atau tidak
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return;
-  }
-
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
   const [form, setForm] = useState({
     nama_lengkap: "",
     username: "",
     no_tel: "",
     password: "",
   });
-
   const [userLogin, setUserLogin] = useState(null);
 
+  // Handle resize untuk responsivitas
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 992;
+      setIsMobile(mobile);
+      if (!mobile) setSidebarOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Cek token dan ambil data user
   useEffect(() => {
     const token = localStorage.getItem("token");
-    if (!token) return navigate("/login");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
 
     try {
       const decoded = jwtDecode(token);
@@ -46,12 +55,8 @@ const EditUserProfile = () => {
             password: "",
           });
         })
-        .catch((err) => {
-          console.error(err);
-          toast.error("Gagal mengambil data user");
-        });
-    } catch (error) {
-      console.error(error);
+        .catch(() => toast.error("Gagal mengambil data user"));
+    } catch {
       localStorage.removeItem("token");
       navigate("/login");
     }
@@ -63,74 +68,136 @@ const EditUserProfile = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     const payload = { ...form };
     if (!payload.password) delete payload.password;
 
     try {
       await axios.put(`http://localhost:5000/users/editUser/${id}`, payload);
       toast.success("Profile berhasil diperbarui");
-      setTimeout(() => {
-        navigate("/dashboard/profile");
-      }, 1500);
-    } catch (err) {
-      console.error(err);
+      setTimeout(() => navigate("/dashboard/profile"), 1500);
+    } catch {
       toast.error("Gagal update profile");
     }
   };
 
   const handleLogout = () => {
     localStorage.removeItem("token");
+    setSidebarOpen(false);
     navigate("/login");
   };
 
   return (
     <div className="page-wrapper">
-      {/* SIDEBAR */}
-      <aside className="sidebar">
-        <div
-          className="sidebar-logo-section"
-          onClick={() => navigate("/dashboard/profile")}
-          style={{ cursor: "pointer" }}
+      {/* Sidebar desktop */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div
+            className="sidebar-logo-section"
+            onClick={() => navigate("/dashboard/profile")}
+            style={{ cursor: "pointer" }}
+          >
+            <Image src="/logoooo.png" className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
+
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link
+              className="link-item"
+              onClick={() => navigate("/dashboard")}
+            >
+              Dashboard
+            </Nav.Link>
+            <Nav.Link
+              className="link-item"
+              onClick={() => navigate("/dashboard/manage-user")}
+            >
+              Manage User
+            </Nav.Link>
+            <Nav.Link
+              className="link-item"
+              onClick={() => navigate("/dashboard/manage-datalist")}
+            >
+              Manage Menu
+            </Nav.Link>
+          </Nav>
+
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
+          </Nav.Link>
+        </aside>
+      )}
+
+      {/* Sidebar Offcanvas mobile */}
+      {isMobile && (
+        <Offcanvas
+          show={sidebarOpen}
+          onHide={() => setSidebarOpen(false)}
+          className="sidebar-offcanvas"
+          backdrop={true}
+          scroll={false}
         >
-          <Image src="/logoooo.png" className="sidebar-logo" />
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image src="/logoooo.png" className="sidebar-logo" />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link
+                href="/dashboard"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Dashboard
+              </Nav.Link>
+              <Nav.Link
+                href="/dashboard/manage-user"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage User
+              </Nav.Link>
+              <Nav.Link
+                href="/dashboard/manage-datalist"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage Menu
+              </Nav.Link>
+            </Nav>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link
-            className="link-item"
-            onClick={() => navigate("/dashboard")}
-          >
-            Dashboard
-          </Nav.Link>
-          <Nav.Link
-            className="link-item"
-            onClick={() => navigate("/dashboard/manage-user")}
-          >
-            Manage User
-          </Nav.Link>
-          <Nav.Link
-            className="link-item"
-            onClick={() => navigate("/dashboard/manage-datalist")}
-          >
-            Manage Menu
-          </Nav.Link>
-        </Nav>
+            <Nav.Link className="logout-link" onClick={handleLogout}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
-
-      {/* MAIN */}
+      {/* MAIN CONTENT */}
       <div className="main-content">
         <Navbar className="top-navbar p-3">
           <Container fluid>
+            {isMobile && (
+              <List
+                size={28}
+                className="hamburger-icon"
+                onClick={() => setSidebarOpen(true)}
+                role="button"
+                aria-label="Toggle sidebar"
+                style={{ cursor: "pointer", color: "#ae0032" }}
+              />
+            )}
             <Navbar.Text className="header-title">Edit Profile</Navbar.Text>
 
-            <Nav className="ms-auto align-items-center gap-2">
-              <span>{userLogin?.username}</span>
+            <Nav
+              className="ms-auto align-items-center gap-2"
+              style={{ cursor: "pointer" }}
+              onClick={() => navigate("/dashboard/profile")}
+            >
+              <span className="fw-semibold">{userLogin?.username}</span>
               <PersonCircle size={22} />
             </Nav>
           </Container>
@@ -194,23 +261,11 @@ const EditUserProfile = () => {
           </Form>
         </Container>
 
-        {/* Toast Container */}
-        <ToastContainer
-          position="top-right"
-          autoClose={3000}
-          hideProgressBar={false}
-          newestOnTop
-          closeOnClick
-          rtl={false}
-          pauseOnFocusLoss
-          draggable
-          pauseOnHover
-        />
-
+        <ToastContainer position="top-right" autoClose={3000} />
         <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
     </div>
   );
 };
 
-export default EditUserProfile;
+export default EditProfile;

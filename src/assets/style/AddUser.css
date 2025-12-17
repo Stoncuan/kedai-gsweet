@@ -168,7 +168,6 @@
   opacity: 0.85;
 }
 
-
 /* Footer */
 .footer {
   background-color: #f7d5db;
@@ -225,4 +224,73 @@
   .btn-tambah-menu {
     font-size: 0.85rem;
   }
+}
+
+/* Hamburger icon untuk navbar mobile */
+.hamburger-icon {
+  margin-right: 1rem;
+  flex-shrink: 0;
+  cursor: pointer;
+  color: #ae0032;
+}
+
+/* Sembunyikan sidebar desktop di layar kecil, main content full width */
+@media (max-width: 991px) {
+  .sidebar {
+    display: none !important;
+  }
+  .main-content {
+    margin-left: 0 !important;
+    width: 100% !important;
+    padding: 1rem;
+  }
+  .top-navbar {
+    padding: 10px 15px;
+    font-size: 1.1rem;
+  }
+}
+
+/* Styling sidebar mobile Offcanvas */
+.sidebar-offcanvas {
+  background-color: #f7c9cd;
+  color: #ae0032;
+}
+
+.sidebar-offcanvas .sidebar-logo-section {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin-bottom: 15px;
+}
+
+.sidebar-offcanvas .sidebar-logo {
+  width: 80px;
+  height: 80px;
+}
+
+.sidebar-offcanvas .sidebar-admin {
+  font-weight: 700;
+  font-size: 1rem;
+}
+
+.sidebar-offcanvas .sidebar-links .link-item {
+  color: #ae0032;
+  font-weight: 600;
+  margin-bottom: 10px;
+  text-decoration: none;
+  display: block;
+}
+
+.sidebar-offcanvas .logout-link {
+  color: #ae0032;
+  font-weight: 600;
+  margin-top: 20px;
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+}
+
+.sidebar-offcanvas .logout-link:hover {
+  text-decoration: underline;
 }

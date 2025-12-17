@@ -1,15 +1,13 @@
-import React, { useState, useEffect, useMemo } from "react";
-import axios from "axios";
-import DataTable from "react-data-table-component";
+import React, { useEffect, useState, useMemo } from "react";
 import {
   Container,
   Navbar,
   Nav,
   Button,
   Image,
+  Offcanvas,
   Form,
-  Modal,
-  Badge,
+  Modal
 } from "react-bootstrap";
 import {
   BiUserCircle,
@@ -19,35 +17,50 @@ import {
   BiTrash,
   BiPencil,
 } from "react-icons/bi";
+import { BoxArrowRight, PersonCircle, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
+import DataTable from "react-data-table-component";
+import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import "../assets/style/ManageMenuDashboard.css";
-import { BoxArrowRight, PersonCircle} from "react-bootstrap-icons";
 
 const ManageMenuDashboard = () => {
   const [menuData, setMenuData] = useState([]);
   const [filterText, setFilterText] = useState("");
   const [loading, setLoading] = useState(true);
   const [username, setUsername] = useState("");
-
-  const handleLogout = () => {
-    localStorage.removeItem("token");
-    navigate("/login");
-  };
-
-  // cek apa user punya token atau tidak
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return;
-  }
-
-  const [showDetail, setShowDetail] = useState(false);
-  const [detailMenu, setDetailMenu] = useState(null);
+  const [isMobile, setIsMobile] = useState(window.innerWidth < 992);
+  const [sidebarOpen, setSidebarOpen] = useState(false);
 
   const navigate = useNavigate();
 
+  // Logout handler
+  const handleLogout = () => {
+    localStorage.removeItem("token");
+    setSidebarOpen(false);
+    navigate("/login");
+  };
+
+  // Token check
+  const token = localStorage.getItem("token");
+  if (!token) {
+    navigate("/login");
+    return null;
+  }
+
+  // Resize handler for isMobile
+  useEffect(() => {
+    const handleResize = () => {
+      const mobile = window.innerWidth < 992;
+      setIsMobile(mobile);
+      if (!mobile) setSidebarOpen(false);
+    };
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
+  }, []);
+
+  // Fetch menu data
   useEffect(() => {
     axios
       .get("http://localhost:5000/menu")
@@ -56,36 +69,7 @@ const ManageMenuDashboard = () => {
       .finally(() => setLoading(false));
   }, []);
 
-  const handleDetail = async (id) => {
-    try {
-      const res = await axios.get(`http://localhost:5000/menu/getMenu/${id}`);
-      setDetailMenu(res.data);
-      setShowDetail(true);
-    } catch {
-      toast.error("Gagal memuat detail menu");
-    }
-  };
-
-  const handleDelete = async (id) => {
-    if (!window.confirm("Yakin ingin menghapus menu ini?")) return;
-
-    try {
-      await axios.delete(`http://localhost:5000/menu/deleteMenu/${id}`);
-      setMenuData((prev) => prev.filter((item) => item.id !== id));
-      toast.success("Menu berhasil dihapus ✅");
-    } catch {
-      toast.error("Gagal menghapus menu ❌");
-    }
-  };
-
-  const filteredItems = useMemo(() => {
-    return menuData.filter(
-      (item) =>
-        item.nama_menu?.toLowerCase().includes(filterText.toLowerCase()) ||
-        item.harga?.toString().includes(filterText)
-    );
-  }, [menuData, filterText]);
-
+  // Table columns
   const columns = [
     {
       name: "No",
@@ -111,13 +95,11 @@ const ManageMenuDashboard = () => {
             title="Detail"
             onClick={() => handleDetail(row.id)}
           />
-
           <BiTrash
             className="menu-action-icon menu-action-delete"
             title="Hapus"
             onClick={() => handleDelete(row.id)}
           />
-
           <BiPencil
             className="menu-action-icon menu-action-edit"
             title="Edit"
@@ -128,36 +110,129 @@ const ManageMenuDashboard = () => {
     },
   ];
 
+  // Filtered list based on filter text
+  const filteredItems = useMemo(
+    () =>
+      menuData.filter(
+        (item) =>
+          item.nama_menu?.toLowerCase().includes(filterText.toLowerCase()) ||
+          item.harga?.toString().includes(filterText)
+      ),
+    [menuData, filterText]
+  );
+
+  // Detail modal states and handlers
+  const [showDetail, setShowDetail] = useState(false);
+  const [detailMenu, setDetailMenu] = useState(null);
+
+  const handleDetail = async (id) => {
+    try {
+      const res = await axios.get(`http://localhost:5000/menu/getMenu/${id}`);
+      setDetailMenu(res.data);
+      setShowDetail(true);
+    } catch {
+      toast.error("Gagal memuat detail menu");
+    }
+  };
+
+  const handleDelete = async (id) => {
+    if (!window.confirm("Yakin ingin menghapus menu ini?")) return;
+
+    try {
+      await axios.delete(`http://localhost:5000/menu/deleteMenu/${id}`);
+      setMenuData((prev) => prev.filter((item) => item.id !== id));
+      toast.success("Menu berhasil dihapus ✅");
+    } catch {
+      toast.error("Gagal menghapus menu ❌");
+    }
+  };
+
   return (
     <div className="page-wrapper">
-      {/* SIDEBAR */}
-      <aside className="sidebar">
-        <div className="sidebar-logo-section">
-          <Image src="/logoooo.png" className="sidebar-logo" />
-          <span className="sidebar-admin">ADMIN</span>
-        </div>
+      {/* Sidebar desktop */}
+      {!isMobile && (
+        <aside className="sidebar">
+          <div className="sidebar-logo-section">
+            <Image src="/logoooo.png" className="sidebar-logo" />
+            <span className="sidebar-admin">ADMIN</span>
+          </div>
 
-        <Nav className="flex-column sidebar-links">
-          <Nav.Link className="link-item" href="/dashboard">
-            Dashboard
+          <Nav className="flex-column sidebar-links">
+            <Nav.Link href="/dashboard" className="link-item">
+              Dashboard
+            </Nav.Link>
+            <Nav.Link href="/dashboard/manage-user" className="link-item">
+              Manage User
+            </Nav.Link>
+            <Nav.Link className="link-item active-link">Manage Menu</Nav.Link>
+          </Nav>
+
+          <Nav.Link className="logout-link" onClick={handleLogout}>
+            Logout <BoxArrowRight />
           </Nav.Link>
-          <Nav.Link className="link-item" href="/dashboard/manage-user">
-            Manage User
-          </Nav.Link>
-          <Nav.Link className="link-item active-link">Manage Menu</Nav.Link>
-        </Nav>
+        </aside>
+      )}
 
-        <Nav.Link className="logout-link" onClick={handleLogout}>
-          Logout <BoxArrowRight />
-        </Nav.Link>
-      </aside>
+      {/* Sidebar Offcanvas mobile */}
+      {isMobile && (
+        <Offcanvas
+          show={sidebarOpen}
+          onHide={() => setSidebarOpen(false)}
+          className="sidebar-offcanvas"
+        >
+          <Offcanvas.Header closeButton>
+            <Offcanvas.Title>
+              <div className="sidebar-logo-section">
+                <Image src="/logoooo.png" className="sidebar-logo" />
+                <span className="sidebar-admin">ADMIN</span>
+              </div>
+            </Offcanvas.Title>
+          </Offcanvas.Header>
+          <Offcanvas.Body>
+            <Nav className="flex-column sidebar-links">
+              <Nav.Link
+                href="/dashboard"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Dashboard
+              </Nav.Link>
+              <Nav.Link
+                href="/dashboard/manage-user"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage User
+              </Nav.Link>
+              <Nav.Link
+                className="link-item active-link"
+                onClick={() => setSidebarOpen(false)}
+              >
+                Manage Menu
+              </Nav.Link>
+            </Nav>
 
-      {/* MAIN */}
+            <Nav.Link className="logout-link" onClick={handleLogout}>
+              Logout <BoxArrowRight />
+            </Nav.Link>
+          </Offcanvas.Body>
+        </Offcanvas>
+      )}
+
+      {/* Main content */}
       <div className="main-content">
         <Navbar className="top-navbar p-3">
           <Container fluid>
+            {isMobile && (
+              <List
+                size={28}
+                className="hamburger-icon"
+                onClick={() => setSidebarOpen(true)}
+                aria-label="Toggle menu"
+                style={{ cursor: "pointer", color: "#ae0032" }}
+              />
+            )}
             <Navbar.Text className="header-title">Manage Menu</Navbar.Text>
-            {/* USER PROFILE */}
             <Nav
               className="ms-auto align-items-center gap-2"
               style={{ cursor: "pointer" }}
@@ -192,13 +267,14 @@ const ManageMenuDashboard = () => {
             pagination
             highlightOnHover
             responsive
+            progressPending={loading}
           />
         </Container>
 
         <footer className="footer text-center py-2">KEDAI GSWEET</footer>
       </div>
 
-      {/* ================= MODAL DETAIL ================= */}
+      {/* Modal Detail */}
       <Modal
         show={showDetail}
         onHide={() => setShowDetail(false)}
@@ -212,7 +288,6 @@ const ManageMenuDashboard = () => {
                 Detail Menu
               </Modal.Title>
             </Modal.Header>
-
             <Modal.Body>
               <div className="text-center mb-3">
                 <Image
@@ -227,15 +302,14 @@ const ManageMenuDashboard = () => {
 
               <Badge bg="danger" className="mb-3">
                 {new Intl.NumberFormat("id-ID", {
-                  astyle: "currency",
                   currency: "IDR",
+                  style: "currency",
                   minimumFractionDigits: 0,
                 }).format(detailMenu.harga)}
               </Badge>
 
               <p className="mt-2">{detailMenu.deskripsi}</p>
             </Modal.Body>
-
             <Modal.Footer>
               <Button
                 variant="outline-secondary"
@@ -243,7 +317,6 @@ const ManageMenuDashboard = () => {
               >
                 Tutup
               </Button>
-
               <Button
                 variant="danger"
                 onClick={() => {
