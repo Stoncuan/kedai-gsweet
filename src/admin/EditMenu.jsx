@@ -251,7 +251,13 @@ const EditMenu = () => {
               />
             </Form.Group>
 
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-end gap-2">
+              <Button
+                variant="secondary"
+                onClick={() => navigate("/dashboard/manage-datalist")}
+              >
+                Batal
+              </Button>
               <Button type="submit" variant="danger" disabled={loading}>
                 {loading ? "Menyimpan..." : "Update Menu"}
               </Button>

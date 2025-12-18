@@ -117,7 +117,7 @@ router.put("/editMenu/:id", upload.single("gambarMenu"), (req, res) => {
     updateMenu(data, req.params.id, (err) => {
       if (err) return res.status(500).json(err);
 
-      // 🔥 hapus gambar lama jika upload baru
+      // hapus gambar lama jika upload baru
       if (gambarBaru && gambarLama) {
         const imagePath = path.join(__dirname, "../uploads", gambarLama);
         fs.unlink(imagePath, () => {});

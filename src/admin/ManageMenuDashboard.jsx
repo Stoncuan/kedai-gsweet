@@ -7,21 +7,16 @@ import {
   Image,
   Offcanvas,
   Form,
-  Modal
+  Modal,
+  Badge,
 } from "react-bootstrap";
-import {
-  BiUserCircle,
-  BiLogOut,
-  BiPlus,
-  BiFile,
-  BiTrash,
-  BiPencil,
-} from "react-icons/bi";
+import { BiPlus, BiFile, BiTrash, BiPencil } from "react-icons/bi";
 import { BoxArrowRight, PersonCircle, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import DataTable from "react-data-table-component";
 import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 import "react-toastify/dist/ReactToastify.css";
 import "../assets/style/ManageMenuDashboard.css";
 
@@ -42,12 +37,20 @@ const ManageMenuDashboard = () => {
     navigate("/login");
   };
 
-  // Token check
-  const token = localStorage.getItem("token");
-  if (!token) {
-    navigate("/login");
-    return null;
-  }
+  useEffect(() => {
+    const token = localStorage.getItem("token");
+    if (!token) {
+      navigate("/login");
+      return;
+    }
+    try {
+      const decoded = jwtDecode(token);
+      setUsername(decoded.username); // SESUAI ISI TOKEN
+    } catch (error) {
+      console.error("Token tidak valid");
+      navigate("/login");
+    }
+  }, [navigate]);
 
   // Resize handler for isMobile
   useEffect(() => {
@@ -83,7 +86,7 @@ const ManageMenuDashboard = () => {
     },
     {
       name: "Harga",
-      selector: (row) => `Rp ${row.harga}`,
+      selector: (row) => "Rp " + Number(row.harga).toLocaleString("id-ID"),
       sortable: true,
     },
     {
@@ -164,7 +167,7 @@ const ManageMenuDashboard = () => {
             <Nav.Link href="/dashboard/manage-user" className="link-item">
               Manage User
             </Nav.Link>
-            <Nav.Link className="link-item active-link">Manage Menu</Nav.Link>
+            <Nav.Link href="/dashboard/manage-datalist" className="link-item active-link">Manage Menu</Nav.Link>
           </Nav>
 
           <Nav.Link className="logout-link" onClick={handleLogout}>

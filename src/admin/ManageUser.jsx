@@ -16,6 +16,7 @@ import { BiPlus, BiFile, BiTrash, BiPencil } from "react-icons/bi";
 import { PersonCircle, BoxArrowRight, List } from "react-bootstrap-icons";
 import { useNavigate } from "react-router-dom";
 import { ToastContainer, toast } from "react-toastify";
+import { jwtDecode } from "jwt-decode";
 import "../assets/style/ManageUser.css";
 
 const ManageUserDashboard = () => {
@@ -35,12 +36,19 @@ const ManageUserDashboard = () => {
     navigate("/login");
   };
 
-  // Token check on mount
   useEffect(() => {
     const token = localStorage.getItem("token");
     if (!token) {
       navigate("/login");
       return;
+    }
+
+    try {
+      const decoded = jwtDecode(token);
+      setUsername(decoded.username); // SESUAI ISI TOKEN
+    } catch (error) {
+      console.error("Token tidak valid");
+      navigate("/login");
     }
   }, [navigate]);
 

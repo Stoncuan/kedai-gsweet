@@ -101,7 +101,10 @@ const AddMenu = () => {
             <Nav.Link href="/dashboard/manage-user" className="link-item">
               Manage User
             </Nav.Link>
-            <Nav.Link href="/dashboard/manage-datalist" className="link-item active-link">
+            <Nav.Link
+              href="/dashboard/manage-datalist"
+              className="link-item active-link"
+            >
               Manage Menu
             </Nav.Link>
           </Nav>
@@ -114,7 +117,11 @@ const AddMenu = () => {
 
       {/* Offcanvas Sidebar mobile */}
       {isMobile && (
-        <Offcanvas show={sidebarOpen} onHide={() => setSidebarOpen(false)} className="sidebar-offcanvas">
+        <Offcanvas
+          show={sidebarOpen}
+          onHide={() => setSidebarOpen(false)}
+          className="sidebar-offcanvas"
+        >
           <Offcanvas.Header closeButton>
             <Offcanvas.Title>
               <div className="sidebar-logo-section">
@@ -125,13 +132,25 @@ const AddMenu = () => {
           </Offcanvas.Header>
           <Offcanvas.Body>
             <Nav className="flex-column sidebar-links">
-              <Nav.Link href="/dashboard" className="link-item" onClick={() => setSidebarOpen(false)}>
+              <Nav.Link
+                href="/dashboard"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
                 Dashboard
               </Nav.Link>
-              <Nav.Link href="/manage-user" className="link-item" onClick={() => setSidebarOpen(false)}>
+              <Nav.Link
+                href="/manage-user"
+                className="link-item"
+                onClick={() => setSidebarOpen(false)}
+              >
                 Manage User
               </Nav.Link>
-              <Nav.Link href="/dashboard/manage-datalist" className="link-item active-link" onClick={() => setSidebarOpen(false)}>
+              <Nav.Link
+                href="/dashboard/manage-datalist"
+                className="link-item active-link"
+                onClick={() => setSidebarOpen(false)}
+              >
                 Manage Menu
               </Nav.Link>
             </Nav>
@@ -165,7 +184,10 @@ const AddMenu = () => {
           </Nav>
         </Navbar>
 
-        <Container fluid className="d-flex justify-content-center align-items-start py-4">
+        <Container
+          fluid
+          className="d-flex justify-content-center align-items-start py-4"
+        >
           <Form className="form-add-menu" onSubmit={handleSubmit}>
             <Row className="mb-3">
               <Col md={6}>
@@ -213,7 +235,13 @@ const AddMenu = () => {
               />
             </Form.Group>
 
-            <div className="d-flex justify-content-end">
+            <div className="d-flex justify-content-end gap-2">
+              <Button
+                variant="secondary"
+                onClick={() => navigate("/dashboard/manage-datalist")}
+              >
+                Batal
+              </Button>
               <Button type="submit" variant="danger" disabled={loading}>
                 {loading ? "Menyimpan..." : "Simpan Menu"}
               </Button>
